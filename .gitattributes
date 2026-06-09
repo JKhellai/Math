@@ -1,0 +1,5 @@
+# 默认：文本文件交给 git 自动规整行尾（仓库内存 LF）
+* text=auto
+
+# Windows 批处理必须是 CRLF，否则 cmd.exe 解析出错（双击会一闪而过）
+*.bat text eol=crlf

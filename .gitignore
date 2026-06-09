@@ -1,0 +1,18 @@
+# ── Obsidian 库配置（私人）──
+.obsidian/
+
+# ── 手绘草稿板 / 画布（不参与构建）──
+*.canvas
+
+# ── 内部设计 / 构建规格（暂不公开；想一并发布就删掉这一行）──
+specs/
+
+# ── 私人构建产物（含 status 进度层，请勿公开）──
+index.private.html
+graph.private.json
+
+# ── 系统 / 编辑器杂项 ──
+.DS_Store
+Thumbs.db
+desktop.ini
+*~

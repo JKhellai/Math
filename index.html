@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>数学知识体系 · 3D 知识图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --bg0:#05070f; --ink:#e8eefc; --muted:#8ea1c4;
+    --gold:#fbbf24; --cyan:#22d3ee; --glass:rgba(11,17,32,.74);
+    --line:rgba(125,160,220,.16); --line2:rgba(125,160,220,.28);
+    --neutral:#A9A9A9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;width:100%;overflow:hidden;background:var(--bg0)}
+  body{
+    font-family:"Noto Sans SC",system-ui,sans-serif;color:var(--ink);
+    background:
+      radial-gradient(1200px 800px at 70% 18%, #101a36 0%, rgba(16,26,54,0) 60%),
+      radial-gradient(900px 700px at 18% 88%, #0d1530 0%, rgba(13,21,48,0) 55%),
+      linear-gradient(180deg,#05070f 0%, #080d1c 100%);
+  }
+
+  /* ── 顶栏 ─────────────────────────────────────────────── */
+  #topbar{
+    position:fixed;top:0;left:0;right:0;height:52px;z-index:20;display:flex;align-items:center;gap:10px;
+    padding:0 14px;background:linear-gradient(180deg,rgba(7,11,22,.92),rgba(7,11,22,.55));
+    border-bottom:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .navbtn{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);color:#cdd9f2;cursor:pointer;font-size:16px;line-height:1;
+    display:grid;place-items:center;transition:.15s;flex:none}
+  .navbtn:hover:not(:disabled){color:#fff;border-color:var(--line2);background:rgba(255,255,255,.09)}
+  .navbtn:disabled{opacity:.32;cursor:default}
+  #crumbs{display:flex;align-items:center;gap:2px;flex:1;min-width:0;overflow:hidden;
+    white-space:nowrap;font-size:13px}
+  #crumbs .seg{color:#bcccf0;cursor:pointer;padding:3px 7px;border-radius:6px;transition:.15s;flex:none}
+  #crumbs .seg:hover{background:rgba(255,255,255,.08);color:#fff}
+  #crumbs .seg.cur{color:#fff;font-weight:600}
+  #crumbs .sp{color:var(--muted);opacity:.6;flex:none;padding:0 1px}
+  #searchWrap{position:relative;flex:none}
+  #search{width:200px;height:32px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);color:var(--ink);padding:0 12px;font-size:13px;font-family:inherit;outline:none;transition:.15s}
+  #search:focus{border-color:var(--line2);background:rgba(255,255,255,.07);width:240px}
+  #search::placeholder{color:var(--muted)}
+  #results{position:absolute;top:38px;right:0;width:280px;max-height:50vh;overflow-y:auto;z-index:30;
+    background:var(--glass);border:1px solid var(--line);border-radius:11px;backdrop-filter:blur(14px);
+    box-shadow:0 16px 50px rgba(0,0,0,.5);padding:6px;display:none}
+  #results.open{display:block}
+  #results .r{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:8px;cursor:pointer;font-size:13px;color:#cdd9f2}
+  #results .r:hover{background:rgba(255,255,255,.08);color:#fff}
+  #results .r .cd{width:8px;height:8px;border-radius:50%;flex:none}
+  #results .r .sub{color:var(--muted);font-size:11px;margin-left:auto}
+  #results .empty{padding:12px;color:var(--muted);font-size:12.5px;text-align:center}
+
+  /* ── 主区：图（全幅底层）+ 面板（覆盖层滑入，不挤压图区）──────────── */
+  #app{position:fixed;top:52px;left:0;right:0;bottom:0;overflow:hidden}
+  #graph{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:1;
+    transition:top .42s cubic-bezier(.22,.9,.3,1),left .42s cubic-bezier(.22,.9,.3,1),width .42s cubic-bezier(.22,.9,.3,1),height .42s cubic-bezier(.22,.9,.3,1),transform .42s cubic-bezier(.22,.9,.3,1),opacity .3s}
+  #scene{position:absolute;inset:0;display:block;touch-action:none;cursor:grab}
+  #scene.grabbing{cursor:grabbing}
+  #labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  /* 面板覆盖在图之上滑入：图保持原尺寸、镜头不被顶走 */
+  #panel{position:absolute;top:0;right:0;bottom:0;width:var(--pw,400px);max-width:92%;
+    transform:translateX(100%);
+    transition:transform .42s cubic-bezier(.22,.9,.3,1), width .42s cubic-bezier(.22,.9,.3,1);
+    background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border-left:1px solid var(--line);box-shadow:-24px 0 64px rgba(0,0,0,.5);
+    display:flex;flex-direction:column;z-index:8}
+  body.panelopen #panel{transform:translateX(0)}
+  body.dragging #panel{transition:none}      /* 拖拽分隔条时关掉过渡，避免迟滞 */
+  /* 分隔条 = 面板左缘的拖拽把手，随面板一起滑入 */
+  #splitter{position:absolute;top:0;left:0;bottom:0;width:12px;transform:translateX(-50%);
+    cursor:col-resize;z-index:9;display:none}
+  #splitter::after{content:"";position:absolute;top:0;bottom:0;left:5px;width:2px;background:var(--line);transition:.15s}
+  #splitter:hover::after{background:var(--line2)}
+  body.panelopen #splitter{display:block}
+  /* 专注阅读：面板近全宽，图平滑缩成左下角小地图（数值 top/left/宽高 → 可过渡）*/
+  body.reading #panel{width:100%;max-width:100%}
+  body.reading #graph{top:calc(100% - 214px);left:14px;width:300px;height:200px;z-index:20;
+    border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.5);
+    background:radial-gradient(150px 110px at 60% 32%, #111c38 0%, #070b16 80%)}  /* 不透明底，内容看得清 */
+  body.reading #splitter{display:none}
+  /* 小地图收起：向下滑出，只留一个"地图"按钮 */
+  body.reading.mapmin #graph{transform:translateY(calc(100% + 28px));opacity:0;pointer-events:none}
+  #mapToggle{position:absolute;left:14px;bottom:14px;z-index:22;display:none;align-items:center;gap:5px;
+    padding:6px 11px;border-radius:9px;font-size:11.5px;color:#cdd9f2;background:var(--glass);
+    border:1px solid var(--line2);backdrop-filter:blur(10px);cursor:pointer;transition:.15s}
+  #mapToggle:hover{color:#fff}
+  body.reading #mapToggle{display:inline-flex}
+
+  #phead{padding:18px 22px 12px;border-bottom:1px solid var(--line);flex:none;position:relative}
+  #pbadge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.6px;
+    padding:3px 9px;border-radius:20px;text-transform:uppercase;margin-bottom:10px;border:1px solid var(--line)}
+  #ptitle{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:26px;line-height:1.12;color:#fff;padding-right:64px}
+  #pctrls{position:absolute;top:16px;right:16px;display:flex;gap:6px}
+  #pctrls button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;font-size:15px;line-height:1;transition:.15s;display:grid;place-items:center}
+  #pctrls button:hover{color:#fff;background:rgba(255,255,255,.1)}
+  #pbody{padding:18px 22px 28px;overflow-y:auto;flex:1 1 auto;font-size:14px;line-height:1.78;color:#cfdbf3}
+  #pbody h2{font-family:"Cormorant Garamond",serif;font-size:21px;color:#fff;margin:22px 0 10px;font-weight:700}
+  #pbody h3{font-size:15px;color:#eaf1ff;margin:18px 0 8px;font-weight:600}
+  #pbody p{margin:11px 0}
+  #pbody strong{color:#fff;font-weight:700}
+  #pbody em{color:#b9c8ee;font-style:italic}
+  #pbody ul,#pbody ol{margin:11px 0 11px 22px}
+  #pbody li{margin:5px 0}
+  #pbody code{background:rgba(125,160,220,.14);padding:1px 6px;border-radius:5px;font-size:12.5px;
+    font-family:ui-monospace,"Cascadia Code",Consolas,monospace;color:#e6edff}
+  #pbody blockquote{margin:13px 0;padding:9px 15px;border-left:3px solid var(--line2);
+    background:rgba(125,160,220,.07);border-radius:0 8px 8px 0;color:#b9c8ee;font-size:13px}
+  #pbody blockquote p{margin:5px 0}
+  #pbody table{border-collapse:collapse;margin:14px 0;font-size:13px;width:auto}
+  #pbody th,#pbody td{border:1px solid var(--line2);padding:5px 13px;text-align:center}
+  #pbody th{background:rgba(125,160,220,.13);color:#fff;font-weight:600}
+  #pbody hr{border:none;border-top:1px solid var(--line);margin:20px 0}
+  #pbody svg{max-width:100%;height:auto;display:block;margin:14px auto}
+  #pbody a.wl{color:#9fd0ff;border-bottom:1px dashed rgba(159,208,255,.5);cursor:pointer;text-decoration:none}
+  #pbody a.wl:hover{color:#fff;border-bottom-color:#fff;background:rgba(159,208,255,.12)}
+  #pbody .katex{font-size:1.02em}
+  #pfoot{flex:none;padding:11px 22px 13px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  #pfoot .st{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:14px;border:1px solid var(--line);font-weight:600;letter-spacing:.3px}
+
+  /* ── 悬停预览卡 ──────────────────────────────────────── */
+  #card{position:fixed;z-index:40;max-width:280px;padding:13px 15px;border-radius:13px;
+    background:var(--glass);border:1px solid var(--line2);backdrop-filter:blur(16px);
+    box-shadow:0 14px 44px rgba(0,0,0,.55);pointer-events:none;opacity:0;transition:opacity .14s;display:none}
+  #card.show{opacity:1;display:block}
+  #card .ct{font-weight:700;font-size:14px;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+  #card .ct .cd{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 8px currentColor}
+  #card .cs{font-size:12.5px;line-height:1.6;color:#c2d0ee}
+  #card .cj{margin-top:9px;font-size:11.5px;color:var(--cyan);font-weight:600}
+
+  /* ── 浮层：图例 / 帮助 / 提示 / 进度开关 ─────────────────── */
+  #legend{position:absolute;left:18px;bottom:46px;z-index:5;padding:12px 14px;border-radius:13px;
+    background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--line);
+    box-shadow:0 12px 40px rgba(0,0,0,.4);font-size:11px;min-width:172px;
+    transition:transform .35s cubic-bezier(.22,.9,.3,1)}
+  #legendBody{transition:opacity .2s}
+  #legend .cap{color:var(--muted);font-weight:500;margin-bottom:7px;letter-spacing:.3px;font-size:10px;text-transform:uppercase}
+  #legend .row{display:flex;align-items:center;gap:8px;margin:4px 0;color:#c7d4ee}
+  #legend .dot{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 8px currentColor}
+  #legend .ln{width:15px;height:0;border-top:2px solid currentColor;flex:none}
+  #legend .sep{height:1px;background:var(--line);margin:8px 0}
+  #legendTab{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:6px;
+    border:1px solid var(--line);background:rgba(255,255,255,.05);color:#bcccf0;cursor:pointer;
+    font-size:12px;line-height:1;display:grid;place-items:center;z-index:1;transition:.15s}
+  #legendTab:hover{color:#fff;background:rgba(255,255,255,.14)}
+  #legend.collapsed{transform:translateX(calc(-100% + 30px))}
+  #legend.collapsed #legendBody{opacity:0;pointer-events:none}
+  #toggles{position:absolute;right:16px;bottom:46px;z-index:5;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .tg{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#c7d4ee;cursor:pointer;
+    padding:7px 11px;border-radius:20px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(10px);transition:.15s}
+  .tg:hover{border-color:var(--line2);color:#fff}
+  .tg.on{border-color:var(--cyan);color:#cdf6ff}
+  .tg .sw{width:26px;height:14px;border-radius:8px;background:rgba(255,255,255,.12);position:relative;transition:.15s;flex:none}
+  .tg .sw::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#9fb0d6;transition:.15s}
+  .tg.on .sw{background:rgba(34,211,238,.4)} .tg.on .sw::after{left:14px;background:#22d3ee}
+  #hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:5;
+    font-size:11.5px;color:var(--muted);letter-spacing:.3px;padding:7px 15px;border-radius:24px;
+    background:rgba(10,16,30,.55);border:1px solid var(--line);backdrop-filter:blur(8px);
+    font-style:italic;animation:fade 1s ease both, hintout .8s ease 9s forwards;pointer-events:none}
+  @keyframes hintout{to{opacity:0;visibility:hidden}}
+  @keyframes fade{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+  /* 专注阅读时，右侧浮层让位（进度开关藏起、提示条隐藏）*/
+  body.reading #toggles{opacity:0;pointer-events:none}
+  body.reading #hint{display:none}
+
+  /* 标签 */
+  .lbl{position:absolute;top:0;left:0;will-change:transform;font-size:12px;font-weight:500;
+    letter-spacing:.2px;white-space:nowrap;color:#dbe6ff;padding:2px 8px;border-radius:7px;
+    background:rgba(8,13,26,.5);border:1px solid rgba(130,165,225,.12);
+    text-shadow:0 1px 6px rgba(0,0,0,.7);transition:opacity .22s,color .2s;transform:translate(-50%,-160%);}
+  .lbl.sel{color:#fff;font-weight:700;font-size:13px;border-color:rgba(255,255,255,.5);background:rgba(12,20,40,.88)}
+  .lbl.anc{color:#ffe7a8;border-color:rgba(251,191,36,.5);background:rgba(30,22,6,.72)}
+  .lbl.desc{color:#bdf3fb;border-color:rgba(34,211,238,.5);background:rgba(6,26,30,.72)}
+  .lbl.ctx{color:#dbe6ff;border-color:rgba(165,182,225,.4);background:rgba(10,16,32,.66)}
+  .lbl.dim{opacity:.14}
+  .lbl.hide{opacity:0}
+  .lbl .drill{opacity:.55;font-size:10px;margin-left:4px}
+
+  #footer{position:fixed;bottom:0;left:0;z-index:5;padding:5px 12px;font-size:10.5px;color:var(--muted);
+    background:linear-gradient(90deg,rgba(7,11,22,.7),transparent);letter-spacing:.2px}
+  #footer a{color:#9fb6e6;text-decoration:none} #footer a:hover{color:#fff}
+
+  #err{position:fixed;inset:0;display:none;place-items:center;text-align:center;color:#fff;font-size:15px;padding:40px;z-index:99;background:var(--bg0)}
+  @media (max-width:720px){
+    #search{width:120px} #search:focus{width:150px}
+    #panel{width:88vw;max-width:94vw}
+    #legend{transform:scale(.9);transform-origin:bottom left}
+  }
+</style>
+</head>
+<body>
+  <div id="topbar">
+    <button class="navbtn" id="back" title="后退" disabled>‹</button>
+    <button class="navbtn" id="fwd" title="前进" disabled>›</button>
+    <button class="navbtn" id="home" title="回到顶层">⌂</button>
+    <div id="crumbs"></div>
+    <div id="searchWrap">
+      <input id="search" type="text" placeholder="搜索概念…" autocomplete="off" spellcheck="false">
+      <div id="results"></div>
+    </div>
+  </div>
+
+  <div id="app">
+    <div id="graph">
+      <canvas id="scene"></canvas>
+      <div id="labels"></div>
+    </div>
+    <!-- 图区浮层：移到 #graph 之外，专注阅读时图缩成小地图也不会把它们一起裹进去 -->
+    <div id="legend"><button id="legendTab" title="收起 / 展开图例">‹</button><div id="legendBody"></div></div>
+    <div id="toggles">
+      <div class="tg" id="tgProgress"><span class="sw"></span>进度层</div>
+    </div>
+    <div id="hint">拖拽旋转 · 滚轮缩放 · 单击选中（高亮依赖链）· 双击容器下钻 · 点空白处取消</div>
+    <button id="mapToggle" title="收起 / 展开小地图">⤓ 收起地图</button>
+    <div id="panel">
+      <div id="splitter"></div>
+      <div id="phead">
+        <div id="pctrls">
+          <button id="pReading" title="专注阅读 / 收回分屏">⤢</button>
+          <button id="pClose" title="关闭">×</button>
+        </div>
+        <span id="pbadge"></span>
+        <div id="ptitle"></div>
+      </div>
+      <div id="pbody"></div>
+      <div id="pfoot"></div>
+    </div>
+  </div>
+
+  <div id="card"></div>
+  <div id="footer">© <a href="https://github.com/JKhellai" target="_blank" rel="noopener">JKhellai</a> · 数学知识体系 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></div>
+  <div id="err">⚠️ 3D 引擎或数据加载失败。请在能访问 cdnjs.cloudflare.com 的环境下打开本文件。</div>
+
+<script>
+"use strict";
+// ════════════════════════════════════════════════════════════════════════
+//  数据（由 build.py 内嵌；§0 file:// 下无法 fetch 本地文件，故直接内嵌）
+// ════════════════════════════════════════════════════════════════════════
+const RAW = {"nodes":[{"id":"alg_algebra","label":"代数","parent":null,"summary":"研究「运算与结构」的分支：对象如何在加、乘、复合等运算下结合，以及这些运算服从哪些定律（群、环、域、向量空间）。","depth":0,"isContainer":false,"isTop":true,"role":"discipline","color":"#979AFF","ring":1,"bearing":0,"popupLinks":[{"id":"fond_fondamenta","text":"地基"}],"body":"\n代数(algebra)问的不是「多大」、也不是「在哪」，而是：**一堆对象在某种运算下如何结合，又有哪些规律恒成立**。把「运算 + 它满足的定律」抽象出来单独研究，就得到群、环、域、向量空间这些**结构**。它用的语言——命题、集合、函数——在 <a class=\"wl\" data-id=\"fond_fondamenta\">地基<\/a> 里已经备齐；代数所做的，是在这套语言之上，追问对象之间「运算法则」本身。"},{"id":"an_analisi","label":"分析","parent":null,"summary":"研究「极限与连续变化」的分支：以极限为核心，严格处理逼近、连续、导数、积分与无穷过程。","depth":0,"isContainer":false,"isTop":true,"role":"discipline","color":"#FF7F50","ring":1,"bearing":0,"popupLinks":[{"id":"fond_fondamenta","text":"地基"}],"body":"\n分析(analysis)的核心只有一个字：**极限**。一旦我们想严格地谈「越来越接近」「无限细分再累加」「瞬时变化率」，就进入了分析的领地——连续、导数、积分、级数，全是极限这一观念结出的果实。它的语言取自 <a class=\"wl\" data-id=\"fond_fondamenta\">地基<\/a>，但它真正的内核——极限与完备性——既不来自纯粹的运算、也不来自空间直观，是不可被还原的。正因如此，它真正的力量要等到数系一路构造到实数、补齐「没有缝隙」的完备性之后，才完全释放。"},{"id":"fond_fondamenta","label":"地基","parent":null,"summary":"整座数学大厦立足之处——逻辑、集合、关系、函数；代数、几何、分析三大主干皆从这里生长。","depth":0,"isContainer":true,"isTop":true,"role":"foundation","color":"#A9A9A9","ring":0,"bearing":3,"popupLinks":[{"id":"fond_insiemi","text":"集合"}],"body":"\n这里是数学的**地基**(foundation)，整座大厦最底下的一层。它不讲某一个具体的定理，而是把后面一切都要用到的最基本的东西先备齐：一套不含歧义的**语言**（逻辑）、一种描述「一堆对象」的方式（集合）、以及对象之间的**对应与关联**（关系与函数）。\n\n地基自身的根是 逻辑——因为在严格地说清「集合是什么、数是什么、极限是什么」之前，我们必须先有一套精确的语言来陈述命题、组合命题、并判断一段推理成不成立。其余的 <a class=\"wl\" data-id=\"fond_insiemi\">集合<\/a>、关系 与 函数，都站在逻辑之上。\n\n再往上，是代数、几何、分析三大主干：它们各自处理结构、空间与连续，但无论哪一支，写下的每一个定义和定理，归根到底都用这里备好的语言和工具。"},{"id":"fond_insiemi","label":"集合","parent":"fond_fondamenta","summary":"集合是把一些对象当作整体来看待；∈ 是原始的属于关系，外延原则用「成员相同」定义相等，而 ∪∩∖ 不过是 ∨∧¬ 抬到 ∈ 上。","depth":1,"isContainer":false,"isTop":false,"role":null,"color":"#A9A9A9","ring":2,"bearing":0,"popupLinks":[{"id":"fond_quantificatori","text":"谓词"},{"id":"fond_proposizioni","text":"联结词"}],"body":"\n## 为什么需要集合\n\n上一节的量词总要「取遍某个范围」——∀x、∃x 里那个 x 究竟在哪儿取？我们一直含糊地说「论域」「一堆对象」。现在把这个范围本身钉死：它就是**集合**。集合是数学里**最通用的容器**——往后每一个对象（数、函数、空间里的点）都将被装进某个集合里来谈。\n\n## 集合与属于\n\n**集合**(set) 就是把若干对象看作一个整体；这些对象叫它的**元素**(element)。最根本的关系是**属于**(membership)，记 x ∈ A，读作「x 是 A 的元素」；不属于记 x ∉ A。\n\n属于关系 ∈ 我们**不再往下定义**——它和逻辑一样，是这一层的原始概念，我们约定直接使用。（这是个选择：整个集合论就架在 ∈ 这一个原始关系之上。）\n\n怎么写出一个具体的集合？两种办法：\n\n- **列举**：把元素列出来，如 A = {0, 1, 2}。花括号里不计次序、不计重复——{0,1,2}、{2,1,0}、{0,0,1,2} 是同一个集合（凭什么算「同一个」，下面外延原则会讲死）。\n- **描述**：从一个**已有的**集合 A 里，挑出满足某谓词 P(x) 的元素，记 {x ∈ A : P(x)}。这里直接用上了上一节的 <a class=\"wl\" data-id=\"fond_quantificatori\">谓词<\/a>——例如 {x ∈ ℝ : x > 3}。\n\n> 留意「从已有集合里挑」这个限制：不能无中生有地写 {x : P(x)}（对「一切满足 P 的 x」一网打尽）。这种不加约束的写法会闹出矛盾（罗素悖论），严格的回避之道留待后面专门处理；眼下我们一律**从一个已经到手的集合里切**，就安全了。\n\n## 外延原则：集合由成员决定\n\n两个集合什么时候**相等**？回答只有一条——**外延原则**(extensionality)：两个集合相等，当且仅当它们含有完全相同的元素。用我们已有的逻辑语言写出来，干净利落：\n\nA = B  ⟺  ∀x ( x ∈ A ⟺ x ∈ B )。\n\n这条把「相等」彻底交给了「成员」：集合**不在乎**元素怎么排、写了几遍、用什么方式描述出来——只认「谁在里面」。这就是为什么 {0,1,2} 和 {2,1,0} 是同一个集合。\n\n## 子集\n\n若 A 的每个元素都还在 B 里，就说 A 是 B 的**子集**(subset)，记 A ⊆ B。又是用 ∀ 和蕴含直接拼出来：\n\nA ⊆ B  ⟺  ∀x ( x ∈ A ⟹ x ∈ B )。\n\n把它和外延原则并到一处，得到一条天天要用的「双向夹」：\n\nA = B  ⟺  ( A ⊆ B  ∧  B ⊆ A )。\n\n（因为前面讲联结词时说过 p ⟺ q 恰是 (p⟹q)∧(q⟹p)，把它套到 x∈A ⟺ x∈B 上即得。）所以证集合相等的标准套路就是：**证 A⊆B、再证 B⊆A**，两个方向各跑一遍——你以后会无数次这么做。\n\n## 基本运算就是联结词\n\n这是本节最漂亮的一点：集合的交、并、差，**根本不是新东西**——它们就是讲联结词那节的 <a class=\"wl\" data-id=\"fond_proposizioni\">联结词<\/a> ∧、∨、¬，被「抬」到属于关系 ∈ 上：\n\n- **并**(union)：x ∈ A ∪ B  ⟺  x ∈ A  ∨  x ∈ B。\n- **交**(intersection)：x ∈ A ∩ B  ⟺  x ∈ A  ∧  x ∈ B。\n- **差**(difference)：x ∈ A ∖ B  ⟺  x ∈ A  ∧  ¬(x ∈ B)。\n\n先用一张图把直觉立起来——两个圆，交叠处即 A∩B，两圆覆盖的全部即 A∪B：\n\n<svg viewBox=\"0 0 360 200\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"140\" cy=\"100\" r=\"78\" fill=\"#FF7F50\" fill-opacity=\"0.20\" stroke=\"#E0612F\" stroke-width=\"1.6\"/>\n  <circle cx=\"220\" cy=\"100\" r=\"78\" fill=\"#979AFF\" fill-opacity=\"0.20\" stroke=\"#5A5FE0\" stroke-width=\"1.6\"/>\n  <text x=\"92\" y=\"106\" font-size=\"20\" text-anchor=\"middle\" fill=\"#333\">A<\/text>\n  <text x=\"268\" y=\"106\" font-size=\"20\" text-anchor=\"middle\" fill=\"#333\">B<\/text>\n  <text x=\"180\" y=\"105\" font-size=\"13\" text-anchor=\"middle\" fill=\"#333\">A∩B<\/text>\n<\/svg>\n\n一旦「成员资格」被翻译成逻辑命题，集合的恒等式就**全部塌缩成上面那些逻辑等价**。举个例子，集合版的德摩根律 A∖(B∪C) = (A∖B)∩(A∖C)，证起来无非是把 ∈ 翻成逻辑、套一次逻辑的德摩根、再用外延原则收口。这就是套路：**集合代数 = 逻辑代数，根都在 ∈ 和那张真值表里**。\n\n## 空集\n\n有一个集合一个元素都没有，叫**空集**(empty set)，记 ∅。它有个初看古怪的性质：**∅ 是任何集合的子集**，即 ∅ ⊆ A 对一切 A 成立。\n\n为什么？按定义，∅ ⊆ A 就是 ∀x ( x ∈ ∅ ⟹ x ∈ A )。可 x ∈ ∅ 永远为假，于是这个蕴含的前件恒假——它**空洞地为真**（正是讲蕴含时「前件为假，蕴含自动成立」那一条）。前件从不成立，承诺就从不被推翻，所以 ∅ ⊆ A 自动成立。逻辑那一层埋下的种子，在这里结了第一个果。\n\n## 一道激活练习\n\n用**外延原则**证明交运算可交换：\n\nA ∩ B = B ∩ A。\n\n（思路提示：要证两集合相等，按外延原则只需证 ∀x ( x∈A∩B ⟺ x∈B∩A )；把两边的 ∈ 都翻成逻辑，你会发现它归结为前面某条关于 ∧ 的等价。）\n\n## 参考解答\n\n（建议先自己写完再看。）思路：集合相等 → 外延原则 → 把成员资格翻成逻辑 → 套一条逻辑等价 → 收口。\n\n由外延原则，要证 A∩B = B∩A，只需对任意 x 证 x∈A∩B ⟺ x∈B∩A。逐步：\n\n```\n  x ∈ A∩B\n⟺ x∈A ∧ x∈B       （交的定义）\n⟺ x∈B ∧ x∈A       （∧ 的交换律——用真值表一眼可验：p∧q 与 q∧p 两列相同）\n⟺ x ∈ B∩A         （交的定义，反着用）\n```\n\n对一切 x 成立，故由外延原则 A∩B = B∩A。∎\n\n一句话思路：**集合的「交换律」其实是「且」的交换律换了身衣服**——这正是「集合代数 = 逻辑代数」的一个实例。同样地，集合的德摩根律、分配律，根也都在前面那些逻辑等价里。\n\n## 往前看一步\n\n现在我们有了容器（集合），也能判断相等、包含，做交并差了。但眼下集合里的元素还各自孤立；数学真正关心的，是元素之间的**对应**——把 A 里的东西按某种规则关联到 B 里的东西。要精确地谈「对应」，得先有一个能装下「一对有次序的对象」的工具，再从中提炼出**关系**与函数。这就引向接下来的 关系。","refs":"Amann–Escher, Analysis I §I.2"},{"id":"fond_proposizioni","label":"命题与联结词","parent":"fond_fondamenta","summary":"命题是非真即假的陈述；五个联结词 ¬ ∧ ∨ ⟹ ⟺ 全部由真值表定义，是一切数学推理的最小零件。","depth":1,"isContainer":false,"isTop":false,"role":null,"color":"#A9A9A9","ring":0,"bearing":2,"popupLinks":[{"id":"fond_quantificatori","text":"谓词与量词"}],"body":"\n## 为什么从这里起步\n\n我们要从零开始，一砖一瓦把整座数学大厦盖起来。立的规矩是：**任何一句断言，都必须能往下追溯到它所依赖的、更基本的断言**。可这样一路下追总得有尽头——总有一层东西，是我们**约定直接接受、不再往下追问**的。逻辑，就是这最底下的一层。所以这一节脚下空无一物，它本身就是基岩：我们在这里一次性说清「什么才算一句数学的话」「这些话怎么拼接」，之后所有的定义、定理与证明，用的都是这套语言。\n\n## 命题\n\n**命题(proposition)** 是一个**非真即假**的陈述句。「非真即假」四个字要拆开看，含两层意思：它要么真、要么假（**至少**居其一），且不能又真又假（**至多**居其一）。我们把「真」记作 **T**(true)、「假」记作 **F**(false)，统称命题的**真值(truth value)**。\n\n> 这里其实悄悄做了一个**选择**：我们约定采用**经典二值逻辑**——每个命题的真值恰好是 T、F 之一，「排中律」（要么 p、要么非 p，没有第三种可能）默认成立。这是一个立场，而非天经地义；逻辑学里还有不认排中律的体系（如直觉主义逻辑）。但经典逻辑是分析学通行的地基，我们就站在这块地基上。\n\n判断几个句子是不是命题，能帮你抓住要点：\n\n- 「2 是素数(prime)」—— 是命题，真值为 T。\n- 「13 能被 5 整除」—— 是命题，真值为 F。\n- 「请关上门」—— 不是命题（祈使句，无所谓真假）。\n- 「x > 3」—— **暂时**不是命题：真假取决于 x 是谁。这种「含未定元、给定取值后才有真假」的句子叫**谓词**，它要等到 <a class=\"wl\" data-id=\"fond_quantificatori\">谓词与量词<\/a> 才登场——这正是下一节的事。\n- 「这句话是假的」—— 不是命题（说谎者悖论：假设它真，则推出它假；假设它假，又推出它真。它落不进 T/F 任何一格）。\n\n记住这条线：**命题必须能干净地落进 T 或 F 一格**。落不进的，现在都不算。\n\n## 五个联结词\n\n光有一句句孤立的命题还不够用；数学里的话总是「且」「或」「如果……那么」地缠在一起。我们用**联结词(connective)** 把已有命题拼成新命题。要紧的有五个，而它们的全部含义，**就是各自的真值表**——不多不少。换句话说，联结词不靠「语感」定义，靠真值表定义；语感只是帮你记忆的拐杖。\n\n设 p、q 是命题。\n\n**否定(negation) ¬p**：「并非 p」。\n\n| p | ¬p |\n|---|----|\n| T | F |\n| F | T |\n\n**合取(conjunction) p ∧ q**：「p 且 q」。唯有两者皆真才真。\n\n| p | q | p ∧ q |\n|---|---|-------|\n| T | T | T |\n| T | F | F |\n| F | T | F |\n| F | F | F |\n\n**析取(disjunction) p ∨ q**：「p 或 q」。这里的「或」是**相容或(inclusive or)**——只要至少一个真就真，包括两个都真的情形。日常说「喝茶或喝咖啡」常暗指二选一，但数学的 ∨ **不**排斥「两个都要」。\n\n| p | q | p ∨ q |\n|---|---|-------|\n| T | T | T |\n| T | F | T |\n| F | T | T |\n| F | F | F |\n\n**蕴含(implication) p ⟹ q**：「如果 p，那么 q」。p 叫**前件**、q 叫**后件**。它的真值表是五个里最反直觉的一处，务必盯住：\n\n| p | q | p ⟹ q |\n|---|---|-------|\n| T | T | T |\n| T | F | F |\n| F | T | T |\n| F | F | T |\n\n要点：**p ⟹ q 唯一为假的情形，是「前件真、后件假」**。前件一旦为假，整个蕴含**自动为真**——这叫**空洞为真(vacuously true)**。初学最别扭的就是后两行：「F ⟹ 任何」都判真。打个比方：你许诺「**如果**明天下雨，我**就**带伞」。只有「下了雨、你却没带伞」才算你食言（对应第二行）。若明天压根没下雨，那无论你带没带伞，你的承诺都没被推翻——承诺自动算数。数学约定取的正是这个判法：它让「前提不成立时陈述不算错」，从而使蕴含能顺畅地参与推理。\n\n**等价(equivalence) p ⟺ q**：「p 当且仅当(if and only if) q」，两者真值一致才真。\n\n| p | q | p ⟺ q |\n|---|---|-------|\n| T | T | T |\n| T | F | F |\n| F | T | F |\n| F | F | T |\n\n不难看出 p ⟺ q 恰好是 (p ⟹ q) ∧ (q ⟹ p)——这也是为何证明「等价」常拆成「⟹」与「⟸」两个方向各证一遍，你以后会无数次这么做。\n\n## 复合命题与真值表的用法\n\n有了五个零件，就能拼任意复杂的式子，如 ¬(p ∧ q) 或 (p ⟹ q) ∧ (¬q)。**任何**这样的复合命题，它的真值都被组成它的那些命题的真值**唯一决定**——一行行算真值表即可。约定优先级（像算术里乘除先于加减）：¬ 最紧，其次 ∧、∨，再次 ⟹、⟺；拿不准就加括号，括号永远优先。\n\n举一例，算 ¬p ∨ q 的真值表，并和 p ⟹ q 并排放：\n\n| p | q | ¬p | ¬p ∨ q | p ⟹ q |\n|---|---|----|--------|-------|\n| T | T | F | T | T |\n| T | F | F | F | F |\n| F | T | T | T | T |\n| F | F | T | T | T |\n\n最后两列一模一样。这告诉我们：**蕴含并不是第六个独立的零件**，p ⟹ q 不过是 ¬p ∨ q 的简写。这是我们第一次用真值表「证明」了两个外形不同的式子其实是同一个东西。\n\n当一个复合命题在**所有**真值组合下都为 T，称它为**重言式(tautology)**，即「永真式」；恒为 F 的称**矛盾式(contradiction)**。重言式是逻辑里「无条件成立」的真理，是日后一切推理规则的来源。\n\n## 几条要紧的等价\n\n若 A、B 两个式子真值表完全相同，就记 A ≡ B，说它们**逻辑等价**（等价的说法：A ⟺ B 是重言式）。下面几条最常用，每条都能用真值表验证：\n\n- **双重否定**：¬¬p ≡ p。\n- **德摩根律(De Morgan's laws)**：¬(p ∧ q) ≡ ¬p ∨ ¬q，且 ¬(p ∨ q) ≡ ¬p ∧ ¬q。「否定一个『且』，得到『或』；否定一个『或』，得到『且』」——否定往里钻时，∧ 与 ∨ 互换。这条以后求「极限不存在」「函数不连续」之类否定命题时天天要用。\n- **蕴含的改写**：p ⟹ q ≡ ¬p ∨ q（刚验过）。\n- **逆否命题(contrapositive)**：p ⟹ q ≡ ¬q ⟹ ¬p。一个蕴含和它的逆否式永远同真假——这是「反证法」成立的逻辑根。注意它跟**逆命题(converse)** q ⟹ p 是两码事，后者一般**不**与原命题等价（见下条陷阱）。\n\n## 几个最容易栽跟头的地方\n\n- **相容或 vs 排斥或**：∨ 是相容或，「两个都真」也算真。真要表达「恰好二选一」，得另写 (p ∨ q) ∧ ¬(p ∧ q)。\n- **空洞为真**：F ⟹ q 恒真。「所有独角兽都会飞」这种话，因前提（存在独角兽）为假而**自动**为真——别被它荒谬的外表骗了。这一点到了带量词的命题里会再次绊人，先留个心。\n- **逆命题不是原命题**：由「下雨 ⟹ 地湿」推不出「地湿 ⟹ 下雨」（洒水车也能让地湿）。能与原命题对调的，只有逆否命题 ¬q ⟹ ¬p，不是逆命题。这是初学证明最高频的逻辑漏洞。\n- **联结词 ⟹ 与「推理」不是一回事**：⟹ 是个**造句**用的真值函数，吃两个命题、吐一个命题；而我们写证明时说的「由 A 推出 B」是一种**元层面**的判断（在所有使 A 真的情形下 B 也真）。二者高度相关却不同层。本课程按通行做法，在这套「严谨但不完全形式化」的数学元语言里工作，不另起炉灶搭一套形式证明系统；真正的形式证明论是逻辑学独立的一支，我们用不到时就不去碰它。\n\n## 一道激活练习\n\n用真值表证明**德摩根律的第一条**：\n\n¬(p ∧ q) ≡ ¬p ∨ ¬q。\n\n也就是列出 p、q 的四种组合，分别算出左边 ¬(p ∧ q) 与右边 ¬p ∨ ¬q 两列，核对它们逐行相等。（提示：先算辅助列 p ∧ q 和 ¬p、¬q，再拼出两边。）做完后请用一句自己的话，说清「否定一个合取，为什么会翻成析取」。\n\n## 参考解答\n\n（建议先自己写完再看。）思路：联结词全由真值表定义，所以「证明两式等价」＝「列出全部真值组合，逐行核对两边真值相同」。\n\n| p | q | p∧q | ¬(p∧q) | ¬p | ¬q | ¬p∨¬q |\n|---|---|-----|--------|----|----|-------|\n| T | T | T | F | F | F | F |\n| T | F | F | T | F | T | T |\n| F | T | F | T | T | F | T |\n| F | F | F | T | T | T | T |\n\n第 4 列 ¬(p∧q) 与第 7 列 ¬p∨¬q 逐行相同 → 两式逻辑等价。\n\n为什么「且」的否定会翻成「或」：要让「p 且 q」不成立，**不必两个都假**，只要**至少一个**假，整个合取就塌了——而「至少一个为假」正是「¬p 或 ¬q」。否定一个合取，约束被放松成了析取。\n\n## 往前看一步\n\n到这里，我们能精确地谈论一句句**确定的**断言，并把它们拼装、化简、互相推出。可数学里铺天盖地的句子其实长这样：「**对每一个**实数 x，x² ≥ 0」「**存在**某个 n，使得……」——它们带着未定的元、扫过一整个范围。这种句子还不是我们今天定义的命题（回想那个被搁置的「x > 3」）。要把它们也纳入这套严密的语言，就得给逻辑添上两件新工具：**全称**与**存在**。这正是 <a class=\"wl\" data-id=\"fond_quantificatori\">谓词与量词<\/a> 要做的事。","refs":"Amann–Escher, Analysis I §I.1"},{"id":"fond_quantificatori","label":"谓词与量词","parent":"fond_fondamenta","summary":"谓词是带未定元的「开句」，给定取值才有真假；全称 ∀ 与存在 ∃ 把它封成命题，其否定是德摩根律的放大版，是数学陈述的标准句式。","depth":1,"isContainer":false,"isTop":false,"role":null,"color":"#A9A9A9","ring":1,"bearing":1,"popupLinks":[{"id":"fond_proposizioni","text":"德摩根律"},{"id":"fond_insiemi","text":"集合"}],"body":"\n## 为什么需要量词\n\n上一节我们把「命题」定得很严：一句话必须能干净地落进真或假。也正因如此，我们当时把「x > 3」这类句子**挡在了门外**——它的真假悬而未决，要看 x 是谁。可偏偏，数学里最常说的话恰恰长这样：「**对每一个**实数 x，都有 x² ≥ 0」「**存在**一个 n，使得 2ⁿ > 1000」。这些句子扫过一整个范围，是定理与定义的标准句式。这一节就把它们正式收进我们严密的语言里——办法分两步：先承认带未定元的「开句」，再用两个**量词**把它们封成真正的命题。\n\n## 谓词\n\n**谓词**(predicate)，也叫**开语句**(open sentence)，是一句含有**自由变元**(free variable)的话，记作 P(x)；它本身**没有**真值，但一旦把 x 代成某个具体对象，就变回一个命题。\n\n- 取 P(x)：「x > 3」，变元 x 取遍实数。那么 P(5) 为真、P(2) 为假；而 P(x) 孤零零地写着，无所谓真假。\n- 谓词可以带多个变元：Q(x, y)：「x < y」，代入 Q(1, 2) 真、Q(2, 1) 假。\n\n有一点必须讲清：写谓词，**一定要交代变元的取值范围**——这个范围叫**论域**(domain of discourse)。「x > 3」在论域为 ℝ 时，和在论域为「正整数」时，谈的是不同的事。（这个「范围」严格来说是一个集合；集合的严格定义我们下节再给，这里先借用「一堆对象凑成一个整体」的朴素理解。）\n\n## 两个量词\n\n要把开句 P(x) 封成一个有真假的命题，就给变元**加上量词**、把它「绑定」住。要紧的只有两个。\n\n**全称量词**(universal quantifier) ∀。写 ∀x ∈ A, P(x)，读作「对论域 A 里的**每一个** x，P(x) 成立」。它为真，当且仅当 P(x) 对 A 中**所有** x 都为真。\n\n- ∀x ∈ ℝ, x² ≥ 0：真。\n- ∀x ∈ ℝ, x > 3：假——因为有 x = 0 不满足。\n\n记住要害：**要推翻一个全称命题，只需举出一个反例**(counterexample)。哪怕千万个 x 都对，只要逮着一个不对的，∀ 就塌了。\n\n**存在量词**(existential quantifier) ∃。写 ∃x ∈ A, P(x)，读作「在 A 里**存在**某个 x，使 P(x) 成立」。它为真，当且仅当 P(x) 对 A 中**至少一个** x 为真。\n\n- ∃x ∈ ℝ, x > 3：真——拿出 x = 5 作见证即可。\n- ∃x ∈ ℝ, x² < 0：假——没有任何实数的平方是负的。\n\n它的要害正相反：**要证一个存在命题，给出一个见证**(witness)就够了；**要推翻它，则得说明无一可行**。\n\n## 量词的否定——德摩根律的「放大版」\n\n这是全节最要紧、日后用得最多的一处。先建立直觉：把 ∀x P(x) 想成「对论域里每个对象都成立」——论域有限时，它无非是一长串合取 P(a) ∧ P(b) ∧ ⋯；把 ∃x P(x) 想成「至少一个成立」，有限时就是一长串析取 P(a) ∨ P(b) ∨ ⋯。\n\n于是上一节的 <a class=\"wl\" data-id=\"fond_proposizioni\">德摩根律<\/a> 立刻「放大」成量词的否定规则：\n\n- ¬(∀x P(x)) ≡ ∃x ¬P(x)。「并非人人都 P」=「存在一个不 P 的」。（对应 ¬(p ∧ q) ≡ ¬p ∨ ¬q。）\n- ¬(∃x P(x)) ≡ ∀x ¬P(x)。「并不存在 P 的」=「人人都不 P」。（对应 ¬(p ∨ q) ≡ ¬p ∧ ¬q。）\n\n口诀就一句：**否定往里钻，∀ 与 ∃ 对调，谓词随之取反**。注意上面那个「一串 ∧ / 一串 ∨」只是帮你看清来路的类比——论域无限时 ∀、∃ 并不真是有限的合取析取；但这两条否定规则对**任意**论域（含无限）都照样成立，它们直接来自 ∀、∃ 的定义。\n\n举一例。「∀x ∈ ℝ, x² ≥ 0」的否定是「∃x ∈ ℝ, x² < 0」（把 ∀ 换成 ∃、把 x² ≥ 0 取反成 x² < 0）。原命题真，故其否定假——自洽。\n\n## 嵌套：顺序要人命\n\n把量词叠起来用时，**∀ 和 ∃ 的先后不能随便换**。看一个论域取 ℝ、谓词 Q(x, y) 为「y > x」的例子：\n\n- ∀x ∃y (y > x)：「对每个 x，都**找得到**一个更大的 y」。**真**——给定 x，取 y = x + 1 即可（y 可以随 x 变）。\n- ∃y ∀x (y > x)：「**存在某个** y，它比**每个** x 都大」。**假**——那等于说实数里有个最大的数，没有。\n\n同样的两个量词、同样的谓词，仅仅调了次序，真假就翻了。症结在于：∀x ∃y 里，y 的选取**允许依赖** x；而 ∃y ∀x 里，必须**一个 y 通吃所有** x。（顺带：同类量词之间可以随意交换——∀x∀y ≡ ∀y∀x，∃x∃y ≡ ∃y∃x；只有 ∀ 与 ∃ 混着叠时才挑顺序。）这个「顺序决定一切」的现象，等你将来学极限、连续的 ε-δ 定义时会反复撞见——那些定义正是几个 ∀、∃ 叠出来的，叠错顺序，意思就全变了。\n\n## 几个最容易栽跟头的地方\n\n- **否定时只做一半**。把 ∀ 的否定写成「∀x ¬P(x)」（只取反谓词、忘了换量词），或写成「∃x P(x)」（只换量词、忘了取反谓词），都是错的。两件事要一起做。\n- **混合量词的顺序**。如上例，调了次序就可能变味，务必照原句的先后来读。\n- **空论域的边界情形**。若论域为空，∀x P(x) **恒真**（举不出反例——这正是上一节「空洞为真」的体现），而 ∃x P(x) **恒假**（找不到对象作见证）。「所有住在这间空屋里的人都两米高」是一句真话。\n- **「=」暂且朴素地用**。下面练习里会出现「相等」，我们先按「指同一个对象」的朴素意思用它；它的严格身份留待讲关系时再交代。\n\n## 一道激活练习\n\n把下面这句的否定，**一步步把 ¬ 推到紧贴谓词为止**（最终式子里 ¬ 前面不许再有量词），写出最终形式，再用一句中文说清它断言什么、是真是假：\n\n¬( ∀x ∈ ℝ, ∃y ∈ ℝ, y > x )。\n\n（提示：从最外层的 ∀ 开始，一层层套用否定规则；每钻进一层，量词对调一次，最后对谓词「y > x」取反。）\n\n## 参考解答\n\n（建议先自己写完再看。）思路：从最外层量词起，每剥一层就套一次否定规则（∀↔∃ 对调、谓词取反），一路推到 ¬ 紧贴谓词。\n\n```\n¬( ∀x∈ℝ, ∃y∈ℝ, y>x )\n≡ ∃x∈ℝ, ¬( ∃y∈ℝ, y>x )     （¬∀ → ∃¬）\n≡ ∃x∈ℝ, ∀y∈ℝ, ¬(y>x)        （¬∃ → ∀¬）\n≡ ∃x∈ℝ, ∀y∈ℝ, y ≤ x          （「y>x」取反为「y≤x」）\n```\n\n它断言什么：**存在一个实数 x，比每个实数 y 都不小**——也就是「实数里有个最大的数」。**是假的**：对任何 x，x+1 就比它大，没有最大实数。（这与原句「对每个 x 都找得到更大的 y」为真恰好相反，自洽。）\n\n## 往前看一步\n\n现在，配上上一节的联结词，我们已经能把几乎任何一句数学断言写得滴水不漏。但有一样东西，这一节自始至终是**借来用**的：量词扫过的那个「论域」——我们一直说「x 取遍 ℝ」「取遍某个范围」，可这个**范围**本身，严格来说究竟是什么？它就是**集合**：把一些对象当成一个整体来看待，好让量词有个确切的地方去「取遍」。这正是 <a class=\"wl\" data-id=\"fond_insiemi\">集合<\/a> 要替我们钉死的第一件事。","refs":"Amann–Escher, Analysis I §I.1"},{"id":"geo_geometria","label":"几何","parent":null,"summary":"研究「形、空间与不变量」的分支：点、线、面与图形，以及在某类变换下保持不变的性质（长度、角度、相交关系、连续形变下的特征）。","depth":0,"isContainer":false,"isTop":true,"role":"discipline","color":"#00C884","ring":1,"bearing":0,"popupLinks":[{"id":"fond_fondamenta","text":"地基"}],"body":"\n几何(geometry)关心的是**形与空间**：点、线、面怎样摆放，图形具有哪些性质，以及——这是现代几何的灵魂——在某一类**变换**下，哪些性质岿然不动（保长度的、保角度的、乃至只保「连在一起」这种最粗的特征）。它同样以 <a class=\"wl\" data-id=\"fond_fondamenta\">地基<\/a> 的语言写成，但带来了纯逻辑与运算里没有的新原料：空间直观，以及「位置、邻近」的观念。"}],"edges":[{"from":"fond_fondamenta","to":"alg_algebra","type":"prerequisite"},{"from":"fond_fondamenta","to":"an_analisi","type":"prerequisite"},{"from":"fond_proposizioni","to":"fond_insiemi","type":"prerequisite"},{"from":"fond_quantificatori","to":"fond_insiemi","type":"prerequisite"},{"from":"fond_proposizioni","to":"fond_quantificatori","type":"prerequisite"},{"from":"fond_fondamenta","to":"geo_geometria","type":"prerequisite"}],"meta":{"counts":{"nodes":7,"edges":6,"dangling_prerequisites":0},"palette":{"neutral":"#A9A9A9","disciplines":{"alg_algebra":"#979AFF","an_analisi":"#FF7F50","geo_geometria":"#00C884"}},"topIds":["alg_algebra","an_analisi","fond_fondamenta","geo_geometria"],"foundationIds":["fond_fondamenta"],"disciplineIds":["alg_algebra","an_analisi","geo_geometria"],"danglingPrerequisites":[]}};
+
+window.addEventListener('load', () => {
+  if (typeof THREE === 'undefined' || !RAW || !RAW.nodes) {
+    document.getElementById('err').style.display = 'grid'; return;
+  }
+  try { App(RAW); }
+  catch (e) { console.error(e); document.getElementById('err').style.display = 'grid'; }
+});
+
+function App(DATA){
+  // ── 索引与图结构 ──────────────────────────────────────────────────────
+  const byId = {}; DATA.nodes.forEach(n => byId[n.id] = n);
+  const children = {}; DATA.nodes.forEach(n => children[n.id] = []);
+  DATA.nodes.forEach(n => { if (n.parent && children[n.parent]) children[n.parent].push(n.id); });
+  const fwd = {}, bwd = {};                          // fwd: root→dependents, bwd: dependent→roots
+  DATA.nodes.forEach(n => { fwd[n.id] = []; bwd[n.id] = []; });
+  DATA.edges.forEach(e => { if (fwd[e.from] && bwd[e.to]) { fwd[e.from].push(e.to); bwd[e.to].push(e.from); } });
+  const meta = DATA.meta || {};
+  const topIds = meta.topIds || DATA.nodes.filter(n => !n.parent).map(n => n.id);
+  const foundationIds = new Set(meta.foundationIds || []);
+  const disciplineIds = meta.disciplineIds || topIds.filter(t => !foundationIds.has(t));
+  const palette = (meta.palette || {disciplines:{}, neutral:'#A9A9A9'});
+
+  function reach(start, adj){ const seen=new Set(), st=[...adj[start]];
+    while(st.length){ const c=st.pop(); if(seen.has(c))continue; seen.add(c); (adj[c]||[]).forEach(x=>{ if(!seen.has(x))st.push(x); }); } return seen; }
+  function ancestorsParent(id){ const out=[]; let c=byId[id]; while(c && c.parent){ out.unshift(c.parent); c=byId[c.parent]; } return out; }
+  function subtree(id){ const seen=new Set(); (function go(x){ (children[x]||[]).forEach(k=>{ if(!seen.has(k)){ seen.add(k); go(k);} }); })(id); return seen; }
+  function hash01(s){ let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return ((h>>>0)%100000)/100000; }
+
+  // ── OKLab 色相（用于顶层学科主干按色相 120° 环绕）──────────────────────
+  function hexRgb(h){ h=h.replace('#',''); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
+  function s2l(c){ c/=255; return c>0.04045?Math.pow((c+0.055)/1.055,2.4):c/12.92; }
+  function okHue(hex){ let [r,g,b]=hexRgb(hex).map(s2l);
+    const l=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b),
+          m=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b),
+          s=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+    const A=1.9779984951*l-2.4285922050*m+0.4505937099*s,
+          B=0.0259040371*l+0.7827717662*m-0.8086757660*s;
+    return Math.atan2(B,A); }
+
+  // ════════════════════════════════════════════════════════════════════
+  //  §2 确定性布局：全局递归嵌套径向布局（位置稳定 → 空间记忆）
+  //    · 顶层：地基居中，学科主干按色相绕环（呼应调色板、且映出"建立在地基之上"）
+  //    · 容器：子概念绕容器绽放，半径 = 同父内的依赖环序（ring），角度 = order/稳定哈希
+  //    · 下钻 = 镜头飞向该容器；位置不重排，全局空间一致、连续
+  // ════════════════════════════════════════════════════════════════════
+  const pos = {};                                    // id → THREE.Vector3
+  const TOP_RING = 11, CHILD_BASE = 5.0, RING_STEP = 3.6, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 4.6;
+  let homeY = 0;                                      // 镜头默认锚高（结构中段）
+
+  (function layout(){
+    // 顶层
+    const founds = topIds.filter(t => foundationIds.has(t));
+    const disc   = topIds.filter(t => !foundationIds.has(t));
+    // 地基（通常恰一个）居中；若多个则挤在小圈
+    founds.forEach((t,i) => {
+      if (founds.length === 1) pos[t] = new THREE.Vector3(0,0,0);
+      else { const a = 2*Math.PI*i/founds.length; pos[t] = new THREE.Vector3(Math.cos(a)*1.6,0,Math.sin(a)*1.6); }
+    });
+    if (founds.length === 0 && disc.length) pos[disc[0]] = new THREE.Vector3(0,0,0);
+    // 学科主干按 OKLab 色相绕环
+    disc.forEach((t,i) => {
+      const hue = okHue(byId[t].color || '#888');
+      const a = isFinite(hue) ? hue : (2*Math.PI*i/Math.max(disc.length,1));
+      pos[t] = new THREE.Vector3(Math.cos(a)*TOP_RING, -0.6, Math.sin(a)*TOP_RING);
+    });
+    // 递归安放各容器的子层（按深度从浅到深）
+    const conts = DATA.nodes.filter(n => (children[n.id]||[]).length)
+                            .sort((a,b)=>(a.depth||0)-(b.depth||0));
+    const sortKey = (a,b)=>{ const oa=byId[a].order, ob=byId[b].order;
+      if(oa!=null && ob!=null && oa!==ob) return oa-ob;
+      if(oa!=null && ob==null) return -1; if(ob!=null && oa==null) return 1;
+      return hash01(a)-hash01(b); };
+    conts.forEach(c => {
+      const kidList = children[c.id].slice();
+      const kidSet  = new Set(kidList);
+      const center  = pos[c.id] || new THREE.Vector3(0,0,0);
+      const scale   = Math.pow(DEPTH_SCALE, c.depth||0);
+      const phase   = hash01(c.id)*Math.PI*2;
+      // 同容器内的兄弟前置关系
+      const sp={}; kidList.forEach(k=> sp[k]=(bwd[k]||[]).filter(r=>kidSet.has(r)));
+      // 根（无兄弟前置 → 内圈）：按 order/哈希均匀分布角度
+      const roots = kidList.filter(k=>sp[k].length===0).sort(sortKey);
+      const ang={}; const R=roots.length||1;
+      roots.forEach((k,i)=> ang[k]=phase + 2*Math.PI*(i/R));
+      // 衍生节点：放到其"主前置"(环序最小的兄弟前置)的角度附近 →
+      //   边沿径向往外走、不再横穿中心容器；同一前置的多个衍生在小扇形内散开
+      const rest = kidList.filter(k=>sp[k].length>0)
+        .sort((a,b)=> (byId[a].ring||0)-(byId[b].ring||0) || sortKey(a,b));
+      const primary={}; rest.forEach(k=> primary[k]=sp[k].slice()
+        .sort((a,b)=>(byId[a].ring||0)-(byId[b].ring||0)||hash01(a)-hash01(b))[0]);
+      const groups={}; rest.forEach(k=>{ (groups[primary[k]]=groups[primary[k]]||[]).push(k); });
+      rest.forEach(k=>{ const g=groups[primary[k]], m=g.length, idx=g.indexOf(k);
+        const off = m>1 ? (idx-(m-1)/2)*(0.8/(m-1)) : 0;
+        ang[k] = (ang[primary[k]]!=null?ang[primary[k]]:phase) + off; });
+      // 落位
+      kidList.forEach(kid=>{ const ring=byId[kid].ring||0;
+        const rad=(CHILD_BASE + ring*RING_STEP)*scale; const a=ang[kid]!=null?ang[kid]:phase;
+        pos[kid]=new THREE.Vector3(center.x + Math.cos(a)*rad,
+          center.y - (byId[kid].depth||0)*0.7, center.z + Math.sin(a)*rad);
+      });
+    });
+    DATA.nodes.forEach(n => { if(!pos[n.id]) pos[n.id] = new THREE.Vector3((hash01(n.id)-0.5)*20,0,(hash01(n.id+'z')-0.5)*20); });
+    // ── 垂直生长：高度 = 全局依赖深度（离公理多远）──
+    //   地基/公理在最底层，依赖它们的概念逐层抬升 → 整体像一棵从地基往上长的树。
+    //   径向(x,z)仍编码同容器内的结构；y 则编码"建立在……之上"的纵向生长。
+    const ddMemo={};
+    function depDepth(id, guard){ if(ddMemo[id]!=null) return ddMemo[id];
+      guard=guard||new Set(); if(guard.has(id)) return 0;
+      let d=0; (bwd[id]||[]).forEach(p=>{ d=Math.max(d, 1+depDepth(p, new Set(guard).add(id))); });
+      ddMemo[id]=d; return d; }
+    let maxDD=0;
+    DATA.nodes.forEach(n=>{ const d=depDepth(n.id); if(d>maxDD)maxDD=d;
+      if(pos[n.id]) pos[n.id].y = d*LEVEL_H; });
+    homeY = maxDD*LEVEL_H/2;
+  })();
+
+  // ════════════════════════════════════════════════════════════════════
+  //  Three.js 场景（深空 / 星系风）
+  // ════════════════════════════════════════════════════════════════════
+  const graphEl = document.getElementById('graph');
+  const cvs = document.getElementById('scene');
+  const renderer = new THREE.WebGLRenderer({canvas:cvs, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x05070f, 0.012);
+  const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 1000);
+
+  (function stars(){ const g=new THREE.BufferGeometry(), N=1100, p=new Float32Array(N*3);
+    for(let i=0;i<N;i++){ const r=70+Math.random()*220,t=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);
+      p[i*3]=r*Math.sin(ph)*Math.cos(t); p[i*3+1]=r*Math.cos(ph)*0.6; p[i*3+2]=r*Math.sin(ph)*Math.sin(t); }
+    g.setAttribute('position', new THREE.BufferAttribute(p,3));
+    scene.add(new THREE.Points(g, new THREE.PointsMaterial({color:0x8fa6d8,size:0.6,transparent:true,opacity:0.5}))); })();
+
+  // 圆形辉光贴图 + 容器外环贴图
+  function radialTex(){ const c=document.createElement('canvas'); c.width=c.height=128; const x=c.getContext('2d');
+    const g=x.createRadialGradient(64,64,0,64,64,64); g.addColorStop(0,'rgba(255,255,255,1)');
+    g.addColorStop(.25,'rgba(255,255,255,.5)'); g.addColorStop(1,'rgba(255,255,255,0)');
+    x.fillStyle=g; x.fillRect(0,0,128,128); return new THREE.CanvasTexture(c); }
+  function ringTex(){ const c=document.createElement('canvas'); c.width=c.height=128; const x=c.getContext('2d');
+    x.strokeStyle='rgba(255,255,255,.85)'; x.lineWidth=4; x.beginPath(); x.arc(64,64,52,0,Math.PI*2); x.stroke();
+    return new THREE.CanvasTexture(c); }
+  function discTex(){ const c=document.createElement('canvas'); c.width=c.height=128; const x=c.getContext('2d');
+    const g=x.createRadialGradient(64,64,0,64,64,62); g.addColorStop(0,'rgba(255,255,255,1)');
+    g.addColorStop(.80,'rgba(255,255,255,1)'); g.addColorStop(1,'rgba(255,255,255,0)');
+    x.fillStyle=g; x.beginPath(); x.arc(64,64,62,0,Math.PI*2); x.fill(); return new THREE.CanvasTexture(c); }
+  const HALO = radialTex(), RING = ringTex(), DISC = discTex();
+  const DISC_K = 2.15;                                 // 圆盘视觉直径系数（≈ 2×半径）
+
+  // ── 节点 ──────────────────────────────────────────────────────────────
+  const meshes = [], meshById = {}, labelEl = {};
+  const labels = document.getElementById('labels');
+  function nodeRadius(n){ return Math.max(0.55, Math.min(1.7, 0.55 + 0.32*Math.log2(1+(n.bearing||0)))); }
+
+  DATA.nodes.forEach(n => {
+    const col = new THREE.Color(n.color || '#9fb0d6'); const r = nodeRadius(n);
+    // 节点用面向镜头的圆盘(billboard)而非 3D 球 → 任何屏幕位置都是正圆，不被透视拉成椭圆
+    const mesh = new THREE.Sprite(new THREE.SpriteMaterial({map:DISC,color:col,transparent:true,opacity:0.96,depthWrite:false}));
+    mesh.scale.set(r*DISC_K,r*DISC_K,1);
+    mesh.position.copy(pos[n.id]); mesh.userData = {id:n.id, base:col.clone(), r};
+    scene.add(mesh); meshes.push(mesh); meshById[n.id] = mesh;
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({map:HALO,color:col,transparent:true,
+      opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false}));
+    halo.scale.set(r*HALO_K,r*HALO_K,1); halo.position.copy(pos[n.id]); scene.add(halo); mesh.userData.halo=halo;
+    // 平滑高亮：当前值向目标值逐帧逼近（见 stepVisual）
+    mesh.userData.curScale=1; mesh.userData.tScale=1; mesh.userData.tOpacity=0.96;
+    mesh.userData.tHaloOp=0.5; mesh.userData.tHaloCol=col.clone(); mesh.userData.tRingOp=0.5;
+    if (n.isContainer){                              // §6 容器：淡淡外环（内有世界）
+      const ring = new THREE.Sprite(new THREE.SpriteMaterial({map:RING,color:col,transparent:true,
+        opacity:0.5,depthWrite:false})); ring.scale.set(r*3.2,r*3.2,1); ring.position.copy(pos[n.id]);
+      scene.add(ring); mesh.userData.ring=ring;
+    }
+    if (n.status){                                   // 私人前沿/进度层（默认关）
+      const prog = new THREE.Sprite(new THREE.SpriteMaterial({map:RING,transparent:true,opacity:0,depthWrite:false,
+        color:new THREE.Color(n.status==='done'?0x6ee7a0:n.status==='learning'?0xffd866:n.status==='debt'?0xff8b6b:0x8aa0c8)}));
+      prog.scale.set(r*4.2,r*4.2,1); prog.position.copy(pos[n.id]); scene.add(prog); mesh.userData.prog=prog;
+    }
+    const el = document.createElement('div'); el.className='lbl'; el.textContent=n.label;
+    el.style.borderLeft = '3px solid '+(n.color||'#9fb0d6');
+    if (n.isContainer){ const d=document.createElement('span'); d.className='drill'; d.textContent='⤵'; el.appendChild(d); }
+    el.addEventListener('pointerenter', ()=>showCard(n.id,null,el));
+    el.addEventListener('pointerleave', hideCard);
+    el.style.pointerEvents='auto'; el.style.cursor='pointer';
+    el.addEventListener('click', e=>{ e.stopPropagation(); select(n.id,true); });
+    labels.appendChild(el); labelEl[n.id]=el;
+  });
+
+  // ── 边：有向（root→dependent）。方向靠颜色(金=上游/青=下游)+径向位置编码，不画箭头 ──
+  const edgeObjs = [];
+  DATA.edges.forEach(e => {
+    const a=pos[e.from], b=pos[e.to]; if(!a||!b) return;
+    const g=new THREE.BufferGeometry().setFromPoints([a,b]);
+    const m=new THREE.LineBasicMaterial({color:0x2a4a6f,transparent:true,opacity:0.22});
+    const line=new THREE.Line(g,m); scene.add(line);
+    edgeObjs.push({from:e.from,to:e.to,line,
+      tLineCol:new THREE.Color(0x2a4a6f), tLineOp:0.22});
+  });
+  // 归属(容器-子)不画线（§6）：靠径向嵌套位置 + 下钻 + 面包屑表达，避免连线杂乱。
+
+  // ════════════════════════════════════════════════════════════════════
+  //  相机轨道（拖拽旋转 / 滚轮缩放）+ 平滑目标 tween
+  // ════════════════════════════════════════════════════════════════════
+  let theta=Math.PI*0.5, phi=Math.PI*0.40, radius=32;
+  const target=new THREE.Vector3(0,homeY,0), targetGoal=new THREE.Vector3(0,homeY,0);
+  let radiusGoal=32, introT=0;
+  const homeView=()=> new THREE.Vector3(0,homeY,0);   // 顶层默认锚点（结构中段高度）
+  function place(){ const sp=Math.sin(phi),cp=Math.cos(phi);
+    camera.position.set(target.x+radius*sp*Math.cos(theta), target.y+radius*cp, target.z+radius*sp*Math.sin(theta));
+    camera.lookAt(target); }
+  function flyTo(v, rad){ targetGoal.copy(v); if(rad!=null) radiusGoal=rad; }
+
+  let dragging=false,lx=0,ly=0,dx0=0,dy0=0,moved=false;
+  cvs.addEventListener('pointerdown',e=>{ dragging=true;moved=false;lx=dx0=e.clientX;ly=dy0=e.clientY;
+    cvs.classList.add('grabbing'); cvs.setPointerCapture(e.pointerId); });
+  cvs.addEventListener('pointermove',e=>{
+    if(dragging){ const dx=e.clientX-lx,dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
+      if(Math.abs(e.clientX-dx0)+Math.abs(e.clientY-dy0)>4) moved=true;
+      theta-=dx*0.005; phi=Math.max(0.12,Math.min(Math.PI-0.12,phi-dy*0.005)); }
+    else hover(e); });
+  cvs.addEventListener('pointerup',e=>{ dragging=false; cvs.classList.remove('grabbing'); if(!moved) clickAt(e); });
+  cvs.addEventListener('pointerleave',()=>{ dragging=false; cvs.classList.remove('grabbing'); hideCard(); });
+  cvs.addEventListener('dblclick',e=>{ const m=pick(e); if(m){ const n=byId[m.userData.id];
+    if(n.isContainer) drill(n.id,true); else select(n.id,true); } });
+  cvs.addEventListener('wheel',e=>{ e.preventDefault(); radiusGoal*=(1+e.deltaY*0.0009);
+    radiusGoal=Math.max(6,Math.min(120,radiusGoal)); },{passive:false});
+
+  const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+  function pick(e){ const r=cvs.getBoundingClientRect();
+    ndc.x=((e.clientX-r.left)/r.width)*2-1; ndc.y=-((e.clientY-r.top)/r.height)*2+1;
+    ray.setFromCamera(ndc,camera); const h=ray.intersectObjects(meshes); return h.length?h[0].object:null; }
+  function clickAt(e){ const m=pick(e); if(m) select(m.userData.id,true); else clearSel(true); }
+  let hoverId=null;
+  function hover(e){ const m=pick(e); const id=m?m.userData.id:null;
+    cvs.style.cursor=m?'pointer':'grab';
+    if(id!==hoverId){ hoverId=id; if(id) showCard(id,e,null); else hideCard(); }
+    else if(id) moveCard(e); }
+
+  // ════════════════════════════════════════════════════════════════════
+  //  §4 依赖高亮：链条之外变暗去饱和；上游金、下游青、选中明亮中性
+  // ════════════════════════════════════════════════════════════════════
+  let focus=null, selected=null;
+  function applyVisual(){
+    const anc = selected ? reach(selected,bwd) : null;     // 上游前置（金）
+    const desc = selected ? reach(selected,fwd) : null;     // 下游依赖者（青）
+    const parents = selected ? new Set(ancestorsParent(selected)) : null;  // 归属祖先（语境）
+    const sub  = focus ? subtree(focus) : null;             // 下钻聚焦：容器子树
+    meshes.forEach(mz=>{
+      const id=mz.userData.id, u=mz.userData; let cls='', dim=false;
+      if(selected){
+        if(id===selected) cls='sel';
+        else if(anc.has(id)) cls='anc';
+        else if(desc.has(id)) cls='desc';
+        else if(parents.has(id)) cls='ctx';   // 父/容器：保留为语境，不暗掉（看得出归属）
+        else { cls='dim'; dim=true; }
+      } else if(focus){
+        if(id===focus || sub.has(id)){} else { dim=true; }
+      }
+      // 只设"目标值"，由 stepVisual 逐帧平滑逼近（不再硬切）
+      u.tOpacity = dim?0.16 : (cls==='ctx'?0.72:0.96);
+      u.tHaloOp  = dim?0.05 : (cls==='sel'?1 : (cls==='anc'||cls==='desc')?0.8 : cls==='ctx'?0.42 : 0.5);
+      u.tScale   = cls==='sel'?1.35 : (cls==='anc'||cls==='desc')?1.12 : dim?0.9 : 1;
+      u.tRingOp  = dim?0.08:0.5;
+      if(cls==='anc') u.tHaloCol.setHex(0xfbbf24);
+      else if(cls==='desc') u.tHaloCol.setHex(0x22d3ee);
+      else if(cls==='sel') u.tHaloCol.setHex(0xffffff);
+      else u.tHaloCol.copy(u.base);            // ctx/默认/dim 保留节点底色
+      const el=labelEl[id]; el.className='lbl '+cls;
+      if(!selected && focus && dim) el.classList.add('hide');     // 背景层标签隐藏
+    });
+    edgeObjs.forEach(ed=>{
+      let st='';
+      if(selected){
+        const inA=(anc.has(ed.from)||ed.from===selected)&&(anc.has(ed.to)||ed.to===selected);
+        const inD=(desc.has(ed.from)||ed.from===selected)&&(desc.has(ed.to)||ed.to===selected);
+        st=inA?'anc':inD?'desc':'dim';
+      }
+      if(st==='anc'){ ed.tLineCol.setHex(0xfbbf24);ed.tLineOp=.85; }
+      else if(st==='desc'){ ed.tLineCol.setHex(0x22d3ee);ed.tLineOp=.85; }
+      else if(st==='dim'){ ed.tLineCol.setHex(0x16263e);ed.tLineOp=.04; }
+      else { ed.tLineCol.setHex(0x2a4a6f);ed.tLineOp=.22; }
+    });
+    refreshProgress();
+  }
+  // 逐帧把当前视觉值平滑逼近目标 → 高亮在两片之间交叉淡入淡出，而非硬切
+  function stepVisual(){
+    const k=0.14;
+    meshes.forEach(mz=>{ const u=mz.userData, h=u.halo.material;
+      mz.material.opacity += (u.tOpacity-mz.material.opacity)*k;
+      h.opacity += (u.tHaloOp-h.opacity)*k; h.color.lerp(u.tHaloCol,k);
+      u.curScale += (u.tScale-u.curScale)*k;
+      mz.scale.set(u.r*DISC_K*u.curScale,u.r*DISC_K*u.curScale,1);
+      u.halo.scale.set(u.r*HALO_K*u.curScale,u.r*HALO_K*u.curScale,1);
+      if(u.ring) u.ring.material.opacity += (u.tRingOp-u.ring.material.opacity)*k;
+    });
+    edgeObjs.forEach(ed=>{ const m=ed.line.material;
+      m.opacity += (ed.tLineOp-m.opacity)*k; m.color.lerp(ed.tLineCol,k);
+    });
+  }
+
+  // ── 进度层（§6 可切换，默认关）────────────────────────────────────────
+  let progressOn=false;
+  const hasStatus = DATA.nodes.some(n=>n.status);     // 公开版剔除了 status → 无数据
+  function refreshProgress(){ meshes.forEach(mz=>{ const p=mz.userData.prog; if(!p)return;
+    p.material.opacity = progressOn ? (byId[mz.userData.id].status==='future'?0.35:0.75) : 0; }); }
+  if(!hasStatus){ document.getElementById('toggles').style.display='none'; }  // 无进度数据则隐藏开关
+  else document.getElementById('tgProgress').addEventListener('click', function(){
+    progressOn=!progressOn; this.classList.toggle('on',progressOn); refreshProgress(); });
+
+  // ════════════════════════════════════════════════════════════════════
+  //  导航：选中 / 下钻 / 跳转 + 统一浏览器式返回栈
+  // ════════════════════════════════════════════════════════════════════
+  const history=[]; let hpos=-1;
+  function pushHistory(){ const st={focus,selected,panel:panelNode};
+    history.splice(hpos+1); history.push(st); hpos=history.length-1; updateNav(); }
+  function updateNav(){ document.getElementById('back').disabled=hpos<=0;
+    document.getElementById('fwd').disabled=hpos>=history.length-1; }
+  function applyHistory(st){ focus=st.focus; selected=st.selected;
+    if(st.panel) openPanel(st.panel,false); else closePanel(false);
+    if(selected) flyTo(pos[selected], Math.min(radiusGoal,18));
+    else if(focus) flyTo(pos[focus], 16); else flyTo(homeView(), 32);
+    applyVisual(); renderCrumbs(); }
+  document.getElementById('back').onclick=()=>{ if(hpos>0){ hpos--; applyHistory(history[hpos]); updateNav(); } };
+  document.getElementById('fwd').onclick =()=>{ if(hpos<history.length-1){ hpos++; applyHistory(history[hpos]); updateNav(); } };
+  document.getElementById('home').onclick=()=>{ focus=null; selected=null; closePanel(false);
+    flyTo(homeView(),32); applyVisual(); renderCrumbs(); pushHistory(); };
+
+  function select(id, record){ selected=id;
+    const n=byId[id];
+    flyTo(pos[id], Math.max(12, Math.min(radiusGoal,20)));
+    applyVisual(); openPanel(id,false); renderCrumbs();
+    if(record) pushHistory(); }
+  function drill(id, record){ focus=id; selected=null;
+    flyTo(pos[id], Math.max(11, 9 + (children[id]||[]).length*0.4));
+    applyVisual(); renderCrumbs(); if(record) pushHistory(); }
+  function clearSel(record){ if(!selected && !focus) return; selected=null;
+    applyVisual(); closePanel(false); renderCrumbs(); if(record) pushHistory(); }
+
+  // ── 面包屑：当前焦点（或选中节点）的归属地址 ───────────────────────────
+  function renderCrumbs(){ const box=document.getElementById('crumbs'); box.innerHTML='';
+    const anchor = selected || focus; const chain=[];
+    if(anchor){ ancestorsParent(anchor).forEach(a=>chain.push(a)); chain.push(anchor); }
+    const root=document.createElement('span'); root.className='seg'+(anchor?'':' cur');
+    root.textContent='全部'; root.onclick=()=>{ focus=null;selected=null;closePanel(false);
+      flyTo(homeView(),32); applyVisual(); renderCrumbs(); pushHistory(); };
+    box.appendChild(root);
+    chain.forEach((id,i)=>{ const sp=document.createElement('span'); sp.className='sp'; sp.textContent='›'; box.appendChild(sp);
+      const seg=document.createElement('span'); seg.className='seg'+(i===chain.length-1?' cur':'');
+      seg.textContent=byId[id].label; seg.onclick=()=>{ const n=byId[id];
+        if(n.isContainer){ drill(id,true);} else { select(id,true);} };
+      box.appendChild(seg); });
+  }
+
+  // ════════════════════════════════════════════════════════════════════
+  //  §5 阅读面板：marked 渲染正文 + KaTeX + 内嵌 SVG 原样 + [[ ]] 阅读线
+  // ════════════════════════════════════════════════════════════════════
+  let panelNode=null;
+  const pbody=document.getElementById('pbody');
+  if(window.marked) marked.setOptions({gfm:true, breaks:false});
+  function renderBody(id){
+    const n=byId[id];
+    hideCard();                       // 面板内容要换了 → 先收掉任何残留的悬停卡
+    let html = window.marked ? marked.parse(n.body||'') : (n.body||'').replace(/\n/g,'<br>');
+    pbody.innerHTML = html;
+    if(window.renderMathInElement){ try{ renderMathInElement(pbody,{throwOnError:false,
+      delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},
+                  {left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]}); }catch(e){} }
+    // [[ ]] 阅读线：点词 = 面板内打开（地图不动）；悬停 = 预览卡
+    pbody.querySelectorAll('a.wl').forEach(a=>{ const tid=a.dataset.id;
+      a.addEventListener('click', e=>{ e.preventDefault(); hideCard(); openPanel(tid,true); });
+      a.addEventListener('pointerenter', ()=>showCard(tid,null,a));
+      a.addEventListener('pointerleave', hideCard); });
+    pbody.scrollTop=0;
+  }
+  function openPanel(id, record){
+    panelNode=id; const n=byId[id];
+    document.body.classList.add('panelopen');
+    const badge=document.getElementById('pbadge');
+    const home = byId[ (ancestorsParent(id)[0]) || id ];
+    badge.textContent = n.role==='foundation'?'地基':(n.isContainer?'容器':'概念');
+    badge.style.color = n.color; badge.style.borderColor=n.color;
+    document.getElementById('ptitle').textContent=n.label;
+    renderBody(id);
+    const foot=document.getElementById('pfoot'); foot.innerHTML='';
+    if(n.status){ const s=document.createElement('span'); s.className='st';
+      const map={done:'已完成 ✓',learning:'学习中',debt:'待补 ⚠',future:'未来'};
+      s.textContent=map[n.status]||n.status; s.style.color=n.status==='debt'?'#ff9b7b':'#9fd0ff'; foot.appendChild(s); }
+    if(n.refs){ const r=document.createElement('span'); r.textContent='出处 · '+n.refs; foot.appendChild(r); }
+    if(record){ flyTo(pos[id], Math.max(12,Math.min(radiusGoal,20))); pushHistory(); }
+  }
+  function closePanel(record){ panelNode=null; document.body.classList.remove('panelopen','reading');
+    if(record) pushHistory(); }
+  document.getElementById('pClose').onclick=()=>{ selected=null; closePanel(false); applyVisual(); renderCrumbs(); pushHistory(); };
+  document.getElementById('pReading').onclick=()=>{
+    const on=!document.body.classList.contains('reading');
+    document.body.classList.toggle('reading',on);
+    if(!on) document.body.classList.remove('mapmin');   // 退出阅读→复位小地图
+    setLegend(on);          // 进入专注阅读→图例自动收起；退出→自动展开
+    refreshMapBtn();
+  };
+
+  // ── 悬停预览卡（节点 / [[ ]]）────────────────────────────────────────
+  const card=document.getElementById('card'); let cardAnchorEl=null;
+  function showCard(id, ev, anchorEl){ const n=byId[id]; if(!n)return;
+    card.innerHTML = '<div class="ct"><span class="cd" style="color:'+n.color+';background:'+n.color+'"></span>'
+      + n.label + '</div><div class="cs">'+(n.summary||'')+'</div>'
+      + '<div class="cj">跳转 ↗ （单击）</div>';
+    card.classList.add('show'); cardAnchorEl=anchorEl||null;
+    if(ev) moveCard(ev); else if(anchorEl) placeCardAt(anchorEl);
+  }
+  function moveCard(ev){ const w=card.offsetWidth,h=card.offsetHeight;
+    let x=ev.clientX+16, y=ev.clientY+16;
+    if(x+w>innerWidth-8) x=ev.clientX-w-16; if(y+h>innerHeight-8) y=ev.clientY-h-16;
+    card.style.left=x+'px'; card.style.top=y+'px'; }
+  function placeCardAt(el){ const r=el.getBoundingClientRect(); const w=card.offsetWidth,h=card.offsetHeight;
+    let x=r.left, y=r.bottom+8; if(x+w>innerWidth-8)x=innerWidth-w-8; if(y+h>innerHeight-8)y=r.top-h-8;
+    card.style.left=x+'px'; card.style.top=Math.max(8,y)+'px'; }
+  function hideCard(){ card.classList.remove('show'); }
+  // 卡片是 pointer-events:none，跳转用节点单击/词单击完成（与悬停解耦，符合 §5 双手势）
+
+  // ── 搜索（label / aliases）───────────────────────────────────────────
+  const search=document.getElementById('search'), results=document.getElementById('results');
+  function doSearch(q){ q=q.trim().toLowerCase(); if(!q){ results.classList.remove('open'); return; }
+    const hits=DATA.nodes.filter(n=>{ const hay=(n.label+' '+(n.aliases||[]).join(' ')+' '+n.id).toLowerCase();
+      return hay.includes(q); }).slice(0,12);
+    results.innerHTML = hits.length ? '' : '<div class="empty">无匹配</div>';
+    hits.forEach(n=>{ const d=document.createElement('div'); d.className='r';
+      d.innerHTML='<span class="cd" style="background:'+n.color+'"></span>'+n.label
+        +'<span class="sub">'+(byId[n.parent]?byId[n.parent].label:'主干')+'</span>';
+      d.onclick=()=>{ results.classList.remove('open'); search.value='';
+        focus=byId[n.id].parent||null; select(n.id,true); }; results.appendChild(d); });
+    results.classList.add('open');
+  }
+  search.addEventListener('input', ()=>doSearch(search.value));
+  search.addEventListener('focus', ()=>{ if(search.value) doSearch(search.value); });
+  document.addEventListener('click', e=>{ if(!document.getElementById('searchWrap').contains(e.target)) results.classList.remove('open'); });
+
+  // ── 分隔条拖拽 ────────────────────────────────────────────────────────
+  const splitter=document.getElementById('splitter'); let sdrag=false;
+  splitter.addEventListener('pointerdown',e=>{ sdrag=true; document.body.classList.add('dragging'); splitter.setPointerCapture(e.pointerId); });
+  splitter.addEventListener('pointermove',e=>{ if(!sdrag)return;
+    const w=Math.max(280,Math.min(innerWidth-260, innerWidth-e.clientX));
+    document.body.style.setProperty('--pw', w+'px'); });
+  splitter.addEventListener('pointerup',e=>{ sdrag=false; document.body.classList.remove('dragging'); });
+
+  // ── 图例 ──────────────────────────────────────────────────────────────
+  (function legend(){ const L=document.getElementById('legendBody');
+    let h='<div class="cap">学科 · 融合色</div>';
+    const names={an_analisi:'分析',geo_geometria:'几何',alg_algebra:'代数'};
+    Object.keys(palette.disciplines||{}).forEach(id=>{ const c=palette.disciplines[id];
+      h+='<div class="row"><span class="dot" style="color:'+c+';background:'+c+'"></span>'+(byId[id]?byId[id].label:names[id]||id)+'</div>'; });
+    h+='<div class="row"><span class="dot" style="color:'+palette.neutral+';background:'+palette.neutral+'"></span>地基（中性）</div>';
+    h+='<div class="sep"></div>';
+    h+='<div class="row" style="color:var(--gold)"><span class="ln"></span><span style="color:#c7d4ee">金 = 上游（根/前置）</span></div>';
+    h+='<div class="row" style="color:var(--cyan)"><span class="ln"></span><span style="color:#c7d4ee">青 = 下游（依赖者）</span></div>';
+    L.innerHTML=h; })();
+
+  // ── 图例收起/展开（手动按钮 + 专注阅读时自动收起，避让左下角小地图）──────
+  const legendEl=document.getElementById('legend'), legendTab=document.getElementById('legendTab');
+  let legendCollapsed=false;
+  function setLegend(c){ legendCollapsed=c; legendEl.classList.toggle('collapsed',c); legendTab.textContent=c?'›':'‹'; }
+  legendTab.onclick=()=> setLegend(!legendCollapsed);
+
+  // ── 小地图收起/展开（仅专注阅读时出现；向下滑出，留一个按钮可再唤出）──────
+  const mapToggle=document.getElementById('mapToggle');
+  function refreshMapBtn(){ mapToggle.textContent = document.body.classList.contains('mapmin') ? '⤢ 展开地图' : '⤓ 收起地图'; }
+  mapToggle.onclick=()=>{ document.body.classList.toggle('mapmin'); refreshMapBtn(); };
+
+  // ── 渲染循环 + 自适应尺寸 ─────────────────────────────────────────────
+  const v=new THREE.Vector3();
+  function project(){ const W=graphEl.clientWidth,H=graphEl.clientHeight;
+    DATA.nodes.forEach(n=>{ const el=labelEl[n.id]; v.copy(pos[n.id]).project(camera);
+      if(v.z>1||v.z<-1){ el.style.display='none'; return; } el.style.display='';
+      const x=(v.x*0.5+0.5)*W, y=(-v.y*0.5+0.5)*H;
+      el.style.transform='translate(-50%,-160%) translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)'; }); }
+  function resize(){ const W=graphEl.clientWidth||1,H=graphEl.clientHeight||1;
+    camera.aspect=W/H; camera.updateProjectionMatrix(); renderer.setSize(W,H,false); }
+  new ResizeObserver(resize).observe(graphEl); resize();
+  function loop(){ requestAnimationFrame(loop);
+    if(introT<1){ introT=Math.min(1,introT+0.012); const e=1-Math.pow(1-introT,3);
+      radius=60-(60-radiusGoal)*e; phi=Math.PI*(0.30+0.06*e); }
+    else radius += (radiusGoal-radius)*0.12;
+    target.lerp(targetGoal,0.12);
+    stepVisual(); place(); project(); renderer.render(scene,camera); }
+
+  // 初始
+  applyVisual(); renderCrumbs(); pushHistory(); radiusGoal=30; loop();
+}
+</script>
+</body>
+</html>
