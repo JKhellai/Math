@@ -97,6 +97,24 @@
   #mapToggle:hover{color:#fff}
   body.reading #mapToggle{display:inline-flex}
 
+  /* ── 触屏底部预览卡：单击节点先看简介，地图保持可见可操作 ── */
+  #peek{position:absolute;left:14px;right:14px;bottom:14px;z-index:7;
+    background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--line2);border-radius:14px;padding:12px 14px;
+    box-shadow:0 14px 44px rgba(0,0,0,.55);
+    transform:translateY(calc(100% + 28px));transition:transform .3s cubic-bezier(.22,.9,.3,1)}
+  #peek.show{transform:translateY(0)}
+  #peek .ph{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  #peek .pd{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 8px currentColor}
+  #peek .pt{font-weight:700;font-size:15px;color:#fff;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #peek .px{width:26px;height:26px;border-radius:7px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);color:var(--muted);font-size:14px;line-height:1;flex:none}
+  #peek .ps{font-size:12.5px;line-height:1.6;color:#c2d0ee}
+  #peek .pb{display:flex;gap:8px;margin-top:10px}
+  #peek .pb button{flex:1;padding:9px 0;border-radius:9px;border:1px solid var(--line2);
+    background:rgba(255,255,255,.06);color:#e8eefc;font-size:13px;font-family:inherit}
+  #peek .pb button:active{background:rgba(255,255,255,.14)}
+
   #phead{padding:18px 22px 12px;border-bottom:1px solid var(--line);flex:none;position:relative}
   #pbadge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.6px;
     padding:3px 9px;border-radius:20px;text-transform:uppercase;margin-bottom:10px;border:1px solid var(--line)}
@@ -224,6 +242,11 @@
     </div>
     <div id="hint">拖拽旋转 · 滚轮缩放 · 单击选中（高亮依赖链）· 双击容器下钻 · 点空白处取消</div>
     <button id="mapToggle" title="收起 / 展开小地图">⤓ 收起地图</button>
+    <div id="peek">
+      <div class="ph"><span class="pd" id="peekDot"></span><span class="pt" id="peekTitle"></span><button class="px" id="peekClose">×</button></div>
+      <div class="ps" id="peekSum"></div>
+      <div class="pb"><button id="peekRead">阅读全文 📖</button><button id="peekDrill">钻入下一层 ⤵</button></div>
+    </div>
     <div id="panel">
       <div id="splitter"></div>
       <div id="phead">
@@ -271,6 +294,8 @@ function App(DATA){
   const foundationIds = new Set(meta.foundationIds || []);
   const disciplineIds = meta.disciplineIds || topIds.filter(t => !foundationIds.has(t));
   const palette = (meta.palette || {disciplines:{}, neutral:'#A9A9A9'});
+  // 触屏设备（无悬停）：选中节点先出底部预览卡而非整屏面板；[[词]] 第一击出 summary、再击才跳转
+  const isTouch = matchMedia('(pointer:coarse)').matches;
 
   function reach(start, adj){ const seen=new Set(), st=[...adj[start]];
     while(st.length){ const c=st.pop(); if(seen.has(c))continue; seen.add(c); (adj[c]||[]).forEach(x=>{ if(!seen.has(x))st.push(x); }); } return seen; }
@@ -592,7 +617,8 @@ function App(DATA){
   function updateNav(){ document.getElementById('back').disabled=hpos<=0;
     document.getElementById('fwd').disabled=hpos>=history.length-1; }
   function applyHistory(st){ focus=st.focus; selected=st.selected;
-    if(st.panel) openPanel(st.panel,false); else closePanel(false);
+    if(st.panel) openPanel(st.panel,false);
+    else { closePanel(false); if(isTouch && selected) showPeek(selected); else hidePeek(); }
     if(selected) flyTo(pos[selected], fitR()*0.5);
     else if(focus) flyTo(pos[focus], fitR()*0.5); else flyTo(homeView(), fitR());
     applyVisual(); renderCrumbs(); }
@@ -604,13 +630,28 @@ function App(DATA){
   function select(id, record){ selected=id;
     const n=byId[id];
     flyTo(pos[id], fitR()*0.5);
-    applyVisual(); openPanel(id,false); renderCrumbs();
+    applyVisual();
+    if(isTouch) showPeek(id); else openPanel(id,false);   // 触屏：先出预览卡，地图不被挡
+    renderCrumbs();
     if(record) pushHistory(); }
-  function drill(id, record){ focus=id; selected=null;
+  function drill(id, record){ focus=id; selected=null; hidePeek();
     flyTo(pos[id], fitR()*0.5);
     applyVisual(); renderCrumbs(); if(record) pushHistory(); }
-  function clearSel(record){ if(!selected && !focus) return; selected=null;
+  function clearSel(record){ if(!selected && !focus) return; selected=null; hidePeek();
     applyVisual(); closePanel(false); renderCrumbs(); if(record) pushHistory(); }
+
+  // ── 触屏底部预览卡 ─────────────────────────────────────────────────────
+  const peekEl=document.getElementById('peek'); let peekId=null;
+  function showPeek(id){ const n=byId[id]; if(!n) return; peekId=id;
+    document.getElementById('peekDot').style.cssText='color:'+n.color+';background:'+n.color;
+    document.getElementById('peekTitle').textContent=n.label;
+    document.getElementById('peekSum').textContent=n.summary||'';
+    document.getElementById('peekDrill').style.display = n.isContainer?'':'none';
+    peekEl.classList.add('show'); }
+  function hidePeek(){ peekId=null; peekEl.classList.remove('show'); }
+  document.getElementById('peekClose').onclick=()=>hidePeek();
+  document.getElementById('peekRead').onclick=()=>{ const id=peekId; hidePeek(); if(id) openPanel(id,true); };
+  document.getElementById('peekDrill').onclick=()=>{ const id=peekId; hidePeek(); if(id) drill(id,true); };
 
   // ── 面包屑：当前焦点（或选中节点）的归属地址 ───────────────────────────
   function renderCrumbs(){ const box=document.getElementById('crumbs'); box.innerHTML='';
@@ -630,26 +671,29 @@ function App(DATA){
   // ════════════════════════════════════════════════════════════════════
   //  §5 阅读面板：marked 渲染正文 + KaTeX + 内嵌 SVG 原样 + [[ ]] 阅读线
   // ════════════════════════════════════════════════════════════════════
-  let panelNode=null;
+  let panelNode=null, wlPending=null;   // wlPending：触屏上"一击预览、二击打开"的待跳转词
   const pbody=document.getElementById('pbody');
+  pbody.addEventListener('click', e=>{ if(!e.target.closest('a.wl')){ wlPending=null; hideCard(); } });
   if(window.marked) marked.setOptions({gfm:true, breaks:false});
   function renderBody(id){
     const n=byId[id];
-    hideCard();                       // 面板内容要换了 → 先收掉任何残留的悬停卡
+    hideCard(); wlPending=null;       // 面板内容要换了 → 收掉残留的悬停卡、清掉待跳转词
     let html = window.marked ? marked.parse(n.body||'') : (n.body||'').replace(/\n/g,'<br>');
     pbody.innerHTML = html;
     if(window.renderMathInElement){ try{ renderMathInElement(pbody,{throwOnError:false,
       delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},
                   {left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]}); }catch(e){} }
-    // [[ ]] 阅读线：点词 = 面板内打开（地图不动）；悬停 = 预览卡
+    // [[ ]] 阅读线：桌面=悬停预览/单击打开；触屏=第一击预览 summary、再击同一词才打开
     pbody.querySelectorAll('a.wl').forEach(a=>{ const tid=a.dataset.id;
-      a.addEventListener('click', e=>{ e.preventDefault(); hideCard(); openPanel(tid,true); });
-      a.addEventListener('pointerenter', ()=>showCard(tid,null,a));
-      a.addEventListener('pointerleave', hideCard); });
+      a.addEventListener('click', e=>{ e.preventDefault();
+        if(isTouch && wlPending!==tid){ wlPending=tid; showCard(tid,null,a); return; }
+        wlPending=null; hideCard(); openPanel(tid,true); });
+      a.addEventListener('pointerenter', ()=>{ if(!isTouch) showCard(tid,null,a); });
+      a.addEventListener('pointerleave', ()=>{ if(!isTouch) hideCard(); }); });
     pbody.scrollTop=0;
   }
   function openPanel(id, record){
-    panelNode=id; const n=byId[id];
+    panelNode=id; const n=byId[id]; hidePeek();
     document.body.classList.add('panelopen');
     const badge=document.getElementById('pbadge');
     const home = byId[ (ancestorsParent(id)[0]) || id ];
@@ -680,7 +724,7 @@ function App(DATA){
   function showCard(id, ev, anchorEl){ const n=byId[id]; if(!n)return;
     card.innerHTML = '<div class="ct"><span class="cd" style="color:'+n.color+';background:'+n.color+'"></span>'
       + n.label + '</div><div class="cs">'+(n.summary||'')+'</div>'
-      + '<div class="cj">跳转 ↗ （单击）</div>';
+      + '<div class="cj">'+(isTouch?'再点一次打开 ↗':'跳转 ↗ （单击）')+'</div>';
     card.classList.add('show'); cardAnchorEl=anchorEl||null;
     if(ev) moveCard(ev); else if(anchorEl) placeCardAt(anchorEl);
   }
