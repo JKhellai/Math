@@ -323,6 +323,7 @@ function App(DATA){
   const pos = {};                                    // id → THREE.Vector3
   const TOP_RING = 11, CHILD_BASE = 5.6, RING_STEP = 3.6, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 4.6;
   const SPIRAL = 0.85;   // 依赖链每深一环的角度偏转：链条绕容器盘旋生长，不再单边直线戳出
+  const TRUNK_GAP = 9;   // 学科主干环与地基子树最外缘之间的安全间距（主干半径随内容自动外推）
   const NEST_H = 2.2;    // 归属嵌套每深一层的抬高：子节点浮在容器上方，主从一眼可辨
   let homeY = 0;                                      // 镜头默认锚高（结构中段）
 
@@ -336,12 +337,6 @@ function App(DATA){
       else { const a = 2*Math.PI*i/founds.length; pos[t] = new THREE.Vector3(Math.cos(a)*1.6,0,Math.sin(a)*1.6); }
     });
     if (founds.length === 0 && disc.length) pos[disc[0]] = new THREE.Vector3(0,0,0);
-    // 学科主干按 OKLab 色相绕环
-    disc.forEach((t,i) => {
-      const hue = okHue(byId[t].color || '#888');
-      const a = isFinite(hue) ? hue : (2*Math.PI*i/Math.max(disc.length,1));
-      pos[t] = new THREE.Vector3(Math.cos(a)*TOP_RING, -0.6, Math.sin(a)*TOP_RING);
-    });
     // 递归安放各容器的子层（按深度从浅到深）
     const conts = DATA.nodes.filter(n => (children[n.id]||[]).length)
                             .sort((a,b)=>(a.depth||0)-(b.depth||0));
@@ -349,7 +344,7 @@ function App(DATA){
       if(oa!=null && ob!=null && oa!==ob) return oa-ob;
       if(oa!=null && ob==null) return -1; if(ob!=null && oa==null) return 1;
       return hash01(a)-hash01(b); };
-    conts.forEach(c => {
+    function layoutContainer(c){
       const kidList = children[c.id].slice();
       const kidSet  = new Set(kidList);
       const center  = pos[c.id] || new THREE.Vector3(0,0,0);
@@ -378,7 +373,23 @@ function App(DATA){
         pos[kid]=new THREE.Vector3(center.x + Math.cos(a)*rad,
           center.y - (byId[kid].depth||0)*0.7, center.z + Math.sin(a)*rad);
       });
+    }
+    // ── 两段排布：先排地基子树 → 量出占地半径 → 主干放到圈外 → 再排主干子树 ──
+    //   主干环半径随地基内容自动外推，地基的链再长也不会和三大主干混在一起。
+    const rootOf = id => { const a = ancestorsParent(id); return a.length ? a[0] : id; };
+    conts.filter(c => foundationIds.has(rootOf(c.id))).forEach(layoutContainer);
+    let foundExt = 0;
+    DATA.nodes.forEach(n => { const p = pos[n.id];
+      if (p && foundationIds.has(rootOf(n.id))) {
+        const d = Math.hypot(p.x, p.z); if (d > foundExt) foundExt = d; } });
+    const trunkR = Math.max(TOP_RING, foundExt + TRUNK_GAP);
+    // 学科主干按 OKLab 色相绕环（半径动态外推）
+    disc.forEach((t,i) => {
+      const hue = okHue(byId[t].color || '#888');
+      const a = isFinite(hue) ? hue : (2*Math.PI*i/Math.max(disc.length,1));
+      pos[t] = new THREE.Vector3(Math.cos(a)*trunkR, -0.6, Math.sin(a)*trunkR);
     });
+    conts.filter(c => !foundationIds.has(rootOf(c.id))).forEach(layoutContainer);
     DATA.nodes.forEach(n => { if(!pos[n.id]) pos[n.id] = new THREE.Vector3((hash01(n.id)-0.5)*20,0,(hash01(n.id+'z')-0.5)*20); });
     // ── 垂直生长：高度 = 全局依赖深度（离公理多远）──
     //   地基/公理在最底层，依赖它们的概念逐层抬升 → 整体像一棵从地基往上长的树。
