@@ -750,7 +750,10 @@ function App(DATA){
       const x=(v.x*0.5+0.5)*W, y=(-v.y*0.5+0.5)*H;
       el.style.transform='translate(-50%,-160%) translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)'; }); }
   function resize(){ const W=graphEl.clientWidth||1,H=graphEl.clientHeight||1;
-    camera.aspect=W/H; camera.updateProjectionMatrix(); renderer.setSize(W,H,false);
+    // setSize 必须让 three 同步写 canvas 的 CSS 尺寸（updateStyle=true）：
+    // canvas 是替换元素，inset:0 不会拉伸它；若只设缓冲尺寸，在 dpr>1 的屏幕（手机）上
+    // 画布会比容器大 dpr 倍、被裁到只剩左上角 → 场景偏到右下角。
+    camera.aspect=W/H; camera.updateProjectionMatrix(); renderer.setSize(W,H);
     const f=fitR(); if(lastFit){ const k=f/lastFit; radiusGoal*=k; radius*=k; } lastFit=f; }  // 转屏自动重适配，保持相对缩放
   new ResizeObserver(resize).observe(graphEl); resize();
   let introR0=0;
