@@ -374,7 +374,7 @@ function App(DATA){
   const renderer = new THREE.WebGLRenderer({canvas:cvs, antialias:true, alpha:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x05070f, 0.012);
+  scene.fog = new THREE.FogExp2(0x05070f, 0.012);   // 密度每帧随镜头距离自适应（见 loop），观感恒定
   const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 1000);
 
   (function stars(){ const g=new THREE.BufferGeometry(), N=1100, p=new Float32Array(N*3);
@@ -759,6 +759,8 @@ function App(DATA){
       if(!introR0) introR0=radiusGoal*1.7; radius=introR0-(introR0-radiusGoal)*e; phi=Math.PI*(0.30+0.06*e); }
     else radius += (radiusGoal-radius)*0.12;
     target.lerp(targetGoal,0.12);
+    // 雾密度随镜头距离缩放：density·radius ≈ 常数 → 拉远取景（手机竖屏）时球不再被雾吞掉
+    scene.fog.density = 0.36/Math.max(radius, 25);
     stepVisual(); place(); project(); renderer.render(scene,camera); }
 
   // 初始
