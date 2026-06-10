@@ -321,7 +321,9 @@ function App(DATA){
   //    · 下钻 = 镜头飞向该容器；位置不重排，全局空间一致、连续
   // ════════════════════════════════════════════════════════════════════
   const pos = {};                                    // id → THREE.Vector3
-  const TOP_RING = 11, CHILD_BASE = 5.0, RING_STEP = 3.6, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 4.6;
+  const TOP_RING = 11, CHILD_BASE = 5.6, RING_STEP = 3.6, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 4.6;
+  const SPIRAL = 0.85;   // 依赖链每深一环的角度偏转：链条绕容器盘旋生长，不再单边直线戳出
+  const NEST_H = 2.2;    // 归属嵌套每深一层的抬高：子节点浮在容器上方，主从一眼可辨
   let homeY = 0;                                      // 镜头默认锚高（结构中段）
 
   (function layout(){
@@ -368,7 +370,8 @@ function App(DATA){
       const groups={}; rest.forEach(k=>{ (groups[primary[k]]=groups[primary[k]]||[]).push(k); });
       rest.forEach(k=>{ const g=groups[primary[k]], m=g.length, idx=g.indexOf(k);
         const off = m>1 ? (idx-(m-1)/2)*(0.8/(m-1)) : 0;
-        ang[k] = (ang[primary[k]]!=null?ang[primary[k]]:phase) + off; });
+        // 在主前置角度上叠加固定螺旋步长：纯链条盘旋上升、占满四周，且相邻环间角差小、连线不穿中心
+        ang[k] = (ang[primary[k]]!=null?ang[primary[k]]:phase) + SPIRAL + off; });
       // 落位
       kidList.forEach(kid=>{ const ring=byId[kid].ring||0;
         const rad=(CHILD_BASE + ring*RING_STEP)*scale; const a=ang[kid]!=null?ang[kid]:phase;
@@ -385,10 +388,14 @@ function App(DATA){
       guard=guard||new Set(); if(guard.has(id)) return 0;
       let d=0; (bwd[id]||[]).forEach(p=>{ d=Math.max(d, 1+depDepth(p, new Set(guard).add(id))); });
       ddMemo[id]=d; return d; }
-    let maxDD=0;
-    DATA.nodes.forEach(n=>{ const d=depDepth(n.id); if(d>maxDD)maxDD=d;
-      if(pos[n.id]) pos[n.id].y = d*LEVEL_H; });
-    homeY = maxDD*LEVEL_H/2;
+    let maxY=0;
+    DATA.nodes.forEach(n=>{
+      // 高度 = 依赖深度（离公理多远）+ 归属嵌套抬高：
+      // 同为公理的子节点（如 命题与联结词）也会浮在其容器（地基）上方，主从不再混淆
+      const y = depDepth(n.id)*LEVEL_H + (n.depth||0)*NEST_H;
+      if(y>maxY) maxY=y;
+      if(pos[n.id]) pos[n.id].y = y; });
+    homeY = maxY/2;
   })();
 
   // ════════════════════════════════════════════════════════════════════
@@ -426,7 +433,11 @@ function App(DATA){
   // ── 节点 ──────────────────────────────────────────────────────────────
   const meshes = [], meshById = {}, labelEl = {};
   const labels = document.getElementById('labels');
-  function nodeRadius(n){ return Math.max(0.55, Math.min(1.7, 0.55 + 0.32*Math.log2(1+(n.bearing||0)))); }
+  // 大小 = 承重（被传递依赖数）+ 承载（子树规模，容器装着多少内容物，权重加倍）
+  // → 容器（地基）明显大于其内部节点，主从一眼可辨
+  const subCount = {}; DATA.nodes.forEach(n => subCount[n.id] = subtree(n.id).size);
+  function nodeRadius(n){ const w = (n.bearing||0) + 2*subCount[n.id];
+    return Math.max(0.55, Math.min(1.9, 0.55 + 0.32*Math.log2(1+w))); }
 
   DATA.nodes.forEach(n => {
     const col = new THREE.Color(n.color || '#9fb0d6'); const r = nodeRadius(n);
