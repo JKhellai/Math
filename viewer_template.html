@@ -151,6 +151,18 @@
   #pbody details.ans[open]>summary::before{content:'🔓'}
   #pbody details.ans>summary .hint{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:auto}
   #pbody details.ans>.ansbody{padding:2px 15px 13px;border-top:1px dashed rgba(251,191,36,.22)}
+  /* 直接前置/后续 导航 chips（嵌在正文顶部，只列一跳直接邻居，可点击跳转）*/
+  #pbody .prel{margin:-2px 0 2px}
+  #pbody .prel .grp{margin:0 0 9px}
+  #pbody .prel .gl{font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:6px}
+  #pbody .prel .gl.up{color:var(--gold)}
+  #pbody .prel .gl.down{color:var(--cyan)}
+  #pbody .prel .chips{display:flex;flex-wrap:wrap;gap:7px}
+  #pbody .prel .chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:5px 10px;
+    border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#cdd9f2;cursor:pointer}
+  #pbody .prel .chip:hover,#pbody .prel .chip:active{background:rgba(255,255,255,.1);color:#fff}
+  #pbody .prel .chip .cd{width:8px;height:8px;border-radius:50%;flex:none;box-shadow:0 0 6px currentColor}
+  #pbody .prel hr{border:none;border-top:1px solid var(--line);margin:2px 0 14px}
   #pbody a.wl{color:#9fd0ff;border-bottom:1px dashed rgba(159,208,255,.5);cursor:pointer;text-decoration:none}
   #pbody a.wl:hover{color:#fff;border-bottom-color:#fff;background:rgba(159,208,255,.12)}
   #pbody .katex{font-size:1.02em}
@@ -574,42 +586,48 @@ function App(DATA){
   // ════════════════════════════════════════════════════════════════════
   let focus=null, selected=null;
   function applyVisual(){
-    const anc = selected ? reach(selected,bwd) : null;     // 上游前置（金）
-    const desc = selected ? reach(selected,fwd) : null;     // 下游依赖者（青）
+    const dUp   = selected ? new Set(bwd[selected]) : null;   // 直接前置（一跳，满金）
+    const dDown = selected ? new Set(fwd[selected]) : null;   // 直接后续（一跳，满青）
+    const anc   = selected ? reach(selected,bwd) : null;      // 全部上游（间接 → 淡金）
+    const desc  = selected ? reach(selected,fwd) : null;      // 全部下游（间接 → 淡青）
     const parents = selected ? new Set(ancestorsParent(selected)) : null;  // 归属祖先（语境）
-    const sub  = focus ? subtree(focus) : null;             // 下钻聚焦：容器子树
+    const sub  = focus ? subtree(focus) : null;               // 下钻聚焦：容器子树
     meshes.forEach(mz=>{
       const id=mz.userData.id, u=mz.userData; let cls='', dim=false;
       if(selected){
         if(id===selected) cls='sel';
-        else if(anc.has(id)) cls='anc';
-        else if(desc.has(id)) cls='desc';
-        else if(parents.has(id)) cls='ctx';   // 父/容器：保留为语境，不暗掉（看得出归属）
+        else if(dUp.has(id)) cls='anc';        // 直接前置
+        else if(dDown.has(id)) cls='desc';     // 直接后续
+        else if(parents.has(id)) cls='ctx';    // 父/容器：语境，不暗
+        else if(anc.has(id)) cls='anc2';       // 间接前置（更远的根系）：淡金、线不亮、标签收起
+        else if(desc.has(id)) cls='desc2';     // 间接后续（更远的影响）：淡青
         else { cls='dim'; dim=true; }
       } else if(focus){
         if(id===focus || sub.has(id)){} else { dim=true; }
       }
+      const faint = (cls==='anc2'||cls==='desc2');
       // 只设"目标值"，由 stepVisual 逐帧平滑逼近（不再硬切）
-      u.tOpacity = dim?0.16 : (cls==='ctx'?0.72:0.96);
-      u.tHaloOp  = dim?0.05 : (cls==='sel'?1 : (cls==='anc'||cls==='desc')?0.8 : cls==='ctx'?0.42 : 0.5);
-      u.tScale   = cls==='sel'?1.35 : (cls==='anc'||cls==='desc')?1.12 : dim?0.9 : 1;
+      u.tOpacity = dim?0.16 : faint?0.48 : (cls==='ctx'?0.72:0.96);
+      u.tHaloOp  = dim?0.05 : cls==='sel'?1 : (cls==='anc'||cls==='desc')?0.85 : faint?0.2 : cls==='ctx'?0.42 : 0.5;
+      u.tScale   = cls==='sel'?1.35 : (cls==='anc'||cls==='desc')?1.15 : (dim||faint)?0.92 : 1;
       u.tRingOp  = dim?0.08:0.5;
-      if(cls==='anc') u.tHaloCol.setHex(0xfbbf24);
-      else if(cls==='desc') u.tHaloCol.setHex(0x22d3ee);
+      if(cls==='anc'||cls==='anc2') u.tHaloCol.setHex(0xfbbf24);
+      else if(cls==='desc'||cls==='desc2') u.tHaloCol.setHex(0x22d3ee);
       else if(cls==='sel') u.tHaloCol.setHex(0xffffff);
       else u.tHaloCol.copy(u.base);            // ctx/默认/dim 保留节点底色
       const el=labelEl[id]; el.className='lbl '+cls;
-      if(!selected && focus && dim) el.classList.add('hide');     // 背景层标签隐藏
+      // 标签只在 选中/直接邻居/归属语境 上显示；间接、无关一律收起，避免节点一多就糊成一片
+      if(faint || dim) el.classList.add('hide');
     });
     edgeObjs.forEach(ed=>{
       let st='';
       if(selected){
-        const inA=(anc.has(ed.from)||ed.from===selected)&&(anc.has(ed.to)||ed.to===selected);
-        const inD=(desc.has(ed.from)||ed.from===selected)&&(desc.has(ed.to)||ed.to===selected);
-        st=inA?'anc':inD?'desc':'dim';
+        if(ed.to===selected) st='anc';         // 直接前置边
+        else if(ed.from===selected) st='desc'; // 直接后续边
+        else st='dim';                          // 间接链上的边一律不亮
       }
-      if(st==='anc'){ ed.tLineCol.setHex(0xfbbf24);ed.tLineOp=.85; }
-      else if(st==='desc'){ ed.tLineCol.setHex(0x22d3ee);ed.tLineOp=.85; }
+      if(st==='anc'){ ed.tLineCol.setHex(0xfbbf24);ed.tLineOp=.9; }
+      else if(st==='desc'){ ed.tLineCol.setHex(0x22d3ee);ed.tLineOp=.9; }
       else if(st==='dim'){ ed.tLineCol.setHex(0x16263e);ed.tLineOp=.04; }
       else { ed.tLineCol.setHex(0x2a4a6f);ed.tLineOp=.22; }
     });
@@ -736,7 +754,23 @@ function App(DATA){
         wlPending=null; hideCard(); openPanel(tid,true); });
       a.addEventListener('pointerenter', ()=>{ if(!isTouch) showCard(tid,null,a); });
       a.addEventListener('pointerleave', ()=>{ if(!isTouch) hideCard(); }); });
+    const rel=buildRelations(id);          // 正文顶部嵌入"直接前置/后续"导航 chips
+    if(rel) pbody.insertAdjacentElement('afterbegin', rel);
     pbody.scrollTop=0;
+  }
+  // 只列一跳直接邻居（与地图金/青高亮一一对应），每个 chip 带所属主干色点，点击跳转
+  function buildRelations(id){
+    const ups=bwd[id]||[], downs=fwd[id]||[];
+    if(!ups.length && !downs.length) return null;
+    const chip=t=>{ const n=byId[t];
+      return '<span class="chip" data-id="'+t+'"><span class="cd" style="color:'+n.color+';background:'+n.color+'"></span>'+n.label+'</span>'; };
+    const grp=(ids,cls,label)=> ids.length ?
+      '<div class="grp"><div class="gl '+cls+'">'+label+'</div><div class="chips">'+ids.map(chip).join('')+'</div></div>' : '';
+    const wrap=document.createElement('div'); wrap.className='prel';
+    wrap.innerHTML = grp(ups,'up','⬆ 直接前置 · 建立在其上')+grp(downs,'down','⬇ 直接后续 · 由它展开')+'<hr>';
+    wrap.querySelectorAll('.chip[data-id]').forEach(c=> c.onclick=()=>{
+      const t=c.dataset.id; if(isTouch) closePanel(false); select(t,true); });
+    return wrap;
   }
   function openPanel(id, record){
     panelNode=id; const n=byId[id]; hidePeek();
