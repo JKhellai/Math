@@ -751,7 +751,9 @@ function App(DATA){
     pbody.querySelectorAll('a.wl').forEach(a=>{ const tid=a.dataset.id;
       a.addEventListener('click', e=>{ e.preventDefault();
         if(isTouch && wlPending!==tid){ wlPending=tid; showCard(tid,null,a); return; }
-        wlPending=null; hideCard(); openPanel(tid,true); });
+        wlPending=null; hideCard();
+        selected=tid; applyVisual(); renderCrumbs();   // 地图选中/高亮/面包屑一并跟到目标（镜头已由 openPanel 跟飞）
+        openPanel(tid,true); });
       a.addEventListener('pointerenter', ()=>{ if(!isTouch) showCard(tid,null,a); });
       a.addEventListener('pointerleave', ()=>{ if(!isTouch) hideCard(); }); });
     const rel=buildRelations(id);          // 正文顶部嵌入"直接前置/后续"导航 chips
