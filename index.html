@@ -141,6 +141,16 @@
   #pbody th{background:rgba(125,160,220,.13);color:#fff;font-weight:600}
   #pbody hr{border:none;border-top:1px solid var(--line);margin:20px 0}
   #pbody svg{max-width:100%;height:auto;display:block;margin:14px auto}
+  /* 参考解答折叠块：默认收起，点开才见答案 */
+  #pbody details.ans{margin:16px 0;border:1px solid rgba(251,191,36,.28);border-radius:11px;
+    background:rgba(251,191,36,.05);overflow:hidden}
+  #pbody details.ans>summary{cursor:pointer;list-style:none;padding:11px 15px;font-size:13px;
+    font-weight:600;color:#ffe7a8;display:flex;align-items:center;gap:8px;user-select:none}
+  #pbody details.ans>summary::-webkit-details-marker{display:none}
+  #pbody details.ans>summary::before{content:'🔒';font-size:14px}
+  #pbody details.ans[open]>summary::before{content:'🔓'}
+  #pbody details.ans>summary .hint{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:auto}
+  #pbody details.ans>.ansbody{padding:2px 15px 13px;border-top:1px dashed rgba(251,191,36,.22)}
   #pbody a.wl{color:#9fd0ff;border-bottom:1px dashed rgba(159,208,255,.5);cursor:pointer;text-decoration:none}
   #pbody a.wl:hover{color:#fff;border-bottom-color:#fff;background:rgba(159,208,255,.12)}
   #pbody .katex{font-size:1.02em}
@@ -702,6 +712,20 @@ function App(DATA){
     hideCard(); wlPending=null;       // 面板内容要换了 → 收掉残留的悬停卡、清掉待跳转词
     let html = window.marked ? marked.parse(n.body||'') : (n.body||'').replace(/\n/g,'<br>');
     pbody.innerHTML = html;
+    // 「参考解答/答案」小节自动折叠：标题起、到下一个同级或更高级标题止，包进默认收起的 <details>
+    // —— 先独立思考，点开才见答案（规格 P5 的"长课文可折叠分节"）
+    pbody.querySelectorAll('h1,h2,h3,h4').forEach(h=>{
+      if(!/^(参考)?(解答|答案)$/.test(h.textContent.trim())) return;
+      const lvl=+h.tagName[1];
+      const det=document.createElement('details'); det.className='ans';
+      const sum=document.createElement('summary');
+      sum.innerHTML=h.textContent.trim()+'<span class="hint">先独立思考 · 点击展开</span>';
+      const body=document.createElement('div'); body.className='ansbody';
+      let nd=h.nextSibling;
+      while(nd && !(nd.nodeType===1 && /^H[1-4]$/.test(nd.tagName) && +nd.tagName[1]<=lvl)){
+        const nx=nd.nextSibling; body.appendChild(nd); nd=nx; }
+      det.appendChild(sum); det.appendChild(body); h.replaceWith(det);
+    });
     if(window.renderMathInElement){ try{ renderMathInElement(pbody,{throwOnError:false,
       delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},
                   {left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]}); }catch(e){} }
