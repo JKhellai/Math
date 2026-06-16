@@ -681,7 +681,9 @@ function App(DATA){
     const n=byId[id];
     flyTo(pos[id], fitR()*0.5);
     applyVisual();
-    if(isTouch) showPeek(id); else openPanel(id,false);   // 触屏：先出预览卡，地图不被挡
+    // 触屏：面板未开 → 先出底部预览卡（地图不被挡）；面板已开（含专注阅读看小地图）→ 直接换详情页
+    if(isTouch && !document.body.classList.contains('panelopen')) showPeek(id);
+    else openPanel(id,false);
     renderCrumbs();
     if(record) pushHistory(); }
   function drill(id, record){ focus=id; selected=null; hidePeek();
