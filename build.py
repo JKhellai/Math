@@ -75,15 +75,26 @@ def hex_to_rgb(h):
 def rgb_to_hex(rgb):
     return "#" + "".join(f"{int(c):02X}" for c in rgb)
 
-def mix_oklab(weighted):
-    """weighted = [(hex, weight), ...] → 在 OKLab 空间按权重加权平均，转回 sRGB hex。"""
+# OKLab ↔ OKLCh（极坐标：L 亮度、C 彩度、h 色相角）
+def oklab_to_oklch(L, a, b):
+    return (L, math.hypot(a, b), math.atan2(b, a))
+
+def oklch_to_oklab(L, C, h):
+    return (L, C * math.cos(h), C * math.sin(h))
+
+def mix_trunk_colors(weighted):
+    """weighted = [(hex, weight), ...] → 在 OKLCh 中混合，转回 sRGB hex。
+       L、C 按占比线性加权；色相 h 用单位向量（以彩度 C 加权）求和取辐角——
+       避免在 OKLab 直角坐标里直线性平均时穿过灰轴、混出发灰的脏色。"""
     tot = sum(w for _, w in weighted) or 1.0
-    L = a = b = 0.0
-    for hx, w in weighted:
-        ol, oa, ob = rgb_to_oklab(*hex_to_rgb(hx))
+    L_sum = C_sum = hx = hy = 0.0
+    for hexstr, w in weighted:
         f = w / tot
-        L += ol * f; a += oa * f; b += ob * f
-    return rgb_to_hex(oklab_to_rgb(L, a, b))
+        L, C, h = oklab_to_oklch(*rgb_to_oklab(*hex_to_rgb(hexstr)))
+        L_sum += f * L; C_sum += f * C
+        hx += f * C * math.cos(h); hy += f * C * math.sin(h)   # 彩度高的主干对色相影响更大
+    h_mix = math.atan2(hy, hx)
+    return rgb_to_hex(oklab_to_rgb(*oklch_to_oklab(L_sum, C_sum, h_mix)))
 
 # ───────────────────────────────────────────────────────────────────────────
 # 极简 frontmatter (YAML 子集) 解析 —— 仅覆盖本契约用到的形态，无第三方依赖
@@ -271,6 +282,19 @@ def build(public=True):
 
     # ── §6 颜色推导 ──────────────────────────────────────────────────────────
     discipline_color = {t: (by_id[t]["color_raw"] or NEUTRAL_HEX) for t in discipline_ids}
+    # Analisi 主干 id（供 num_* 归类）：按前缀 an_ 识别（§10 id 前缀表）
+    analisi_id = next((t for t in discipline_ids if t.split("_", 1)[0] == "an"), None)
+
+    def is_num(nid):
+        return nid.split("_", 1)[0] == "num"
+
+    def discipline_of(nid):
+        """该节点归属哪个学科主干（用于祖先统计）；排除地基。
+           num_*（数系构造）一律算 Analisi——它们是分析的直接前置，而非中性地基。"""
+        if is_num(nid) and analisi_id:
+            return analisi_id
+        t = top_trunk_of(nid)
+        return t if t in discipline_color else None
 
     def prereq_closure(nid):
         seen, stack = set(), list(bwd[nid])
@@ -287,12 +311,14 @@ def build(public=True):
         # 顶层主干：用手填 color（缺省退中性）
         if nid in top_set:
             return n["color_raw"] or NEUTRAL_HEX
-        # 收集 prereq 祖先触及的学科主干（每个祖先顺 parent 链上溯顶层主干；排除地基）
+        # 按祖先节点（去重）计数，统计触及的各学科主干占比；排除地基
         weights = {}
+        if is_num(nid) and analisi_id:             # 自身即数系节点 → 计入 Analisi（否则整条数系链全灰）
+            weights[analisi_id] = weights.get(analisi_id, 0) + 1
         for anc in prereq_closure(nid):
-            t = top_trunk_of(anc)
-            if t in discipline_color:
-                weights[t] = weights.get(t, 0) + 1
+            d = discipline_of(anc)
+            if d:
+                weights[d] = weights.get(d, 0) + 1
         if not weights:
             # 不触及任何学科主干（只到地基/无前置）→ 回退自身归属主干基色
             home = top_trunk_of(nid)
@@ -301,7 +327,7 @@ def build(public=True):
             return NEUTRAL_HEX                      # 家在地基 → 中性
         if len(weights) == 1:
             return discipline_color[next(iter(weights))]
-        return mix_oklab([(discipline_color[t], w) for t, w in weights.items()])
+        return mix_trunk_colors([(discipline_color[t], w) for t, w in weights.items()])
 
     # ── §6（查看器）承重程度：有多少节点最终（传递）依赖它 ─────────────────────
     def transitive_dependents(nid):
