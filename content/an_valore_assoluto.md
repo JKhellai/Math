@@ -49,6 +49,31 @@ sign(x) := 1(若 x > 0)/ 0(若 x = 0)/ −1(若 x < 0)。
 
 这一步本身要分情形:若 x − a ≥ 0,|x−a| = x−a < ε 给出右半 x − a < ε,而左半 −ε < x − a 因 x−a ≥ 0 > −ε 自动成立;若 x − a < 0,|x−a| = −(x−a) < ε 给出 x − a > −ε,即左半,右半 x − a < 0 < ε 自动成立。两种情形合起来就是 (∗)。再两边同加 a(序与加法相容,O1),得 a − ε < x < a + ε。∎ 这条说的是:**「x 到 a 的距离小于 ε」等价于「x 落在以 a 为心、ε 为半径的开区间里」**——「距离」与「邻域」的互译,极限定义就靠它。
 
+<svg viewBox="0 0 360 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- 高亮带 -->
+  <rect x="110" y="50" width="140" height="12" fill="#E0612F" opacity="0.13"/>
+  <!-- 轴 -->
+  <line x1="30" y1="56" x2="330" y2="56" stroke="#888" stroke-width="1.3"/>
+  <path d="M 330 56 L 322 52 L 322 60 z" fill="#888"/>
+  <!-- a 中心 -->
+  <line x1="180" y1="48" x2="180" y2="64" stroke="#555" stroke-width="1.4"/>
+  <circle cx="180" cy="56" r="3.5" fill="#555"/>
+  <text x="180" y="80" font-size="12" text-anchor="middle" fill="#333">a</text>
+  <!-- 端点 a±ε (空心,开区间) -->
+  <circle cx="110" cy="56" r="4" fill="white" stroke="#E0612F" stroke-width="1.5"/>
+  <circle cx="250" cy="56" r="4" fill="white" stroke="#E0612F" stroke-width="1.5"/>
+  <text x="110" y="80" font-size="11" text-anchor="middle" fill="#E0612F">a−ε</text>
+  <text x="250" y="80" font-size="11" text-anchor="middle" fill="#E0612F">a+ε</text>
+  <!-- 半径标注 -->
+  <line x1="180" y1="40" x2="250" y2="40" stroke="#E0612F" stroke-width="0.9" stroke-dasharray="3,2"/>
+  <text x="215" y="36" font-size="10" text-anchor="middle" fill="#E0612F">ε</text>
+  <!-- x 点(带内) -->
+  <circle cx="215" cy="56" r="3.5" fill="#5A5FE0"/>
+  <text x="215" y="80" font-size="12" text-anchor="middle" fill="#5A5FE0">x</text>
+</svg>
+
+空心端点表示开区间(不含 a±ε 本身);x 落在带内,正对应 |x−a| < ε。整个极限理论里「x 充分接近 a」这句话,画出来就是这条带。
+
 (vi) **三角不等式**,本节的主角。证明用一个漂亮的分情形(依据 (ii) 的 x ≤ |x|):
 
 先设 x + y ≥ 0。则 |x + y| = x + y;而 x ≤ |x|、y ≤ |y|,相加得 x + y ≤ |x| + |y|。故 |x+y| ≤ |x| + |y|。
