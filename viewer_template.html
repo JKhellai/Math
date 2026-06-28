@@ -343,7 +343,7 @@ function App(DATA){
   //    · 下钻 = 镜头飞向该容器；位置不重排，全局空间一致、连续
   // ════════════════════════════════════════════════════════════════════
   const pos = {};                                    // id → THREE.Vector3
-  const TOP_RING = 11, CHILD_BASE = 6.4, RING_STEP = 4.4, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 4.6;
+  const TOP_RING = 11, CHILD_BASE = 6.4, RING_STEP = 4.4, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 7.0;
   const SPIRAL = 0.85;   // 依赖链每深一环的角度偏转：链条绕容器盘旋生长，不再单边直线戳出
   const TRUNK_GAP = 9;   // 学科主干环与地基子树最外缘之间的安全间距（主干半径随内容自动外推）
   const NEST_H = 2.2;    // 归属嵌套每深一层的抬高：子节点浮在容器上方，主从一眼可辨
@@ -512,7 +512,7 @@ function App(DATA){
     const g=new THREE.BufferGeometry().setFromPoints([a,b]);
     const m=new THREE.LineBasicMaterial({color:0x2a4a6f,transparent:true,opacity:0.22});
     const line=new THREE.Line(g,m); scene.add(line);
-    edgeObjs.push({from:e.from,to:e.to,line,
+    edgeObjs.push({from:e.from,to:e.to,line,bridge:!!e.bridge,
       tLineCol:new THREE.Color(0x2a4a6f), tLineOp:0.22});
   });
   // 归属(容器-子)不画线（§6）：靠径向嵌套位置 + 下钻 + 面包屑表达，避免连线杂乱。
@@ -629,6 +629,7 @@ function App(DATA){
       if(st==='anc'){ ed.tLineCol.setHex(0xfbbf24);ed.tLineOp=.9; }
       else if(st==='desc'){ ed.tLineCol.setHex(0x22d3ee);ed.tLineOp=.9; }
       else if(st==='dim'){ ed.tLineCol.setHex(0x16263e);ed.tLineOp=.04; }
+      else if(ed.bridge){ ed.tLineCol.setHex(0xe879f9);ed.tLineOp=.62; }  // 跨主干交汇桥：品红常亮，凸显合流
       else { ed.tLineCol.setHex(0x2a4a6f);ed.tLineOp=.22; }
     });
     refreshProgress();
@@ -857,6 +858,7 @@ function App(DATA){
     h+='<div class="sep"></div>';
     h+='<div class="row" style="color:var(--gold)"><span class="ln"></span><span style="color:#c7d4ee">金 = 上游（根/前置）</span></div>';
     h+='<div class="row" style="color:var(--cyan)"><span class="ln"></span><span style="color:#c7d4ee">青 = 下游（依赖者）</span></div>';
+    h+='<div class="row" style="color:#e879f9"><span class="ln"></span><span style="color:#c7d4ee">品红 = 跨主干交汇桥</span></div>';
     L.innerHTML=h; })();
 
   // ── 图例收起/展开（手动按钮 + 专注阅读时自动收起，避让左下角小地图）──────
@@ -916,7 +918,7 @@ function App(DATA){
   let introR0=0;
   function loop(){ requestAnimationFrame(loop);
     if(introT<1){ introT=Math.min(1,introT+0.012); const e=1-Math.pow(1-introT,3);
-      if(!introR0) introR0=radiusGoal*1.7; radius=introR0-(introR0-radiusGoal)*e; phi=Math.PI*(0.30+0.06*e); }
+      if(!introR0) introR0=radiusGoal*1.7; radius=introR0-(introR0-radiusGoal)*e; phi=Math.PI*(0.32+0.13*e); }  // 末态更侧视(0.45π)，看清自下而上的层叠
     else radius += (radiusGoal-radius)*0.12;
     target.lerp(targetGoal,0.12);
     // 雾密度随镜头距离缩放：density·radius ≈ 常数 → 拉远取景（手机竖屏）时球不再被雾吞掉
