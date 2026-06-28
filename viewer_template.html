@@ -512,7 +512,7 @@ function App(DATA){
     const g=new THREE.BufferGeometry().setFromPoints([a,b]);
     const m=new THREE.LineBasicMaterial({color:0x2a4a6f,transparent:true,opacity:0.22});
     const line=new THREE.Line(g,m); scene.add(line);
-    edgeObjs.push({from:e.from,to:e.to,line,bridge:!!e.bridge,
+    edgeObjs.push({from:e.from,to:e.to,line,bridge:e.bridge||null,   // "main" | "minor" | null
       tLineCol:new THREE.Color(0x2a4a6f), tLineOp:0.22});
   });
   // 归属(容器-子)不画线（§6）：靠径向嵌套位置 + 下钻 + 面包屑表达，避免连线杂乱。
@@ -629,7 +629,8 @@ function App(DATA){
       if(st==='anc'){ ed.tLineCol.setHex(0xfbbf24);ed.tLineOp=.9; }
       else if(st==='desc'){ ed.tLineCol.setHex(0x22d3ee);ed.tLineOp=.9; }
       else if(st==='dim'){ ed.tLineCol.setHex(0x16263e);ed.tLineOp=.04; }
-      else if(ed.bridge){ ed.tLineCol.setHex(0xe879f9);ed.tLineOp=.62; }  // 跨主干交汇桥：品红常亮，凸显合流
+      else if(ed.bridge==='main'){ ed.tLineCol.setHex(0xf07cff);ed.tLineOp=.82; }  // 主交汇桥：亮品红，真合流点跳出
+      else if(ed.bridge==='minor'){ ed.tLineCol.setHex(0x7a5aa8);ed.tLineOp=.30; } // 次桥：暗紫，低层结构性顺带跨域
       else { ed.tLineCol.setHex(0x2a4a6f);ed.tLineOp=.22; }
     });
     refreshProgress();
@@ -858,7 +859,8 @@ function App(DATA){
     h+='<div class="sep"></div>';
     h+='<div class="row" style="color:var(--gold)"><span class="ln"></span><span style="color:#c7d4ee">金 = 上游（根/前置）</span></div>';
     h+='<div class="row" style="color:var(--cyan)"><span class="ln"></span><span style="color:#c7d4ee">青 = 下游（依赖者）</span></div>';
-    h+='<div class="row" style="color:#e879f9"><span class="ln"></span><span style="color:#c7d4ee">品红 = 跨主干交汇桥</span></div>';
+    h+='<div class="row" style="color:#f07cff"><span class="ln"></span><span style="color:#c7d4ee">亮品红 = 主交汇桥（合流）</span></div>';
+    h+='<div class="row" style="color:#7a5aa8"><span class="ln"></span><span style="color:#c7d4ee">暗紫 = 次级跨域</span></div>';
     L.innerHTML=h; })();
 
   // ── 图例收起/展开（手动按钮 + 专注阅读时自动收起，避让左下角小地图）──────

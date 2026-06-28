@@ -340,19 +340,39 @@ def build(public=True):
             stack.extend(fwd[c])
         return len(seen)
 
+    # ── 全局依赖深度（到公理的最长 prerequisites 链长），供桥分级 ──
+    _dd = {}
+    def dep_depth(nid, _guard=None):
+        if nid in _dd:
+            return _dd[nid]
+        _guard = _guard or set()
+        if nid in _guard:
+            return 0
+        d = 0
+        for p in bwd[nid]:
+            d = max(d, 1 + dep_depth(p, _guard | {nid}))
+        _dd[nid] = d
+        return d
+
     # ── 跨主干「桥」边：汇入某节点的(直接)前置来自 ≥2 个学科主干 → 标记，供查看器凸显合流 ──
-    #   例：内积/范数（an_*）同时前置 alg_*（代数）与 an_*（分析）→ 它的入边都是跨主干桥边。
-    def is_bridge_target(nid):
-        ts = set()
+    #   分级：两侧主干前置「各自都已长高」(深度 ≥ 阈值)才算主桥(真合流点，如内积/范数)；
+    #         否则次桥(低层结构性顺带跨域，如 ℤ/ℚ 依赖环/域)。
+    BRIDGE_MAIN_T = 11   # 经验阈值（随当前体系深度定，未来更深时可上调）
+    def bridge_kind(nid):
+        td = {}                                       # 学科主干 → 该侧直接前置的最大依赖深度
         for p in by_id[nid]["prerequisites"]:
-            d = discipline_of(p) if p in by_id else None
-            if d:
-                ts.add(d)
-        return len(ts) >= 2
-    bridge_targets = {n["id"] for n in raw_nodes if is_bridge_target(n["id"])}
+            if p in by_id:
+                d = discipline_of(p)
+                if d:
+                    td[d] = max(td.get(d, -1), dep_depth(p))
+        if len(td) < 2:
+            return None
+        return "main" if min(td.values()) >= BRIDGE_MAIN_T else "minor"
+    bridge_kind_of = {n["id"]: bridge_kind(n["id"]) for n in raw_nodes}
     for e in edges:
-        if e["to"] in bridge_targets and discipline_of(e["from"]):
-            e["bridge"] = True
+        k = bridge_kind_of.get(e["to"])
+        if k and discipline_of(e["from"]):
+            e["bridge"] = k                           # "main" | "minor"
 
     # ── §2 层内半径数据：同父兄弟内、仅计兄弟间前置的最长依赖链长（确定性环序）──
     ring_memo = {}

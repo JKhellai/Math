@@ -2104,13 +2104,13 @@
       "from": "alg_gruppi",
       "to": "alg_anelli",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_aritmetica",
       "to": "alg_anelli",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "alg_span_indipendenza",
@@ -2121,13 +2121,13 @@
       "from": "alg_anelli",
       "to": "alg_binomio",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_ricorsione",
       "to": "alg_binomio",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "alg_anelli",
@@ -2138,13 +2138,13 @@
       "from": "alg_campi",
       "to": "alg_complessi",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_radici_n",
       "to": "alg_complessi",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "fond_composizione",
@@ -2270,13 +2270,13 @@
       "from": "alg_spazio_vettoriale",
       "to": "an_norma",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "an_spazio_metrico",
       "to": "an_norma",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "an_prodotto_interno",
@@ -2292,13 +2292,13 @@
       "from": "an_monotone",
       "to": "an_numero_e",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "alg_binomio",
       "to": "an_numero_e",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "an_serie_potenze",
@@ -2314,13 +2314,13 @@
       "from": "an_norma",
       "to": "an_prodotto_interno",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "alg_base_dimensione",
       "to": "an_prodotto_interno",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "an_convergenza_assoluta",
@@ -2376,13 +2376,13 @@
       "from": "an_algebra_limiti",
       "to": "an_succ_complesse",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "alg_complessi",
       "to": "an_succ_complesse",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "num_q_ordine",
@@ -2483,19 +2483,19 @@
       "from": "an_cauchy",
       "to": "num_cantor",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "alg_anelli",
       "to": "num_cantor",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_dedekind",
       "to": "num_cantor",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "fond_funzioni",
@@ -2551,7 +2551,7 @@
       "from": "num_z_ordine",
       "to": "num_q",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "fond_equivalenza",
@@ -2562,25 +2562,25 @@
       "from": "alg_campi",
       "to": "num_q",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_q",
       "to": "num_q_ordine",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_z_ordine",
       "to": "num_q_ordine",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "alg_campi",
       "to": "num_q_ordine",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_q_ordine",
@@ -2596,13 +2596,13 @@
       "from": "num_archimede",
       "to": "num_radici_n",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "alg_binomio",
       "to": "num_radici_n",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "main"
     },
     {
       "from": "num_estremo_superiore",
@@ -2633,7 +2633,7 @@
       "from": "num_ordine",
       "to": "num_z",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "fond_equivalenza",
@@ -2644,25 +2644,25 @@
       "from": "alg_anelli",
       "to": "num_z",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_z",
       "to": "num_z_ordine",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "num_ordine",
       "to": "num_z_ordine",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     },
     {
       "from": "alg_anelli",
       "to": "num_z_ordine",
       "type": "prerequisite",
-      "bridge": true
+      "bridge": "minor"
     }
   ],
   "meta": {
