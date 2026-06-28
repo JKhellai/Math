@@ -29,7 +29,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FC7988",
+      "color": "#979AFF",
       "ring": 1,
       "bearing": 39,
       "popupLinks": [
@@ -66,7 +66,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#BB8DF4",
+      "color": "#979AFF",
       "ring": 6,
       "bearing": 2,
       "popupLinks": [
@@ -99,7 +99,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE7A75",
+      "color": "#979AFF",
       "ring": 2,
       "bearing": 15,
       "popupLinks": [
@@ -136,7 +136,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#ED7BBA",
+      "color": "#979AFF",
       "ring": 2,
       "bearing": 36,
       "popupLinks": [
@@ -165,7 +165,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE7A72",
+      "color": "#979AFF",
       "ring": 3,
       "bearing": 2,
       "popupLinks": [
@@ -218,7 +218,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7F50",
+      "color": "#979AFF",
       "ring": 0,
       "bearing": 40,
       "popupLinks": [
@@ -243,7 +243,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#CC87E8",
+      "color": "#979AFF",
       "ring": 4,
       "bearing": 4,
       "popupLinks": [
@@ -268,7 +268,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#C28BF0",
+      "color": "#979AFF",
       "ring": 5,
       "bearing": 3,
       "popupLinks": [
@@ -297,7 +297,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#DB82D8",
+      "color": "#979AFF",
       "ring": 3,
       "bearing": 6,
       "popupLinks": [
@@ -338,7 +338,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C68",
+      "color": "#ED7BBA",
       "ring": 3,
       "bearing": 14,
       "popupLinks": [
@@ -391,7 +391,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C66",
+      "color": "#FB7990",
       "ring": 6,
       "bearing": 7,
       "popupLinks": [
@@ -432,7 +432,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C65",
+      "color": "#FC7988",
       "ring": 7,
       "bearing": 6,
       "popupLinks": [
@@ -477,7 +477,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C66",
+      "color": "#F679A3",
       "ring": 4,
       "bearing": 11,
       "popupLinks": [
@@ -518,7 +518,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7B6A",
+      "color": "#DB82D8",
       "ring": 2,
       "bearing": 16,
       "popupLinks": [
@@ -563,7 +563,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C62",
+      "color": "#FE7A79",
       "ring": 9,
       "bearing": 3,
       "popupLinks": [
@@ -612,7 +612,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C65",
+      "color": "#FB7990",
       "ring": 6,
       "bearing": 4,
       "popupLinks": [
@@ -657,7 +657,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C65",
+      "color": "#FA7993",
       "ring": 5,
       "bearing": 10,
       "popupLinks": [
@@ -706,7 +706,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE7A75",
+      "color": "#CC87E8",
       "ring": 2,
       "bearing": 2,
       "popupLinks": [
@@ -759,7 +759,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FD7982",
+      "color": "#E27FCD",
       "ring": 5,
       "bearing": 0,
       "popupLinks": [
@@ -824,7 +824,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7B69",
+      "color": "#F8799A",
       "ring": 6,
       "bearing": 0,
       "popupLinks": [
@@ -865,7 +865,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7D60",
+      "color": "#FF7B70",
       "ring": 11,
       "bearing": 0,
       "popupLinks": [
@@ -914,7 +914,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FB798C",
+      "color": "#C58AED",
       "ring": 3,
       "bearing": 1,
       "popupLinks": [
@@ -967,7 +967,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C61",
+      "color": "#FE7A75",
       "ring": 10,
       "bearing": 1,
       "popupLinks": [
@@ -1012,7 +1012,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C64",
+      "color": "#FD7982",
       "ring": 8,
       "bearing": 4,
       "popupLinks": [
@@ -1053,7 +1053,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C61",
+      "color": "#FE7A75",
       "ring": 10,
       "bearing": 1,
       "popupLinks": [
@@ -1090,7 +1090,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7B6C",
+      "color": "#E180D0",
       "ring": 3,
       "bearing": 9,
       "popupLinks": [
@@ -1131,7 +1131,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7B6F",
+      "color": "#BB8DF4",
       "ring": 1,
       "bearing": 19,
       "popupLinks": [
@@ -1160,7 +1160,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7B71",
+      "color": "#E47FCB",
       "ring": 4,
       "bearing": 1,
       "popupLinks": [
@@ -1205,7 +1205,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7A72",
+      "color": "#979AFF",
       "ring": 0,
       "bearing": 20,
       "popupLinks": [
@@ -1539,7 +1539,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7B6F",
+      "color": "#C0894A",
       "ring": 10,
       "bearing": 20,
       "popupLinks": [
@@ -1580,7 +1580,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7F50",
+      "color": "#C0894A",
       "ring": 1,
       "bearing": 42,
       "popupLinks": [
@@ -1617,7 +1617,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7C64",
+      "color": "#C0894A",
       "ring": 10,
       "bearing": 0,
       "popupLinks": [
@@ -1694,7 +1694,7 @@
       "isContainer": true,
       "isTop": false,
       "role": null,
-      "color": "#FF7F50",
+      "color": "#C0894A",
       "ring": 5,
       "bearing": 0,
       "popupLinks": [
@@ -1718,7 +1718,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7A72",
+      "color": "#C0894A",
       "ring": 9,
       "bearing": 25,
       "popupLinks": [
@@ -1743,7 +1743,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE7A75",
+      "color": "#C0894A",
       "ring": 8,
       "bearing": 26,
       "popupLinks": [
@@ -1764,7 +1764,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7F50",
+      "color": "#C0894A",
       "ring": 0,
       "bearing": 43,
       "popupLinks": [
@@ -1793,7 +1793,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7F50",
+      "color": "#C0894A",
       "ring": 2,
       "bearing": 34,
       "popupLinks": [
@@ -1834,7 +1834,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FC7988",
+      "color": "#C0894A",
       "ring": 5,
       "bearing": 31,
       "popupLinks": [
@@ -1871,7 +1871,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FD7980",
+      "color": "#C0894A",
       "ring": 6,
       "bearing": 30,
       "popupLinks": [
@@ -1892,7 +1892,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE7A7A",
+      "color": "#C0894A",
       "ring": 7,
       "bearing": 29,
       "popupLinks": [
@@ -1913,7 +1913,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE7A72",
+      "color": "#C0894A",
       "ring": 11,
       "bearing": 13,
       "popupLinks": [
@@ -1958,7 +1958,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FF7B6C",
+      "color": "#C0894A",
       "ring": 11,
       "bearing": 5,
       "popupLinks": [
@@ -1999,7 +1999,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE7A75",
+      "color": "#C0894A",
       "ring": 8,
       "bearing": 16,
       "popupLinks": [
@@ -2024,7 +2024,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FC7988",
+      "color": "#C0894A",
       "ring": 3,
       "bearing": 33,
       "popupLinks": [
@@ -2069,7 +2069,7 @@
       "isContainer": false,
       "isTop": false,
       "role": null,
-      "color": "#FE797D",
+      "color": "#C0894A",
       "ring": 4,
       "bearing": 32,
       "popupLinks": [
@@ -2103,14 +2103,12 @@
     {
       "from": "alg_gruppi",
       "to": "alg_anelli",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_aritmetica",
       "to": "alg_anelli",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "alg_span_indipendenza",
@@ -2120,14 +2118,12 @@
     {
       "from": "alg_anelli",
       "to": "alg_binomio",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_ricorsione",
       "to": "alg_binomio",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "alg_anelli",
@@ -2137,14 +2133,12 @@
     {
       "from": "alg_campi",
       "to": "alg_complessi",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_radici_n",
       "to": "alg_complessi",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "fond_composizione",
@@ -2494,8 +2488,7 @@
     {
       "from": "num_dedekind",
       "to": "num_cantor",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "fond_funzioni",
@@ -2550,8 +2543,7 @@
     {
       "from": "num_z_ordine",
       "to": "num_q",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "fond_equivalenza",
@@ -2561,26 +2553,22 @@
     {
       "from": "alg_campi",
       "to": "num_q",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_q",
       "to": "num_q_ordine",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_z_ordine",
       "to": "num_q_ordine",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "alg_campi",
       "to": "num_q_ordine",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_q_ordine",
@@ -2595,14 +2583,12 @@
     {
       "from": "num_archimede",
       "to": "num_radici_n",
-      "type": "prerequisite",
-      "bridge": "main"
+      "type": "prerequisite"
     },
     {
       "from": "alg_binomio",
       "to": "num_radici_n",
-      "type": "prerequisite",
-      "bridge": "main"
+      "type": "prerequisite"
     },
     {
       "from": "num_estremo_superiore",
@@ -2632,8 +2618,7 @@
     {
       "from": "num_ordine",
       "to": "num_z",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "fond_equivalenza",
@@ -2643,26 +2628,22 @@
     {
       "from": "alg_anelli",
       "to": "num_z",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_z",
       "to": "num_z_ordine",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "num_ordine",
       "to": "num_z_ordine",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     },
     {
       "from": "alg_anelli",
       "to": "num_z_ordine",
-      "type": "prerequisite",
-      "bridge": "minor"
+      "type": "prerequisite"
     }
   ],
   "meta": {
@@ -2673,6 +2654,7 @@
     },
     "palette": {
       "neutral": "#A9A9A9",
+      "numeri": "#C0894A",
       "disciplines": {
         "alg_algebra": "#979AFF",
         "an_analisi": "#FF7F50",

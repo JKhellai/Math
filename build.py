@@ -37,6 +37,7 @@ OUT_JSON_PRIVATE = os.path.join(ROOT, "graph.private.json")
 OUT_HTML_PRIVATE = os.path.join(ROOT, "index.private.html")
 
 NEUTRAL_HEX = "#A9A9A9"  # Fondamenta 中性色（§6：不参与混合）
+NUMERI_HEX  = "#C0894A"  # 数系(num_*)专属色：古铜金，与地基灰/边高亮金区分。数系是代数与分析共同的根基，不属任一学科、不参与三学科混色
 
 # ───────────────────────────────────────────────────────────────────────────
 # §6  OKLab 颜色转换（按规格给定的精确实现）
@@ -282,17 +283,15 @@ def build(public=True):
 
     # ── §6 颜色推导 ──────────────────────────────────────────────────────────
     discipline_color = {t: (by_id[t]["color_raw"] or NEUTRAL_HEX) for t in discipline_ids}
-    # Analisi 主干 id（供 num_* 归类）：按前缀 an_ 识别（§10 id 前缀表）
-    analisi_id = next((t for t in discipline_ids if t.split("_", 1)[0] == "an"), None)
 
     def is_num(nid):
         return nid.split("_", 1)[0] == "num"
 
     def discipline_of(nid):
-        """该节点归属哪个学科主干（用于祖先统计）；排除地基。
-           num_*（数系构造）一律算 Analisi——它们是分析的直接前置，而非中性地基。"""
-        if is_num(nid) and analisi_id:
-            return analisi_id
+        """该节点归属哪个学科主干（用于祖先统计/桥判定）；排除地基与数系。
+           数系(num_*) 是代数与分析共同的根基、不属任一学科 → 返回 None、不参与混色。"""
+        if is_num(nid):
+            return None
         t = top_trunk_of(nid)
         return t if t in discipline_color else None
 
@@ -311,10 +310,11 @@ def build(public=True):
         # 顶层主干：用手填 color（缺省退中性）
         if nid in top_set:
             return n["color_raw"] or NEUTRAL_HEX
-        # 按祖先节点（去重）计数，统计触及的各学科主干占比；排除地基
+        # 数系节点：专属古铜金（不参与三学科混色，是代数与分析共同的根基）
+        if is_num(nid):
+            return NUMERI_HEX
+        # 按祖先节点（去重）计数，统计触及的各学科主干占比；排除地基与数系
         weights = {}
-        if is_num(nid) and analisi_id:             # 自身即数系节点 → 计入 Analisi（否则整条数系链全灰）
-            weights[analisi_id] = weights.get(analisi_id, 0) + 1
         for anc in prereq_closure(nid):
             d = discipline_of(anc)
             if d:
@@ -428,7 +428,7 @@ def build(public=True):
             # 不写实时时间戳：保证"内容不变则输出不变"，避免每次构建都产生无谓的 git 改动
             "counts": {"nodes": len(nodes_out), "edges": len(edges),
                        "dangling_prerequisites": len(dangling_pre)},
-            "palette": {"neutral": NEUTRAL_HEX, "disciplines": discipline_color},
+            "palette": {"neutral": NEUTRAL_HEX, "numeri": NUMERI_HEX, "disciplines": discipline_color},
             "topIds": top_ids,
             "foundationIds": sorted(foundation_ids),
             "disciplineIds": discipline_ids,

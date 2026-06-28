@@ -855,6 +855,7 @@ function App(DATA){
     const names={an_analisi:'分析',geo_geometria:'几何',alg_algebra:'代数'};
     Object.keys(palette.disciplines||{}).forEach(id=>{ const c=palette.disciplines[id];
       h+='<div class="row"><span class="dot" style="color:'+c+';background:'+c+'"></span>'+(byId[id]?byId[id].label:names[id]||id)+'</div>'; });
+    if(palette.numeri) h+='<div class="row"><span class="dot" style="color:'+palette.numeri+';background:'+palette.numeri+'"></span>数系（ℕℤℚℝ）</div>';
     h+='<div class="row"><span class="dot" style="color:'+palette.neutral+';background:'+palette.neutral+'"></span>地基（中性）</div>';
     h+='<div class="sep"></div>';
     h+='<div class="row" style="color:var(--gold)"><span class="ln"></span><span style="color:#c7d4ee">金 = 上游（根/前置）</span></div>';
