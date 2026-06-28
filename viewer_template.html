@@ -343,7 +343,7 @@ function App(DATA){
   //    · 下钻 = 镜头飞向该容器；位置不重排，全局空间一致、连续
   // ════════════════════════════════════════════════════════════════════
   const pos = {};                                    // id → THREE.Vector3
-  const TOP_RING = 11, CHILD_BASE = 5.6, RING_STEP = 3.6, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 4.6;
+  const TOP_RING = 11, CHILD_BASE = 6.4, RING_STEP = 4.4, DEPTH_SCALE = 0.62, HALO_K = 4.2, LEVEL_H = 4.6;
   const SPIRAL = 0.85;   // 依赖链每深一环的角度偏转：链条绕容器盘旋生长，不再单边直线戳出
   const TRUNK_GAP = 9;   // 学科主干环与地基子树最外缘之间的安全间距（主干半径随内容自动外推）
   const NEST_H = 2.2;    // 归属嵌套每深一层的抬高：子节点浮在容器上方，主从一眼可辨
@@ -872,11 +872,40 @@ function App(DATA){
 
   // ── 渲染循环 + 自适应尺寸 ─────────────────────────────────────────────
   const v=new THREE.Vector3();
-  function project(){ const W=graphEl.clientWidth,H=graphEl.clientHeight;
-    DATA.nodes.forEach(n=>{ const el=labelEl[n.id]; v.copy(pos[n.id]).project(camera);
+  // 标签优先级：主干 > 容器 > 承重大者；选中/悬停永远最高（碰撞时优先保留）
+  function lblPrio(n){ return (n.bearing||0) + (n.isContainer?40:0) + (n.isTop?120:0)
+      + (n.id===selected?1e6:0) + (n.id===hoverId?9e5:0); }
+  function lblW(n){ return (n.label||'').length*13 + 20; }   // 估算屏宽，避免每帧 reflow
+  function project(){ const W=graphEl.clientWidth,H=graphEl.clientHeight; const items=[];
+    DATA.nodes.forEach(n=>{ const el=labelEl[n.id], wp=pos[n.id];
+      const dist=wp.distanceTo(camera.position);
+      v.copy(wp).project(camera);
       if(v.z>1||v.z<-1){ el.style.display='none'; return; } el.style.display='';
       const x=(v.x*0.5+0.5)*W, y=(-v.y*0.5+0.5)*H;
-      el.style.transform='translate(-50%,-160%) translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)'; }); }
+      el.style.transform='translate(-50%,-160%) translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)';
+      items.push({n,el,x,y,dist}); });
+    cullLabels(items);
+  }
+  // 标签去拥挤：①距离淡出（近实远淡）②屏幕包围盒碰撞检测——按优先级排序，低优先级被遮挡者隐藏
+  function cullLabels(items){
+    if(selected){   // 选中态：标签由高亮 class 决定显隐，不做距离/碰撞裁剪（数量本就少）
+      items.forEach(it=>{ it.el.style.opacity=''; it.el.style.pointerEvents=it.el.classList.contains('hide')?'none':'auto'; });
+      return; }
+    let dmin=Infinity,dmax=-Infinity;
+    items.forEach(it=>{ if(it.dist<dmin)dmin=it.dist; if(it.dist>dmax)dmax=it.dist; });
+    const span=Math.max(1,dmax-dmin);
+    items.sort((a,b)=> lblPrio(b.n)-lblPrio(a.n) || a.dist-b.dist);
+    const placed=[];
+    for(const it of items){ const el=it.el;
+      if(el.classList.contains('hide')){ el.style.opacity=''; el.style.pointerEvents='none'; continue; }  // focus 背景层
+      let op = 0.62 + 0.38*((dmax-it.dist)/span);               // 距离淡出 0.62~1（碰撞已去重，淡出只轻分远近）
+      const w=lblW(it.n), cy=it.y-22, box={l:it.x-w/2-3, r:it.x+w/2+3, t:cy-13, b:cy+13};
+      let hit=false; for(const p of placed){ if(!(box.r<p.l||box.l>p.r||box.b<p.t||box.t>p.b)){ hit=true; break; } }
+      if(hit) op=0; else placed.push(box);                      // 与高优先级标签重叠 → 让位隐藏
+      if(op>0.12){ el.style.opacity=op.toFixed(2); el.style.pointerEvents='auto'; }
+      else { el.style.opacity='0'; el.style.pointerEvents='none'; }
+    }
+  }
   function resize(){ const W=graphEl.clientWidth||1,H=graphEl.clientHeight||1;
     // setSize 必须让 three 同步写 canvas 的 CSS 尺寸（updateStyle=true）：
     // canvas 是替换元素，inset:0 不会拉伸它；若只设缓冲尺寸，在 dpr>1 的屏幕（手机）上

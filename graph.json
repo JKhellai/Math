@@ -31,7 +31,7 @@
       "role": null,
       "color": "#FC7988",
       "ring": 1,
-      "bearing": 36,
+      "bearing": 39,
       "popupLinks": [
         {
           "id": "num_aritmetica",
@@ -68,7 +68,7 @@
       "role": null,
       "color": "#BB8DF4",
       "ring": 6,
-      "bearing": 1,
+      "bearing": 2,
       "popupLinks": [
         {
           "id": "alg_span_indipendenza",
@@ -101,7 +101,7 @@
       "role": null,
       "color": "#FE7A75",
       "ring": 2,
-      "bearing": 12,
+      "bearing": 15,
       "popupLinks": [
         {
           "id": "alg_anelli",
@@ -138,7 +138,7 @@
       "role": null,
       "color": "#ED7BBA",
       "ring": 2,
-      "bearing": 33,
+      "bearing": 36,
       "popupLinks": [
         {
           "id": "alg_gruppi",
@@ -167,7 +167,7 @@
       "role": null,
       "color": "#FE7A72",
       "ring": 3,
-      "bearing": 1,
+      "bearing": 2,
       "popupLinks": [
         {
           "id": "num_z_ordine",
@@ -220,7 +220,7 @@
       "role": null,
       "color": "#FF7F50",
       "ring": 0,
-      "bearing": 37,
+      "bearing": 40,
       "popupLinks": [
         {
           "id": "fond_composizione",
@@ -245,7 +245,7 @@
       "role": null,
       "color": "#CC87E8",
       "ring": 4,
-      "bearing": 3,
+      "bearing": 4,
       "popupLinks": [
         {
           "id": "alg_spazio_vettoriale",
@@ -270,7 +270,7 @@
       "role": null,
       "color": "#C28BF0",
       "ring": 5,
-      "bearing": 2,
+      "bearing": 3,
       "popupLinks": [
         {
           "id": "alg_sottospazi",
@@ -299,7 +299,7 @@
       "role": null,
       "color": "#DB82D8",
       "ring": 3,
-      "bearing": 5,
+      "bearing": 6,
       "popupLinks": [
         {
           "id": "alg_gruppi",
@@ -340,7 +340,7 @@
       "role": null,
       "color": "#FF7C68",
       "ring": 3,
-      "bearing": 11,
+      "bearing": 14,
       "popupLinks": [
         {
           "id": "an_convergenza",
@@ -393,7 +393,7 @@
       "role": null,
       "color": "#FF7C66",
       "ring": 6,
-      "bearing": 5,
+      "bearing": 7,
       "popupLinks": [
         {
           "id": "an_convergenza",
@@ -434,7 +434,7 @@
       "role": null,
       "color": "#FF7C65",
       "ring": 7,
-      "bearing": 4,
+      "bearing": 6,
       "popupLinks": [
         {
           "id": "an_algebra_limiti",
@@ -479,7 +479,7 @@
       "role": null,
       "color": "#FF7C66",
       "ring": 4,
-      "bearing": 9,
+      "bearing": 11,
       "popupLinks": [
         {
           "id": "an_algebra_limiti",
@@ -520,7 +520,7 @@
       "role": null,
       "color": "#FF7B6A",
       "ring": 2,
-      "bearing": 13,
+      "bearing": 16,
       "popupLinks": [
         {
           "id": "an_spazio_metrico",
@@ -565,7 +565,7 @@
       "role": null,
       "color": "#FF7C62",
       "ring": 9,
-      "bearing": 1,
+      "bearing": 3,
       "popupLinks": [
         {
           "id": "an_serie",
@@ -614,7 +614,7 @@
       "role": null,
       "color": "#FF7C65",
       "ring": 6,
-      "bearing": 2,
+      "bearing": 4,
       "popupLinks": [
         {
           "id": "an_sottosuccessioni",
@@ -659,7 +659,7 @@
       "role": null,
       "color": "#FF7C65",
       "ring": 5,
-      "bearing": 8,
+      "bearing": 10,
       "popupLinks": [
         {
           "id": "an_algebra_limiti",
@@ -708,7 +708,7 @@
       "role": null,
       "color": "#FE7A75",
       "ring": 2,
-      "bearing": 1,
+      "bearing": 2,
       "popupLinks": [
         {
           "id": "alg_base_dimensione",
@@ -748,6 +748,71 @@
         }
       ],
       "body": "\n## 把「长度」装回向量空间\n\n<a class=\"wl\" data-id=\"alg_base_dimensione\">向量空间</a>的内在结构(子空间、基、维数)已经理清,但它仍然很「素」:只有加法和数乘,**没有「长度」**。我们能说「两个向量相加」,却还不能说「这个向量有多长」——而长度,是把分析(极限、距离、收敛)接到向量空间上的桥。这一节补上它。\n\n动机来自最熟悉的 ℝ²。平面上一个向量 x,有一个**长度** ‖x‖(从原点到 x 的距离);两点 x, y 之间的距离就是 ‖x − y‖。这个「长度」函数有三条朴素性质:\n\n- **非负,且只有零向量长度为零**;\n- **伸缩 α 倍,长度变 |α| 倍**:‖αx‖ = |α|·‖x‖(α 可正可负,负的话方向反转但长度只看绝对值);\n- **三角不等式**:‖x + y‖ ≤ ‖x‖ + ‖y‖(两边之和不短于第三边)。\n\n把这三条抽出来当公理,就得到一般向量空间上的「长度」——**范数**。注意这三条**全都见过**:它们正是<a class=\"wl\" data-id=\"an_valore_assoluto\">绝对值</a> |·| 在 ℝ 上满足的性质!范数就是把绝对值「能度量长度」这件事,从数推广到了向量。\n\n## 定义\n\n设 E 是 𝕂 上的<a class=\"wl\" data-id=\"alg_spazio_vettoriale\">向量空间</a>。函数 ‖·‖ : E → ℝ₊（取非负实数值）称 E 上的一个**范数**(norm)，若满足:\n\n- **(N1)** ‖x‖ = 0 ⟺ x = 0（正定性）;\n- **(N2)** ‖λx‖ = |λ|·‖x‖,对一切 x ∈ E, λ ∈ 𝕂（正齐次性 positive homogeneity）;\n- **(N3)** ‖x + y‖ ≤ ‖x‖ + ‖y‖,对一切 x, y ∈ E（三角不等式）。\n\n配了范数的向量空间 (E, ‖·‖) 称**赋范向量空间**(normed vector space)。‖x‖ 读作 x 的**范数**或**长度**。\n\n<svg viewBox=\"0 0 440 190\" xmlns=\"http://www.w3.org/2000/svg\">\n  <!-- 左: 三角不等式 -->\n  <text x=\"120\" y=\"24\" font-size=\"11\" text-anchor=\"middle\" fill=\"#555\">(N3) ‖x+y‖ ≤ ‖x‖+‖y‖</text>\n  <line x1=\"60\" y1=\"150\" x2=\"145\" y2=\"120\" stroke=\"#5A5FE0\" stroke-width=\"2\" marker-end=\"url(#an)\"/>\n  <line x1=\"145\" y1=\"120\" x2=\"180\" y2=\"45\" stroke=\"#00A070\" stroke-width=\"2\" marker-end=\"url(#an)\"/>\n  <line x1=\"60\" y1=\"150\" x2=\"180\" y2=\"45\" stroke=\"#E0612F\" stroke-width=\"2\" marker-end=\"url(#an)\"/>\n  <text x=\"98\" y=\"143\" font-size=\"11\" fill=\"#5A5FE0\">x</text>\n  <text x=\"170\" y=\"88\" font-size=\"11\" fill=\"#00A070\">y</text>\n  <text x=\"105\" y=\"92\" font-size=\"11\" fill=\"#E0612F\">x+y</text>\n  <circle cx=\"60\" cy=\"150\" r=\"2.5\" fill=\"#333\"/>\n  <text x=\"115\" y=\"178\" font-size=\"9\" text-anchor=\"middle\" fill=\"#777\">直达不长于绕道</text>\n  <!-- 右: 单位球 + 齐次 -->\n  <text x=\"320\" y=\"24\" font-size=\"11\" text-anchor=\"middle\" fill=\"#555\">(N2) ‖λx‖ = |λ|·‖x‖</text>\n  <circle cx=\"320\" cy=\"105\" r=\"45\" fill=\"#E0612F\" opacity=\"0.07\" stroke=\"#E0612F\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n  <text x=\"320\" y=\"58\" font-size=\"9\" text-anchor=\"middle\" fill=\"#E0612F\">单位球 ‖x‖=1</text>\n  <!-- x 到单位球, 2x 到外 -->\n  <line x1=\"320\" y1=\"105\" x2=\"352\" y2=\"73\" stroke=\"#5A5FE0\" stroke-width=\"2.5\" marker-end=\"url(#an)\"/>\n  <line x1=\"320\" y1=\"105\" x2=\"384\" y2=\"41\" stroke=\"#5A5FE0\" stroke-width=\"1.3\" opacity=\"0.6\" marker-end=\"url(#an)\"/>\n  <line x1=\"320\" y1=\"105\" x2=\"288\" y2=\"137\" stroke=\"#999\" stroke-width=\"1.3\" marker-end=\"url(#an)\"/>\n  <text x=\"352\" y=\"72\" font-size=\"10\" fill=\"#5A5FE0\">x</text>\n  <text x=\"386\" y=\"40\" font-size=\"10\" fill=\"#5A5FE0\">2x</text>\n  <text x=\"270\" y=\"142\" font-size=\"10\" fill=\"#999\">−x</text>\n  <circle cx=\"320\" cy=\"105\" r=\"2.5\" fill=\"#333\"/>\n  <defs>\n    <marker id=\"an\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"context-stroke\"/></marker>\n  </defs>\n</svg>\n\n(N2) 取 λ = −1 给 ‖−x‖ = ‖x‖（反向不改长度）;取 λ = 0 配 (N1) 给 ‖0‖ = 0。这些都符合「长度」的直觉。\n\n## 核心：范数诱导一个度量\n\n范数最重要的性质,是它**自动给出一个<a class=\"wl\" data-id=\"an_spazio_metrico\">度量</a>**——把「长度」变成「距离」,从而让整个极限理论在向量空间上生效。\n\n**定理.** 设 (E, ‖·‖) 是赋范向量空间。则\n\nd(x, y) := ‖x − y‖\n\n是 E 上的一个<a class=\"wl\" data-id=\"an_spazio_metrico\">度量</a>。于是**每个赋范向量空间自动是度量空间**。\n\n**证明.** 逐条验度量公理 (M1)–(M3):\n- **(M1)** d(x,y) = 0 ⟺ ‖x−y‖ = 0 ⟺ x−y = 0（由 (N1)）⟺ x = y。✓\n- **(M2)** d(x,y) = ‖x−y‖ = ‖(−1)(y−x)‖ = |−1|·‖y−x‖（由 (N2)）= ‖y−x‖ = d(y,x)。✓ 对称性来自正齐次。\n- **(M3)** 把范数的三角不等式 (N3) 用在 (x−z) + (z−y) = x−y 上:\n\n  d(x,y) = ‖x−y‖ = ‖(x−z)+(z−y)‖ ≤ ‖x−z‖ + ‖z−y‖ = d(x,z) + d(z,y)。✓\n\n三条齐备,d 是度量。∎\n\n这条定理是这一节的枢纽:**它把代数(向量空间 + 范数)和分析(度量空间)接通了**。一旦有了范数,<a class=\"wl\" data-id=\"an_spazio_metrico\">度量空间</a>那节建立的一切——开球、邻域、<a class=\"wl\" data-id=\"an_convergenza\">收敛</a>、<a class=\"wl\" data-id=\"an_cauchy\">Cauchy 列</a>——立刻在 E 上有定义。特别地,向量序列的收敛就是\n\nxₙ → x 在 E 中 ⟺ ‖xₙ − x‖ → 0，\n\n即「向量与极限的距离(范数)趋于 0」。而<a class=\"wl\" data-id=\"an_algebra_limiti\">运算法则</a>中**凡不依赖 𝕂 的乘法或序的部分**(如和、数乘的极限)也自动成立——因为它们的证明只用到三角不等式。\n\n> 这正是<a class=\"wl\" data-id=\"an_spazio_metrico\">度量空间</a>那节预告而当时无法严格给出的方向:把「距离」装到向量空间上。绝对值给了 ℝ 一个度量(那是一维的范数);现在范数给了任意向量空间一个度量。ℝⁿ 的欧氏距离是其中最重要的一例——但它的范数从哪来、为什么满足三角不等式,要靠下一节的「内积」回答。\n\n**反向三角不等式**也随之成立(证明与<a class=\"wl\" data-id=\"an_valore_assoluto\">绝对值</a>、<a class=\"wl\" data-id=\"an_spazio_metrico\">度量</a>那两节一字不差):\n\n‖x − y‖ ≥ | ‖x‖ − ‖y‖ |。\n\n它把诱导度量的<a class=\"wl\" data-id=\"an_spazio_metrico\">反向三角不等式</a>翻译回范数语言,用处一致:估计「两个向量长度之差」。\n\n## 球与有界\n\n有了诱导度量,<a class=\"wl\" data-id=\"an_spazio_metrico\">球</a>的概念照搬:开球 B(a, r) = { x ∈ E : ‖x − a‖ < r }。特别地**单位球** B = { x : ‖x‖ < 1 }(到原点距离 < 1 的向量)。范数的全部信息其实都编码在单位球的「形状」里——不同范数对应不同形状的单位球(圆、方、菱形……),这是泛函分析里的重要视角,这里先记住概念。\n\n子集 X ⊆ E 称**有界**,若它在诱导度量下<a class=\"wl\" data-id=\"an_convergenza\">有界</a>,等价地:存在 r 使 ‖x‖ < r 对一切 x ∈ X(所有向量长度被同一个 r 框住）。\n\n## 例子\n\n**(a) 绝对值是 𝕂 上的范数.** 在一维向量空间 𝕂 上,‖x‖ := |x|（<a class=\"wl\" data-id=\"an_valore_assoluto\">绝对值</a>/<a class=\"wl\" data-id=\"alg_complessi\">模</a>）满足三条——这正是它当初满足的性质。所以 ℝ、ℂ 作为一维赋范空间,诱导的度量就是 d(x,y)=|x−y|,回到<a class=\"wl\" data-id=\"an_spazio_metrico\">最初的例子</a>。范数是绝对值的高维推广,这一例确认了「一维情形退化回绝对值」。\n\n**(b) 上确界范数.** 设 X 是非空集合,B(X) 是 X 上**有界**函数构成的<a class=\"wl\" data-id=\"alg_spazio_vettoriale\">向量空间</a>。定义 ‖f‖_∞ := sup_{t∈X} |f(t)|（函数的「最大绝对值」）。可验证它是范数(三条都来自绝对值的对应性质 + sup 的性质)。这个「上确界范数」把两个函数的距离定义为「它们差的最大幅度」——是函数空间上最常用的范数之一,一致收敛理论(分析后续)的核心就是它诱导的度量。\n\n(ℝⁿ 上的欧氏范数 ‖x‖ = √(Σxᵢ²) 是最重要的例子,但它满足三角不等式需要 Cauchy–Schwarz,留待下一节。)\n\n## 一道激活练习\n\n(a) 在 ℝ² 上定义 ‖(x, y)‖₁ := |x| + |y|（两个坐标绝对值之和,称「曼哈顿范数」/出租车范数）。验证它满足范数三公理 (N1)–(N3)。\n\n(b) 设 (E, ‖·‖) 是赋范空间,xₙ → x 且 yₙ → y（在 E 中）。证明 xₙ + yₙ → x + y。(提示:估计 ‖(xₙ+yₙ)−(x+y)‖,用三角不等式拆成 ‖xₙ−x‖ + ‖yₙ−y‖;这正是<a class=\"wl\" data-id=\"an_algebra_limiti\">和的极限</a>在赋范空间里的版本——注意证明只用到 (N3),不碰 𝕂 的乘法。)\n\n(c) 证明:在赋范空间中,若 xₙ → x,则 ‖xₙ‖ → ‖x‖（范数是「连续」的）。(提示:用反向三角不等式。)\n\n## 参考解答\n\n(建议先自己写完再看。)\n\n**(a)** 设 (x,y), (x',y') ∈ ℝ²,λ ∈ ℝ。\n**(N1)** ‖(x,y)‖₁ = |x|+|y| = 0 ⟺ |x|=0 且 |y|=0（两非负数之和为零则各为零）⟺ x=y=0 ⟺ (x,y)=0。✓\n**(N2)** ‖λ(x,y)‖₁ = ‖(λx,λy)‖₁ = |λx|+|λy| = |λ||x|+|λ||y| = |λ|(|x|+|y|) = |λ|·‖(x,y)‖₁。✓（用绝对值的<a class=\"wl\" data-id=\"an_valore_assoluto\">可乘性</a>。）\n**(N3)** ‖(x,y)+(x',y')‖₁ = |x+x'|+|y+y'| ≤ (|x|+|x'|)+(|y|+|y'|)（对每个坐标用绝对值三角不等式）= (|x|+|y|)+(|x'|+|y'|) = ‖(x,y)‖₁+‖(x',y')‖₁。✓ 故 ‖·‖₁ 是范数。∎\n\n**(b)** 给定 ε > 0。因 xₙ→x,存在 N₁ 使 n≥N₁ 时 ‖xₙ−x‖ < ε/2;因 yₙ→y,存在 N₂ 使 n≥N₂ 时 ‖yₙ−y‖ < ε/2。则 n ≥ max(N₁,N₂) 时:\n\n‖(xₙ+yₙ)−(x+y)‖ = ‖(xₙ−x)+(yₙ−y)‖ ≤ ‖xₙ−x‖ + ‖yₙ−y‖ < ε/2+ε/2 = ε（用 (N3)）。\n\n故 xₙ+yₙ → x+y。∎（与<a class=\"wl\" data-id=\"an_algebra_limiti\">实数列和法则</a>证明结构完全相同,只把 |·| 换成 ‖·‖——因为只用到三角不等式,在任何赋范空间通用。）\n\n**(c)** 由反向三角不等式,| ‖xₙ‖ − ‖x‖ | ≤ ‖xₙ − x‖。给定 ε>0,因 xₙ→x 取 N 使 n≥N 时 ‖xₙ−x‖<ε,则同样 n≥N 时 | ‖xₙ‖−‖x‖ | ≤ ‖xₙ−x‖ < ε。故 ‖xₙ‖ → ‖x‖。∎\n\n回顾:这三题都印证同一件事——**赋范空间里的分析,本质是「把绝对值换成范数」后照搬实数列的论证**,只要原证明不依赖 𝕂 的乘法或序(即只用到三角不等式和齐次性)。(a) 验范数走「三公理逐条核对」标准流程;(b)(c) 则展示「实数列的极限定理,凡不碰乘法/序的,在赋范空间一字通用」。这是范数诱导度量带来的红利:一套分析,处处适用。\n\n## 往前看一步\n\n范数把「长度」和「距离」装进了向量空间,赋范空间自动成为度量空间,极限理论随之生效。但范数只给了**长度**,还没给**角度**——我们仍不能说「两个向量是否垂直」「它们的夹角是多少」。而几何里「垂直」「投影」「勾股定理」都离不开角度。\n\n补上角度的,是一个更强的结构:**内积**(inner product)。在 ℝⁿ 上,内积就是熟悉的点积 ⟨x, y⟩ = Σxᵢyᵢ;由它能定义夹角(通过 cos θ),也能**诱导出范数** ‖x‖ = √⟨x, x⟩。而内积满足的一条关键不等式——**Cauchy–Schwarz** |⟨x,y⟩| ≤ ‖x‖‖y‖——恰恰保证这个诱导范数满足三角不等式 (N3)。于是链条闭合:**内积 → 范数 → 度量**,而欧氏空间 ℝⁿ 终于成为一个有长度、有角度、有距离的完整<a class=\"wl\" data-id=\"an_spazio_metrico\">度量空间</a>。这就是 <a class=\"wl\" data-id=\"an_prodotto_interno\">内积与欧氏空间</a> 的内容,也是我们在分析主干里一直推迟的欧氏 ℝⁿ 的终点站。",
+      "refs": "Amann–Escher, Analysis I §II.3"
+    },
+    {
+      "id": "an_norme_equivalenti",
+      "label": "等价范数与积空间收敛",
+      "parent": "an_analisi",
+      "summary": "两个范数等价指它们互相被常数倍控制;等价范数给出相同的邻域,从而相同的收敛。ℝᵐ 上的欧氏、sup、1-范数两两等价,由此 ℝᵐ 中收敛 ⟺ 每个坐标分量收敛(按分量收敛)。",
+      "depth": 1,
+      "isContainer": false,
+      "isTop": false,
+      "role": null,
+      "color": "#FD7982",
+      "ring": 5,
+      "bearing": 0,
+      "popupLinks": [
+        {
+          "id": "an_norma",
+          "text": "范数"
+        },
+        {
+          "id": "an_prodotto_interno",
+          "text": "欧氏范数"
+        },
+        {
+          "id": "fond_equivalenza",
+          "text": "等价关系"
+        },
+        {
+          "id": "an_spazio_metrico",
+          "text": "邻域"
+        },
+        {
+          "id": "an_convergenza",
+          "text": "收敛"
+        },
+        {
+          "id": "alg_complessi",
+          "text": "ℂᵐ"
+        },
+        {
+          "id": "an_succ_complesse",
+          "text": "复数列"
+        },
+        {
+          "id": "an_algebra_limiti",
+          "text": "和的极限"
+        },
+        {
+          "id": "num_archimede",
+          "text": "阿基米德"
+        },
+        {
+          "id": "an_numero_e",
+          "text": "欧拉数"
+        },
+        {
+          "id": "an_convergenza_assoluta",
+          "text": "绝对收敛"
+        },
+        {
+          "id": "an_riordinamenti",
+          "text": "重排、二重级数与 Cauchy 乘积"
+        }
+      ],
+      "body": "\n## 同一个空间，不同的「长度尺」\n\n<a class=\"wl\" data-id=\"an_norma\">范数</a>那节见过:同一个向量空间可以配不同的范数——ℝ² 上有<a class=\"wl\" data-id=\"an_prodotto_interno\">欧氏范数</a> ‖x‖ = √(x₁²+x₂²)，也有<a class=\"wl\" data-id=\"an_norma\">曼哈顿范数</a> ‖x‖₁ = |x₁|+|x₂|，还有 sup 范数 ‖x‖∞ = max(|x₁|,|x₂|)。它们给出的「长度」数值不同,单位球形状也不同(圆、菱形、方形)。\n\n一个自然的问题:**换一把范数尺,分析会不会变?** 比如「收敛」「聚点」这些概念,用欧氏范数和用 sup 范数定义,得到的结果一样吗?这一节回答它——对一大类范数(「等价」的),答案是**完全一样**。这件事有个重要的实际收获:它让 ℝᵐ 中的收敛**化归为各坐标分量的收敛**,把多维问题拆成一维问题。\n\n## 等价范数\n\n**定义(等价).** 向量空间 E 上的两个<a class=\"wl\" data-id=\"an_norma\">范数</a> ‖·‖₁ 和 ‖·‖₂ 称**等价**(equivalent)，若存在常数 K ≥ 1,使\n\n(1/K)·‖x‖₁ ≤ ‖x‖₂ ≤ K·‖x‖₁，  对一切 x ∈ E。\n\n记 ‖·‖₁ ∼ ‖·‖₂。\n\n直观:两个范数等价,意味着它们「相差不超过一个固定的倍数」——一个范数大,另一个也大,谁也不会比对方大得离谱或小得离谱。它们度量长度的「尺度」是可比的。(可验证 ∼ 是范数集合上的一个<a class=\"wl\" data-id=\"fond_equivalenza\">等价关系</a>:自反、对称、传递都直接从定义得到。)\n\n## ℝᵐ 上的三个范数两两等价\n\n最重要的例子:𝕂ᵐ 上常用的三个范数互相等价。先回忆它们(对 x = (x₁,…,xₘ)):\n\n- 欧氏范数 ‖x‖ = √(Σ|xⱼ|²)（<a class=\"wl\" data-id=\"an_prodotto_interno\">内积诱导</a>）;\n- 1-范数 ‖x‖₁ = Σ|xⱼ|（各分量绝对值之和）;\n- sup 范数 ‖x‖∞ = max_{1≤j≤m} |xⱼ|（最大分量绝对值）。\n\n**命题.** 在 𝕂ᵐ 上,以下不等式成立(对一切 x):\n\n‖x‖∞ ≤ ‖x‖ ≤ √m·‖x‖∞，   (1/√m)·‖x‖₁ ≤ ‖x‖ ≤ ‖x‖₁。\n\n因此三个范数**两两等价**。\n\n**证明.** 设 M := max|xⱼ| = ‖x‖∞。\n- **‖x‖∞ ≤ ‖x‖**:某个 |xₖ| = M,而 ‖x‖² = Σ|xⱼ|² ≥ |xₖ|² = M²,开方得 ‖x‖ ≥ M。\n- **‖x‖ ≤ √m·‖x‖∞**:Σ|xⱼ|² ≤ Σ M² = m·M²,开方 ‖x‖ ≤ √m·M。\n- **‖x‖ ≤ ‖x‖₁**:Σ|xⱼ|² ≤ (Σ|xⱼ|)²（平方和 ≤ 和的平方,因交叉项非负）,开方即得。\n- **(1/√m)‖x‖₁ ≤ ‖x‖**:这正是<a class=\"wl\" data-id=\"an_prodotto_interno\">Cauchy–Schwarz</a>——取 (|x₁|,…,|xₘ|) 与 (1,…,1) 作内积:‖x‖₁ = Σ|xⱼ|·1 ≤ √(Σ|xⱼ|²)·√(Σ1²) = ‖x‖·√m。移项即得。\n\n所以欧氏范数被 sup 范数和 1-范数从两侧夹住(乘上 √m 这类常数),三者两两等价。∎\n\n<svg viewBox=\"0 0 300 320\" xmlns=\"http://www.w3.org/2000/svg\">\n  <line x1=\"40\" y1=\"150\" x2=\"260\" y2=\"150\" stroke=\"#ddd\" stroke-width=\"0.8\"/>\n  <line x1=\"150\" y1=\"40\" x2=\"150\" y2=\"260\" stroke=\"#ddd\" stroke-width=\"0.8\"/>\n  <!-- sup 单位球: 方形 (最大) -->\n  <rect x=\"80\" y=\"80\" width=\"140\" height=\"140\" fill=\"none\" stroke=\"#5A5FE0\" stroke-width=\"1.6\"/>\n  <text x=\"224\" y=\"78\" font-size=\"11\" fill=\"#5A5FE0\">‖·‖∞ (方)</text>\n  <!-- 欧氏 单位球: 圆 (中) -->\n  <circle cx=\"150\" cy=\"150\" r=\"70\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.6\"/>\n  <text x=\"150\" y=\"68\" font-size=\"11\" text-anchor=\"middle\" fill=\"#E0612F\">‖·‖ (圆)</text>\n  <!-- 1-范数 单位球: 菱形 (最小) -->\n  <polygon points=\"220,150 150,80 80,150 150,220\" fill=\"none\" stroke=\"#00A070\" stroke-width=\"1.6\"/>\n  <text x=\"155\" y=\"205\" font-size=\"11\" fill=\"#00A070\">‖·‖₁ (菱)</text>\n  <circle cx=\"150\" cy=\"150\" r=\"2.5\" fill=\"#333\"/>\n  <text x=\"150\" y=\"295\" font-size=\"10\" text-anchor=\"middle\" fill=\"#777\">三个单位球互相包含在常数倍内 ⟹ 三范数等价</text>\n</svg>\n\n图中三个「单位球」——1-范数的菱形、欧氏的圆、sup 范数的方形——一个套一个,而且彼此都在对方的常数倍以内。**等价范数的几何含义,就是单位球互相「夹得住」**:把一个放大有限倍能包住另一个。\n\n## 等价范数给出相同的收敛\n\n等价为什么要紧?因为**它保证了拓扑概念(邻域、收敛、聚点)不变**。\n\n**命题.** 设 ‖·‖₁ ∼ ‖·‖₂ 是 E 上两个等价范数。则它们给出**相同的邻域**:对每个点 a,「a 的邻域」这个集合在两个范数下完全一样。从而**收敛、聚点等概念在等价范数下不变**。\n\n**证明思路.** 由等价,(1/K)‖·‖₁ ≤ ‖·‖₂ ≤ K‖·‖₁。这意味着一个范数的小球总能塞进另一个范数的球里(半径按 K 缩放):‖·‖₂ 下的球 B₂(a, r) 包含 ‖·‖₁ 下的球 B₁(a, r/K),反之亦然。所以「含某个 ‖·‖₁-球」与「含某个 ‖·‖₂-球」是一回事——<a class=\"wl\" data-id=\"an_spazio_metrico\">邻域</a>的集合相同。而<a class=\"wl\" data-id=\"an_convergenza\">收敛</a>「xₙ→a ⟺ a 的每个邻域含几乎所有项」只依赖邻域,故收敛性在两范数下一致;聚点同理。∎\n\n一句话:**等价范数是「同一种收敛的不同度量方式」**。换一把等价的范数尺,长度的数值会变,但「谁趋于谁」「哪些点是聚点」这些定性结论丝毫不变。所以在 ℝᵐ 上,谈论收敛时用欧氏、sup 还是 1-范数,**结果完全相同**——可以挑最方便的那个用。(顺带:<a class=\"wl\" data-id=\"alg_complessi\">ℂᵐ</a> 与 ℝ²ᵐ 在这个意义下也可认同,谈邻域、收敛时二者无区别。)\n\n## 积空间的收敛：按分量收敛\n\n把上面用到 ℝᵐ 上,得到一个极其实用的结论——它把多维收敛拆成一维收敛。\n\n**定理(按分量收敛).** 设 xₙ = (xₙ¹, …, xₙᵐ) ∈ 𝕂ᵐ。则以下等价:\n\n(i) 序列 (xₙ) 在 𝕂ᵐ 中收敛到 x = (x¹, …, xᵐ);\n\n(ii) **对每个** k ∈ {1,…,m},分量序列 (xₙᵏ) 在 𝕂 中收敛到 xᵏ。\n\n**证明.** 因所有范数等价,用最方便的 **sup 范数** 判收敛。注意\n\n‖xₙ − x‖∞ = max_{1≤k≤m} |xₙᵏ − xᵏ|。\n\n「‖xₙ − x‖∞ → 0」(即 xₙ → x)⟺「max_k |xₙᵏ − xᵏ| → 0」⟺ **每个** |xₙᵏ − xᵏ| → 0(最大值趋零当且仅当每一项都趋零)⟺ 每个分量 xₙᵏ → xᵏ。∎\n\n这条定理把「ℝᵐ(或 ℂᵐ)中向量序列的收敛」**完全化归为各坐标分量的收敛**——多维收敛 = 各分量分别收敛,称**按分量收敛**(componentwise convergence)。它的实用价值极大:研究 ℝᵐ 中的极限,原则上只需研究 ℝ 中的极限,逐坐标处理即可。(<a class=\"wl\" data-id=\"an_succ_complesse\">复数列</a>那节对 ℂ = ℝ² 做的「实部虚部分别收敛」,正是这条定理 m=1（ℂ 视作 ℝ²）的特例;现在推广到任意维。)\n\n> 一句提醒:这是把多维**收敛**问题降到一维,但并非说多维分析「不过是一维的堆叠」。许多多维现象(方向、连通、紧性的几何)无法靠逐坐标看清。按分量收敛是个有用的工具,不是说多维分析可被一维取代。\n\n## 一道激活练习\n\n(a) 在 ℝ² 上验证:‖(3, 4)‖ = 5（欧氏）、‖(3,4)‖₁ = 7、‖(3,4)‖∞ = 4。检查命题中的不等式 ‖x‖∞ ≤ ‖x‖ ≤ √2·‖x‖∞ 与 (1/√2)‖x‖₁ ≤ ‖x‖ ≤ ‖x‖₁ 对此 x 成立。\n\n(b) 用按分量收敛判断:𝕂² 中序列 xₙ = (1/n, (1 + 1/n)ⁿ) 是否收敛?若是,极限是什么?\n\n(c) 证明:若 xₙ → x 且 yₙ → y 在 ℝᵐ 中,则 xₙ + yₙ → x + y。(提示:可以用按分量收敛,把它降到 ℝ 中各分量的<a class=\"wl\" data-id=\"an_algebra_limiti\">和的极限</a>;或直接用范数三角不等式——两种都行,体会「降维」与「直接」两条路。)\n\n## 参考解答\n\n(建议先自己写完再看。)\n\n**(a)** ‖(3,4)‖ = √(9+16) = √25 = 5;‖(3,4)‖₁ = 3+4 = 7;‖(3,4)‖∞ = max(3,4) = 4。检查:\n- ‖x‖∞ = 4 ≤ 5 = ‖x‖ ✓;‖x‖ = 5 ≤ √2·4 ≈ 5.66 ✓。\n- (1/√2)·7 ≈ 4.95 ≤ 5 = ‖x‖ ✓;‖x‖ = 5 ≤ 7 = ‖x‖₁ ✓。\n全部成立。\n\n**(b)** 用按分量收敛,逐坐标看:第一分量 1/n → 0（<a class=\"wl\" data-id=\"num_archimede\">阿基米德</a>）;第二分量 (1+1/n)ⁿ → e（<a class=\"wl\" data-id=\"an_numero_e\">欧拉数</a>）。两个分量都收敛,故 (xₙ) **收敛**,极限 = **(0, e)**。\n\n**(c)** **方法一(降维)**:由按分量收敛,xₙ→x 即每个分量 xₙᵏ→xᵏ,yₙ→y 即 yₙᵏ→yᵏ。则各分量 xₙᵏ+yₙᵏ → xᵏ+yᵏ（ℝ 中<a class=\"wl\" data-id=\"an_algebra_limiti\">和的极限</a>）,即 (xₙ+yₙ) 的每个分量收敛到 (x+y) 的对应分量,故 xₙ+yₙ → x+y。\n**方法二(直接)**:‖(xₙ+yₙ)−(x+y)‖ = ‖(xₙ−x)+(yₙ−y)‖ ≤ ‖xₙ−x‖+‖yₙ−y‖（三角不等式）→ 0+0 = 0,故收敛。∎\n\n回顾:(b)(c) 都体现按分量收敛的威力——**多维收敛逐坐标验证即可**,每个坐标用熟悉的一维结论。(c) 的两种方法对照有意思:方法一把问题「降维」到 ℝ、复用一维定理;方法二「直接」用范数的三角不等式(在任何<a class=\"wl\" data-id=\"an_norma\">赋范空间</a>通用,不限于 ℝᵐ)。降维法直观、依赖坐标结构;直接法普适、不依赖维数。两条路都通,体现了等价范数带来的灵活性。\n\n## 往前看一步\n\n等价范数与按分量收敛补齐了 ℝᵐ 上的收敛理论:无论用哪把(等价的)范数尺,收敛性一致,而且多维收敛可逐坐标验证。这把欧氏空间的极限理论收拾得干净利落,为多元分析备好了又一块基础。\n\n接下来回到级数,补完<a class=\"wl\" data-id=\"an_convergenza_assoluta\">绝对收敛</a>留下的深层主题:**绝对收敛的级数,可以任意重排而和不变**(重排定理),还可以处理**二重级数**(双下标求和)与两个级数的**Cauchy 乘积**。这些都是「绝对收敛」这个性质的深层回报——它让无穷求和获得了有限求和那样的自由(交换、结合、相乘),而条件收敛则没有这种自由。这就是 <a class=\"wl\" data-id=\"an_riordinamenti\">重排、二重级数与 Cauchy 乘积</a> 的内容。",
       "refs": "Amann–Escher, Analysis I §II.3"
     },
     {
@@ -792,6 +857,55 @@
       "refs": "Amann–Escher, Analysis I §II.4"
     },
     {
+      "id": "an_operazioni_serie_potenze",
+      "label": "幂级数的运算与唯一性",
+      "parent": "an_analisi",
+      "summary": "幂级数可逐项相加、按 Cauchy 乘积相乘,结果仍是幂级数(收敛半径不小于两者较小者)。恒等定理:幂级数若在一列趋于 0 的非零点处全为零,则系数全为零;故幂级数表示唯一,可以「比较系数」。",
+      "depth": 1,
+      "isContainer": false,
+      "isTop": false,
+      "role": null,
+      "color": "#FF7D60",
+      "ring": 11,
+      "bearing": 0,
+      "popupLinks": [
+        {
+          "id": "an_serie_potenze",
+          "text": "幂级数"
+        },
+        {
+          "id": "an_convergenza_assoluta",
+          "text": "绝对收敛"
+        },
+        {
+          "id": "an_riordinamenti",
+          "text": "绝对收敛"
+        },
+        {
+          "id": "an_serie",
+          "text": "逐项相加"
+        },
+        {
+          "id": "alg_binomio",
+          "text": "二项式定理"
+        },
+        {
+          "id": "num_n",
+          "text": "良序原理"
+        },
+        {
+          "id": "an_convergenza",
+          "text": "数列收敛"
+        },
+        {
+          "id": "an_cauchy",
+          "text": "完备性"
+        }
+      ],
+      "body": "\n## 幂级数能像多项式一样运算吗\n\n<a class=\"wl\" data-id=\"an_serie_potenze\">幂级数</a>在收敛圆盘内<a class=\"wl\" data-id=\"an_convergenza_assoluta\">绝对收敛</a>——而<a class=\"wl\" data-id=\"an_riordinamenti\">绝对收敛</a>那节刚证明,绝对收敛的级数可以自由地相加、相乘。这一节把这份自由用到幂级数上:**两个幂级数可以像多项式那样相加、相乘,结果仍是幂级数**。更进一步,我们将证明一个奠基性的事实——**幂级数的表示是唯一的**:一个函数若能展成幂级数,这个展开式只有一种。这让「比较系数」成为合法的推理手段,是幂级数方法的基石。这两件事合起来,为第二章「收敛」画上句号。\n\n## 加法与乘法\n\n**命题.** 设 a(x) = Σaₖxᵏ、b(x) = Σbₖxᵏ 是两个幂级数,收敛半径分别 ρₐ、ρᵦ。记 ρ := min(ρₐ, ρᵦ)。则对一切 |x| < ρ:\n\n- **加法(逐项相加)**:Σaₖxᵏ + Σbₖxᵏ = Σ(aₖ + bₖ)xᵏ;\n- **乘法(Cauchy 乘积/卷积)**:(Σaₖxᵏ)·(Σbₖxᵏ) = Σ_{k}(Σ_{j=0}^{k} aⱼb_{k−j})xᵏ。\n\n且 a+b 与 a·b 的收敛半径都 **≥ ρ**(即在两者公共的收敛圆盘内,运算结果仍是收敛的幂级数)。\n\n**证明.** 在 |x| < ρ 处,两个幂级数都绝对收敛。加法是收敛级数的<a class=\"wl\" data-id=\"an_serie\">逐项相加</a>(运算法则);乘法正是两个绝对收敛级数的 <a class=\"wl\" data-id=\"an_riordinamenti\">Cauchy 乘积</a>——其第 k 项对角线和是 Σ_{j=0}^{k} aⱼ·b_{k−j},而 (aⱼxʲ)(b_{k−j}x^{k−j}) = aⱼb_{k−j}xᵏ,提出 xᵏ 得系数 Σ_{j=0}^{k}aⱼb_{k−j}。Cauchy 乘积定理保证它绝对收敛到积。∎\n\n注意乘法的系数 cₖ = Σ_{j=0}^{k} aⱼb_{k−j} ——这正是多项式相乘时「同次项系数」的算法(**卷积**):x⁰ 系数是 a₀b₀,x¹ 系数是 a₀b₁+a₁b₀,x² 系数是 a₀b₂+a₁b₁+a₂b₀,…… **幂级数相乘,系数按卷积合成,和有限多项式完全一样**——只是现在有无穷多项,靠绝对收敛保证合法。\n\n> 收敛半径**可能变大**(故写 ≥ 而非 =):例如两个幂级数相加,主导项可能抵消,使和的收敛半径超过 min(ρₐ,ρᵦ)。但「至少在公共圆盘 |x|<ρ 内收敛」总成立,这已足够用。\n\n**例(指数律的伏笔).** <a class=\"wl\" data-id=\"an_serie_potenze\">exp(x) = Σxᵏ/k!</a>。算 exp(x)·exp(y)（把 y 看成参数,或在形式幂级数层面）的 Cauchy 乘积,第 n 项系数整理后恰是 (x+y)ⁿ/n!（用<a class=\"wl\" data-id=\"alg_binomio\">二项式定理</a>:Σ_{k=0}^n (xᵏ/k!)(y^{n−k}/(n−k)!) = (1/n!)Σ C(n,k)xᵏy^{n−k} = (x+y)ⁿ/n!）。于是\n\nexp(x)·exp(y) = Σ (x+y)ⁿ/n! = exp(x+y)。\n\n**指数律 exp(x)exp(y) = exp(x+y) 就此由 Cauchy 乘积严格证出**——这是幂级数相乘最漂亮的一个应用,也兑现了<a class=\"wl\" data-id=\"an_riordinamenti\">Cauchy 乘积</a>那节埋的伏笔。\n\n## 表示的唯一性：恒等定理\n\n现在是第二章的压轴结果。它回答一个根本问题:**一个函数的幂级数展开,会不会有两种不同的写法?** 答案是否定的——展开唯一。这要从一个看似很强、实则深刻的引理开始。\n\n**定理(幂级数的零点引理).** 设 Σaₖxᵏ 的收敛半径 ρ > 0。若存在一列**非零**的点 yⱼ,满足 yⱼ → 0(且 0 < |yⱼ| < ρ),使得\n\na(yⱼ) = Σ_{k=0}^{∞} aₖ yⱼᵏ = 0  对**所有** j，\n\n则**所有系数 aₖ = 0**（即 a 是零幂级数）。\n\n<svg viewBox=\"0 0 440 120\" xmlns=\"http://www.w3.org/2000/svg\">\n  <line x1=\"55\" y1=\"70\" x2=\"410\" y2=\"70\" stroke=\"#888\" stroke-width=\"1.2\"/>\n  <path d=\"M 410 70 L 402 66 L 402 74 z\" fill=\"#888\"/>\n  <!-- 原点 -->\n  <line x1=\"90\" y1=\"60\" x2=\"90\" y2=\"80\" stroke=\"#E0612F\" stroke-width=\"1.5\"/>\n  <text x=\"90\" y=\"96\" font-size=\"11\" text-anchor=\"middle\" fill=\"#E0612F\">0</text>\n  <!-- yⱼ 点列, 趋于 0 -->\n  <g fill=\"#5A5FE0\">\n    <circle cx=\"278\" cy=\"70\" r=\"3.5\"/><circle cx=\"196\" cy=\"70\" r=\"3.5\"/><circle cx=\"164\" cy=\"70\" r=\"3.5\"/><circle cx=\"147\" cy=\"70\" r=\"3.5\"/><circle cx=\"136\" cy=\"70\" r=\"3.5\"/><circle cx=\"129\" cy=\"70\" r=\"3\"/><circle cx=\"124\" cy=\"70\" r=\"2.5\"/><circle cx=\"120\" cy=\"70\" r=\"2\"/><circle cx=\"117\" cy=\"70\" r=\"1.6\"/>\n  </g>\n  <text x=\"278\" y=\"58\" font-size=\"10\" fill=\"#5A5FE0\">y₀</text>\n  <text x=\"196\" y=\"58\" font-size=\"10\" fill=\"#5A5FE0\">y₁</text>\n  <text x=\"160\" y=\"58\" font-size=\"10\" fill=\"#5A5FE0\">y₂</text>\n  <text x=\"135\" y=\"92\" font-size=\"9\" fill=\"#5A5FE0\">yⱼ → 0</text>\n  <text x=\"320\" y=\"58\" font-size=\"10\" fill=\"#777\">在每个 yⱼ 处 a(yⱼ)=0</text>\n  <text x=\"200\" y=\"112\" font-size=\"10\" text-anchor=\"middle\" fill=\"#777\">零点在原点处堆积 ⟹ 所有系数为零</text>\n</svg>\n\n**证明.** 反设系数不全为零。由<a class=\"wl\" data-id=\"num_n\">良序原理</a>,存在**最小**的下标 n₀ 使 a_{n₀} ≠ 0。把级数从第 n₀ 项拆开:a(x) = a_{n₀}x^{n₀} + Σ_{k>n₀} aₖxᵏ。关键是估计后面那个尾巴。\n\n**尾部估计**:固定 r ∈ (0, ρ)。由绝对收敛,对 |x| ≤ r,\n\n|Σ_{k≥n} aₖxᵏ| ≤ Σ_{k≥n}|aₖ||x|ᵏ = |x|ⁿ·Σ_{k≥n}|aₖ||x|^{k−n} ≤ |x|ⁿ·(Σ_{j≥0}|a_{j+n}|rʲ)。\n\n记 C := Σ_{j≥0}|a_{j+n₀+1}|rʲ < ∞(绝对收敛保证有限),则尾巴 |Σ_{k>n₀}aₖxᵏ| ≤ C·|x|^{n₀+1}。所以\n\n|a(x) − a_{n₀}x^{n₀}| ≤ C|x|^{n₀+1}，  |x| ≤ r。\n\n把 x = yⱼ 代入。因 a(yⱼ) = 0,左边 = |a_{n₀}yⱼ^{n₀}| = |a_{n₀}||yⱼ|^{n₀};右边 = C|yⱼ|^{n₀+1}。两边除以 |yⱼ|^{n₀}（yⱼ ≠ 0）:\n\n|a_{n₀}| ≤ C·|yⱼ|，  对所有 j。\n\n但 yⱼ → 0,令 j → ∞ 得 |a_{n₀}| ≤ 0,即 **a_{n₀} = 0**——与「a_{n₀} ≠ 0」矛盾。故系数全为零。∎\n\n证明的精髓:**最低次的非零系数 a_{n₀} 主导了原点附近的行为**(其它项是更高次的、更小的)。若函数在一列逼近 0 的点上全为零,这个主导项被迫为零——一个漂亮的「用最低次项卡住」的论证。\n\n由这个引理,立刻得到唯一性:\n\n**定理(恒等定理 identity theorem).** 设 a(x) = Σaₖxᵏ、b(x) = Σbₖxᵏ 收敛半径都 > 0。若存在一列非零点 yⱼ → 0,使 a(yⱼ) = b(yⱼ) 对所有 j,则 **aₖ = bₖ 对所有 k**(两幂级数逐项相同)。\n\n**证明.** 考虑差 a − b = Σ(aₖ−bₖ)xᵏ。它在所有 yⱼ 处为零(因 a(yⱼ)=b(yⱼ)),由零点引理,所有系数 aₖ−bₖ = 0,即 aₖ = bₖ。∎\n\n## 唯一性意味着什么：可以比较系数\n\n恒等定理的推论极其重要:\n\n**幂级数表示唯一.** 若一个函数 f 在原点附近能写成幂级数 f(x) = Σaₖxᵏ,则这个幂级数是**唯一**的——系数 aₖ 被 f 完全确定。(因为「在原点附近相等」尤其意味着「在某列 yⱼ→0 上相等」,恒等定理即给出系数唯一。)\n\n这条「唯一性」让一个常用手段变得合法——**比较系数**(comparison of coefficients):若两个幂级数表示同一个函数(在原点邻域),就可以逐项令它们的系数相等。这是幂级数方法的核心技巧:\n\n- 解微分方程时,设解为幂级数 Σaₖxᵏ,代入方程,**比较两边同次幂的系数**,得到 aₖ 的递推关系——合法性正来自唯一性。\n- 证恒等式(如三角恒等式、组合恒等式)时,把两边展成幂级数,**系数对应相等**即证。\n- 求一个函数的幂级数展开时,不必担心「会不会有别的展开」——唯一性保证算出的就是那一个。\n\n没有恒等定理,「比较系数」只是一厢情愿;有了它,这成了严格的推理。**唯一性是幂级数从「形式工具」升格为「严格方法」的关键。**\n\n> 一个**重要的前提不能省**:零点 yⱼ 必须**趋于 0**(在原点堆积)。仅仅「有无穷多个零点」不够——存在非零的幂级数(如以后会遇到的 sin),它有无穷多个零点(0, ±π, ±2π, …),但这些零点**不**在原点堆积(彼此隔开),所以不与恒等定理矛盾。零点在某点的「堆积」才是迫使系数全零的关键。\n\n## 一道激活练习\n\n(a) 用 Cauchy 乘积求 (Σ_{k=0}^∞ xᵏ)·(Σ_{k=0}^∞ xᵏ) 的幂级数(|x|<1),即算乘积的系数 cₖ。(提示:aⱼ=bⱼ=1,cₖ=Σ_{j=0}^k aⱼb_{k−j}。)\n\n(b) 已知 1/(1−x) = Σxᵏ(|x|<1)。利用幂级数唯一性(比较系数)求满足 (1−x)·f(x) = 1 的幂级数 f(x) = Σaₖxᵏ。(提示:把 (1−x)Σaₖxᵏ 展开,令其等于常数 1=1+0·x+0·x²+…,逐项比较系数解出 aₖ。)\n\n(c) 设幂级数 f(x) = Σaₖxᵏ 满足 f(x) = f(−x) 对原点附近所有 x（偶函数）。用恒等定理证明:所有奇数次系数为零(a₁=a₃=a₅=⋯=0)。\n\n## 参考解答\n\n(建议先自己写完再看。)\n\n**(a)** cₖ = Σ_{j=0}^{k} 1·1 = k+1（k+1 个 1 相加）。故 (Σxᵏ)² = Σ_{k=0}^∞ (k+1)xᵏ = 1 + 2x + 3x² + 4x³ + ⋯。∎（与<a class=\"wl\" data-id=\"an_riordinamenti\">上节练习</a>一致;也即 1/(1−x)² = Σ(k+1)xᵏ。）\n\n**(b)** 展开 (1−x)Σaₖxᵏ = Σaₖxᵏ − Σaₖx^{k+1}。第二个和换指标(令 k+1=m）= Σ_{m≥1}a_{m−1}xᵐ。合并同次幂:常数项 a₀;xᵏ 项（k≥1）系数 aₖ − a_{k−1}。令整体 = 1 = 1 + 0·x + 0·x² + ⋯,**比较系数**:\n\nx⁰: a₀ = 1;  xᵏ (k≥1): aₖ − a_{k−1} = 0,即 aₖ = a_{k−1}。\n\n由 a₀=1 递推得 aₖ = 1 对所有 k。故 f(x) = Σxᵏ = 1/(1−x)——印证了 f = 1/(1−x) 确实是 (1−x)f=1 的解,且唯一性保证这是唯一的幂级数解。∎\n\n**(c)** f(x) = Σaₖxᵏ,而 f(−x) = Σaₖ(−x)ᵏ = Σ(−1)ᵏaₖxᵏ。条件 f(x) = f(−x) 对原点附近所有 x 成立,尤其在某列 yⱼ→0 上成立。由**恒等定理**,两个幂级数 Σaₖxᵏ 与 Σ(−1)ᵏaₖxᵏ 系数对应相等:\n\naₖ = (−1)ᵏaₖ,  对所有 k。\n\n当 k 为奇数,(−1)ᵏ = −1,得 aₖ = −aₖ,即 2aₖ = 0,故 aₖ = 0。所以所有奇数次系数为零。∎（偶函数的幂级数只含偶次幂——这与直觉一致,而恒等定理把它变成了严格结论。对称地,奇函数只含奇次幂。）\n\n回顾:这三题展示幂级数运算与唯一性的典型用法。(a) 是 Cauchy 乘积的直接计算(卷积系数)。(b)(c) 都用「**比较系数**」——其合法性正是恒等定理:(b) 通过令两边同次系数相等解出未知幂级数(幂级数解微分方程/函数方程的雏形);(c) 用对称性 + 恒等定理推出系数的奇偶结构。比较系数是幂级数方法的招牌动作,而它每一次使用,背后都站着唯一性定理。\n\n## 第二章收官\n\n到这里,A–E 第二章「收敛」全部学完。回望整章的拱顶:从<a class=\"wl\" data-id=\"an_convergenza\">数列收敛</a>的 ε–N 定义出发,经<a class=\"wl\" data-id=\"an_cauchy\">完备性</a>(ℝ 的根本性质)、<a class=\"wl\" data-id=\"an_serie\">级数</a>与<a class=\"wl\" data-id=\"an_convergenza_assoluta\">判别法</a>,抵达<a class=\"wl\" data-id=\"an_serie_potenze\">幂级数</a>——而幂级数现在不仅有<a class=\"wl\" data-id=\"an_serie_potenze\">收敛半径</a>、能<a class=\"wl\" data-id=\"an_riordinamenti\">相乘</a>,还有了唯一的表示。「逼近」与「无限求和」的理论完整而严密。\n\n但幂级数目前仍是「静态」的:我们能谈它在一点收敛到什么,却还不能对它做**微积分**——求导、积分。要让幂级数真正成为分析的利器(逐项求导得 exp'=exp、sin'=cos),必须先建立**函数的连续性与可微性**。这正是第三章的主题。\n\n第三章从**连续函数**开始:函数的极限(ε–δ 语言)、连续的定义、连续函数的运算与基本定理(介值定理、最值定理)。连续性是「函数」这一对象的第一个分析性质,也是通向**导数**的必经之路——而导数,正是你那条暂停的物理线等待已久的汇合点。数列收敛的理论已经备齐了一切工具(尤其<a class=\"wl\" data-id=\"an_convergenza\">序列收敛</a>与<a class=\"wl\" data-id=\"an_cauchy\">完备性</a>),连续性的大门就此打开。这是 连续函数 的起点,也是第三章的开篇。",
+      "refs": "Amann–Escher, Analysis I §II.9"
+    },
+    {
       "id": "an_prodotto_interno",
       "label": "内积与欧氏空间",
       "parent": "an_analisi",
@@ -802,7 +916,7 @@
       "role": null,
       "color": "#FB798C",
       "ring": 3,
-      "bearing": 0,
+      "bearing": 1,
       "popupLinks": [
         {
           "id": "an_norma",
@@ -845,6 +959,51 @@
       "refs": "Amann–Escher, Analysis I §II.3"
     },
     {
+      "id": "an_riordinamenti",
+      "label": "重排、二重级数与 Cauchy 乘积",
+      "parent": "an_analisi",
+      "summary": "绝对收敛的级数可任意重排而和不变(条件收敛则不能——重排能改变其和,甚至 Riemann 定理任意指定);二重级数在可和时与求和次序无关;两个绝对收敛级数的 Cauchy 乘积(对角线求和)收敛到积。",
+      "depth": 1,
+      "isContainer": false,
+      "isTop": false,
+      "role": null,
+      "color": "#FF7C61",
+      "ring": 10,
+      "bearing": 1,
+      "popupLinks": [
+        {
+          "id": "an_convergenza_assoluta",
+          "text": "绝对收敛"
+        },
+        {
+          "id": "an_numero_e",
+          "text": "单调数列"
+        },
+        {
+          "id": "fond_funzioni",
+          "text": "双射/置换"
+        },
+        {
+          "id": "an_serie",
+          "text": "Cauchy 判据"
+        },
+        {
+          "id": "fond_cardinalita",
+          "text": "ℕ×ℕ 可数"
+        },
+        {
+          "id": "an_serie_potenze",
+          "text": "exp(x) = Σxᵏ/k!"
+        },
+        {
+          "id": "an_operazioni_serie_potenze",
+          "text": "幂级数的运算与唯一性"
+        }
+      ],
+      "body": "\n## 绝对收敛的深层回报\n\n<a class=\"wl\" data-id=\"an_convergenza_assoluta\">绝对收敛</a>比普通收敛「强」,强在哪里?这一节给出三个深刻的回报——**重排自由、求和次序无关、级数可相乘**。它们共同的主题是:**绝对收敛让无穷求和获得了有限求和那样的自由**(可以随意交换次序、可以像多项式那样相乘),而条件收敛则没有这种自由。这是「绝对」二字真正的分量所在。\n\n先用一个小热身,把<a class=\"wl\" data-id=\"an_convergenza_assoluta\">上节的判别法</a>用在几个常见极限上。\n\n## 热身：几个增长速度的极限\n\n比值判别法不仅判级数敛散,还能顺手算出几个「谁增长得快」的标准极限——因为「级数收敛 ⟹ 项趋于 0」,只要证某个级数收敛,它的通项就自动趋于 0。\n\n**命题(增长速度).** 设 a > 1,k ∈ ℕ 固定。则\n\n(i) nᵏ/aⁿ → 0（指数 aⁿ 压倒任何多项式 nᵏ）;  (ii) aⁿ/n! → 0（阶乘 n! 压倒任何指数 aⁿ）。\n\n**证明.** 都用「证级数收敛 ⟹ 通项趋零」。\n\n(i) 看级数 Σ nᵏ/aⁿ。比值 ((n+1)ᵏ/a^{n+1})/(nᵏ/aⁿ) = (1+1/n)ᵏ·(1/a) → 1ᵏ·(1/a) = 1/a < 1（因 a>1）。由<a class=\"wl\" data-id=\"an_convergenza_assoluta\">比值判别法</a>级数收敛,故通项 nᵏ/aⁿ → 0。\n\n(ii) 看级数 Σ aⁿ/n!。比值 (a^{n+1}/(n+1)!)/(aⁿ/n!) = a/(n+1) → 0 < 1。由比值判别法级数收敛,故 aⁿ/n! → 0。∎\n\n这两条极限(指数压多项式、阶乘压指数)是分析里反复用到的「增长速度排序」:**多项式 ≪ 指数 ≪ 阶乘**(≪ 表示「增长慢得多」)。用级数判别法证它们,比直接估计利落得多——这也补上了<a class=\"wl\" data-id=\"an_numero_e\">单调数列</a>那节「几个重要极限」里当时没细证的部分。\n\n## 重排：绝对收敛的级数可以随意调换次序\n\n有限个数相加,次序无所谓(加法交换律)。无穷多个呢?先看一个**警示性的例子**——条件收敛的级数,调换次序竟能改变和!\n\n**例(交错调和级数重排).** 交错调和级数 s = Σ(−1)^{k+1}/k = 1 − 1/2 + 1/3 − 1/4 + ⋯ <a class=\"wl\" data-id=\"an_convergenza_assoluta\">条件收敛</a>(值是 log 2)。现在把它**重排**——按「一个正项、两个负项」的次序重新排列同样这些项:\n\n1 − 1/2 − 1/4 + 1/3 − 1/6 − 1/8 + 1/5 − 1/10 − 1/12 + ⋯\n\n可以算出(把负项两两与前面的正项配对),这个重排级数收敛到 **s/2 = (log 2)/2**——**同样的项、不同的次序,和变成了一半!**\n\n这说明:**对条件收敛的级数,「无穷和」不满足交换律**——调换次序能改变结果。(更惊人的是 **Riemann 重排定理**:条件收敛级数可以重排成收敛到**任意**指定实数,甚至发散。条件收敛的「和」严重依赖次序。)\n\n但**绝对收敛的级数没有这个毛病**——它的和像有限和一样,与次序无关。\n\n**定理(重排定理).** 设 Σxₖ 绝对收敛。则它的**任何重排** Σx_{σ(k)}（σ 是 ℕ 的任意<a class=\"wl\" data-id=\"fond_funzioni\">双射/置换</a>）也绝对收敛,且与原级数有**相同的值**。\n\n**证明.** 由 Σ|xₖ| 收敛,其 <a class=\"wl\" data-id=\"an_serie\">Cauchy 判据</a>给出:对每个 ε > 0,存在 N 使\n\nΣ_{k=N+1}^{∞} |xₖ| ≤ ε（尾部绝对值之和任意小）。\n\n设 σ 是任意置换。取 M := max{σ⁻¹(0), …, σ⁻¹(N)}（即原级数前 N+1 项 x₀,…,x_N 在重排后出现的最晚位置）。则对 m ≥ M,重排的前 m 项 {x_{σ(0)},…,x_{σ(m)}} **必定包含** {x₀,…,x_N} 全部。于是这两个部分和之差,只剩下标 > N 的那些项,被尾部绝对值控制:\n\n|Σ_{k=0}^{m} x_{σ(k)} − Σ_{k=0}^{N} xₖ| ≤ Σ_{k=N+1}^{∞} |xₖ| ≤ ε，  m ≥ M。\n\n令 m → ∞:|（重排级数的和）− Σ_{k=0}^{N} xₖ| ≤ ε。而原级数的和也与 Σ_{k=0}^{N}xₖ 相差 ≤ ε。故重排的和与原级数的和相差 ≤ 2ε,对一切 ε 成立,两者相等。绝对收敛性同理(对 |x_{σ(k)}| 重复论证)。∎\n\n**核心机制:绝对收敛时,「尾部绝对值之和任意小」**——所以无论怎么重排,只要取得足够靠后,前面那 N 个重要的项总会被包含进来,而剩下的尾巴贡献可忽略。条件收敛缺的正是这一条:它的尾部绝对值之和**不**趋于零(否则就绝对收敛了),所以重排能把正负项重新搭配出不同的和。**绝对收敛 = 无穷和的交换律。**\n\n## 二重级数：双下标求和，次序无关\n\n有时要对一个**双下标**的数组 (x_{jk})_{j,k∈ℕ} 求和——把整个无穷矩阵的元素加起来:\n\n<svg viewBox=\"0 0 320 300\" xmlns=\"http://www.w3.org/2000/svg\">\n  <!-- 5x5 数组, 对角线 j+k=n 同色 -->\n  <g font-size=\"11\" font-family=\"monospace\">\n    <!-- 行列标 -->\n    <text x=\"40\" y=\"66\" font-size=\"10\" fill=\"#999\">j=0</text>\n    <text x=\"40\" y=\"110\" font-size=\"10\" fill=\"#999\">j=1</text>\n    <text x=\"40\" y=\"154\" font-size=\"10\" fill=\"#999\">j=2</text>\n    <text x=\"40\" y=\"198\" font-size=\"10\" fill=\"#999\">j=3</text>\n    <text x=\"78\" y=\"40\" font-size=\"10\" fill=\"#999\">k=0</text>\n    <text x=\"122\" y=\"40\" font-size=\"10\" fill=\"#999\">k=1</text>\n    <text x=\"166\" y=\"40\" font-size=\"10\" fill=\"#999\">k=2</text>\n    <text x=\"210\" y=\"40\" font-size=\"10\" fill=\"#999\">k=3</text>\n  </g>\n  <!-- 对角线高亮: j+k=0(橙) 1(绿) 2(蓝) 3(紫) -->\n  <circle cx=\"78\" cy=\"62\" r=\"15\" fill=\"#E0612F\" opacity=\"0.18\"/>\n  <circle cx=\"122\" cy=\"62\" r=\"15\" fill=\"#00A070\" opacity=\"0.18\"/><circle cx=\"78\" cy=\"106\" r=\"15\" fill=\"#00A070\" opacity=\"0.18\"/>\n  <circle cx=\"166\" cy=\"62\" r=\"15\" fill=\"#5A5FE0\" opacity=\"0.18\"/><circle cx=\"122\" cy=\"106\" r=\"15\" fill=\"#5A5FE0\" opacity=\"0.18\"/><circle cx=\"78\" cy=\"150\" r=\"15\" fill=\"#5A5FE0\" opacity=\"0.18\"/>\n  <circle cx=\"210\" cy=\"62\" r=\"15\" fill=\"#9059D0\" opacity=\"0.18\"/><circle cx=\"166\" cy=\"106\" r=\"15\" fill=\"#9059D0\" opacity=\"0.18\"/><circle cx=\"122\" cy=\"150\" r=\"15\" fill=\"#9059D0\" opacity=\"0.18\"/><circle cx=\"78\" cy=\"194\" r=\"15\" fill=\"#9059D0\" opacity=\"0.18\"/>\n  <!-- 元素 -->\n  <g font-size=\"10\" font-family=\"monospace\" fill=\"#555\">\n    <text x=\"68\" y=\"66\">x₀₀</text><text x=\"112\" y=\"66\">x₀₁</text><text x=\"156\" y=\"66\">x₀₂</text><text x=\"200\" y=\"66\">x₀₃</text><text x=\"240\" y=\"66\">…</text>\n    <text x=\"68\" y=\"110\">x₁₀</text><text x=\"112\" y=\"110\">x₁₁</text><text x=\"156\" y=\"110\">x₁₂</text><text x=\"200\" y=\"110\">x₁₃</text><text x=\"240\" y=\"110\">…</text>\n    <text x=\"68\" y=\"154\">x₂₀</text><text x=\"112\" y=\"154\">x₂₁</text><text x=\"156\" y=\"154\">x₂₂</text><text x=\"200\" y=\"154\">x₂₃</text><text x=\"240\" y=\"154\">…</text>\n    <text x=\"68\" y=\"198\">x₃₀</text><text x=\"112\" y=\"198\">x₃₁</text><text x=\"156\" y=\"198\">x₃₂</text><text x=\"200\" y=\"198\">x₃₃</text><text x=\"240\" y=\"198\">…</text>\n    <text x=\"68\" y=\"220\">⋮</text><text x=\"112\" y=\"220\">⋮</text><text x=\"156\" y=\"220\">⋮</text><text x=\"200\" y=\"220\">⋮</text>\n  </g>\n  <text x=\"160\" y=\"250\" font-size=\"10\" text-anchor=\"middle\" fill=\"#777\">按行加？按列加？按对角线加？——可和时三者相等</text>\n  <text x=\"160\" y=\"266\" font-size=\"9\" text-anchor=\"middle\" fill=\"#999\">同色 = 一条对角线 j+k=n（Cauchy 乘积按此求和）</text>\n</svg>\n\n这个无穷矩阵可以**按行求和**(先把每行加起来,再加各行和)、**按列求和**,或**按其它任何次序**(如沿对角线)。结果会一样吗?和重排一样,关键在一个绝对型条件。\n\n**定义.** 二重级数 Σx_{jk} 称**可和**(summable)，若部分和的绝对值有统一上界:存在 M 使 Σ_{j,k=0}^{n} |x_{jk}| ≤ M 对一切 n。（这是「二维的绝对收敛」。）\n\n**定理(二重级数定理).** 设 Σx_{jk} 可和。则:把矩阵元素按**任意**次序排成一列(<a class=\"wl\" data-id=\"fond_cardinalita\">ℕ×ℕ 可数</a>,故能排)求和,都绝对收敛到**同一个值** s,与次序无关;特别地,**行和之和 = 列和之和 = s**:\n\nΣ_{j} (Σ_{k} x_{jk}) = Σ_{k} (Σ_{j} x_{jk}) = s。\n\n**思路.** 可和性使任意排列后的级数都被 M 控制,从而绝对收敛;再用<a class=\"wl\" data-id=\"an_serie\">重排</a>的思想证明所有排列同值。行和、列和只是两种特殊的「求和次序」,故都等于 s。∎ 直觉:**可和(二维绝对收敛)时,无穷矩阵的元素可以任意次序相加而和不变——行、列、对角线随便加**。又是「绝对型条件买来次序自由」。\n\n## Cauchy 乘积：两个级数相乘\n\n二重级数最重要的应用,是给**两个级数相乘**一个意义。有限和相乘是 (Σxⱼ)(Σyₖ) = Σ_{j,k} xⱼyₖ(每项乘每项)。无穷级数呢?把所有乘积 xⱼyₖ 排成无穷矩阵(第 (j,k) 格是 xⱼyₖ),沿**对角线** j + k = n 收集,就得到 Cauchy 乘积。\n\n**定义(Cauchy 乘积).** 级数 Σxⱼ 与 Σyₖ 的 **Cauchy 乘积**是级数 Σzₙ,其中第 n 项是第 n 条对角线之和:\n\nzₙ := Σ_{k=0}^{n} xₖ y_{n−k} = x₀yₙ + x₁y_{n−1} + ⋯ + xₙy₀。\n\n**定理(Cauchy 乘积).** 若 Σxⱼ 与 Σyₖ 都**绝对收敛**,则它们的 Cauchy 乘积 Σzₙ 也绝对收敛,且\n\n(Σ_{j=0}^{∞} xⱼ)·(Σ_{k=0}^{∞} yₖ) = Σ_{n=0}^{∞} zₙ = Σ_{n=0}^{∞} (Σ_{k=0}^{n} xₖy_{n−k})。\n\n**思路.** 两级数绝对收敛 ⟹ 乘积矩阵 (xⱼyₖ) 可和(其绝对值之和 ≤ (Σ|xⱼ|)(Σ|yₖ|) < ∞);由二重级数定理,矩阵元素可任意次序求和而同值。按「行/列」求和给出 (Σxⱼ)(Σyₖ),按「对角线」求和给出 Σzₙ,故两者相等。∎\n\n**这把「级数相乘」化归到了「绝对收敛 + 二重级数」**。最重要的应用是指数函数的加法定理:用 <a class=\"wl\" data-id=\"an_serie_potenze\">exp(x) = Σxᵏ/k!</a> 的级数,算 exp(x)·exp(y) 的 Cauchy 乘积,对角线之和恰好整理成 Σ(x+y)ⁿ/n! = exp(x+y)——**指数律 exp(x)exp(y) = exp(x+y) 由此严格证出**(细节留待指数函数那节)。Cauchy 乘积是连接「级数」与「函数运算」的关键桥梁。\n\n> 注意 Cauchy 乘积定理要求**绝对收敛**。两个只条件收敛的级数,其 Cauchy 乘积可能发散——又一次,绝对收敛是「能相乘」的保证,条件收敛不够。\n\n## 一道激活练习\n\n(a) 写出两个几何级数 Σxⱼ（x₀=x₁=⋯，公比形式这里简化为 Σaʲ）与 Σbᵏ 的 Cauchy 乘积的通项 zₙ。具体地,设 a, b ∈ ℝ,|a|,|b| < 1,求 Σaʲ 与 Σbᵏ 的 Cauchy 乘积 zₙ = Σ_{k=0}^n aᵏb^{n−k}（当 a ≠ b 时化简）。\n\n(b) 用 Cauchy 乘积验证 (Σ_{k=0}^∞ xᵏ)² = Σ_{n=0}^∞ (n+1)xⁿ（|x|<1）。(提示:两个相同的几何级数 Σxᵏ 作 Cauchy 乘积,算 zₙ = Σ_{k=0}^n xᵏ·x^{n−k}。)\n\n(c) 解释为什么交错调和级数能重排成不同的和,而 Σ(−1)ᵏ⁺¹/k² 不能。(提示:看哪个绝对收敛——比较 Σ1/k 与 Σ1/k²。)\n\n## 参考解答\n\n(建议先自己写完再看。)\n\n**(a)** zₙ = Σ_{k=0}^n aᵏb^{n−k} = b^n Σ_{k=0}^n (a/b)ᵏ（提出 bⁿ）。当 a ≠ b,内部是有限几何和 = (1−(a/b)^{n+1})/(1−a/b),整理:\n\nzₙ = bⁿ·(1 − (a/b)^{n+1})/(1 − a/b) = (b^{n+1} − a^{n+1})/(b − a)。\n\n（这也正是 1/((1−a)(1−b)) 展开成幂级数的系数——Cauchy 乘积给出 (Σaʲ)(Σbᵏ) = 1/(1−a)·1/(1−b)。）\n\n**(b)** 两个 Σxᵏ 的 Cauchy 乘积通项:zₙ = Σ_{k=0}^n xᵏ·x^{n−k} = Σ_{k=0}^n xⁿ = (n+1)xⁿ（n+1 个相同的 xⁿ 相加）。故 (Σxᵏ)² = Σ(n+1)xⁿ。∎（左边 = (1/(1−x))² = 1/(1−x)²,所以顺带得到 1/(1−x)² = Σ(n+1)xⁿ,一个有用的展开。）\n\n**(c)** **交错调和级数 Σ(−1)^{k+1}/k 只条件收敛**——绝对值级数 Σ1/k 是发散的<a class=\"wl\" data-id=\"an_serie\">调和级数</a>。条件收敛的级数,重排能改变其和(正文的 s/2 例,以及 Riemann 定理)。而 **Σ(−1)^{k+1}/k² 绝对收敛**——绝对值级数 Σ1/k² <a class=\"wl\" data-id=\"an_serie\">收敛</a>。由重排定理,绝对收敛级数任意重排和不变。所以前者「能重排出不同的和」、后者「重排和恒不变」,分野正在于**是否绝对收敛**。∎\n\n回顾:这三题围绕同一主线——**绝对收敛是无穷求和获得「有限求和的自由」(交换、相乘)的前提**。(a)(b) 是 Cauchy 乘积的计算(几何级数相乘,对角线求和),(c) 点明重排自由的边界:绝对收敛者有此自由,条件收敛者没有。判断一个无穷求和操作(重排、相乘、换序)是否「安全」,第一步永远是看**绝对收敛**。\n\n## 往前看一步\n\n绝对收敛的三大回报——重排自由、二重级数次序无关、Cauchy 乘积——都已就位。它们共同确立了一个原则:**绝对收敛的无穷和,行为像有限和一样温顺**;而条件收敛则保留了无穷的「危险」(次序敏感)。这套理论,尤其是 Cauchy 乘积,是下一步处理幂级数运算的直接工具。\n\n回到<a class=\"wl\" data-id=\"an_serie_potenze\">幂级数</a>:既然幂级数在收敛圆盘内<a class=\"wl\" data-id=\"an_convergenza_assoluta\">绝对收敛</a>,就能对它们做代数运算——**两个幂级数相加、相乘**(乘法正是 Cauchy 乘积),结果仍是幂级数。还有一个深刻的事实:**幂级数的表示是唯一的**——若两个幂级数在原点附近处处相等,则它们逐项系数相同(恒等定理)。这让「比较系数」成为合法手段,是幂级数方法的基石。这就是第二章最后一块:<a class=\"wl\" data-id=\"an_operazioni_serie_potenze\">幂级数的运算与唯一性</a>。",
+      "refs": "Amann–Escher, Analysis I §II.8"
+    },
+    {
       "id": "an_serie",
       "label": "无穷级数与部分和",
       "parent": "an_analisi",
@@ -855,7 +1014,7 @@
       "role": null,
       "color": "#FF7C64",
       "ring": 8,
-      "bearing": 2,
+      "bearing": 4,
       "popupLinks": [
         {
           "id": "an_cauchy",
@@ -896,7 +1055,7 @@
       "role": null,
       "color": "#FF7C61",
       "ring": 10,
-      "bearing": 0,
+      "bearing": 1,
       "popupLinks": [
         {
           "id": "an_convergenza_assoluta",
@@ -933,7 +1092,7 @@
       "role": null,
       "color": "#FF7B6C",
       "ring": 3,
-      "bearing": 7,
+      "bearing": 9,
       "popupLinks": [
         {
           "id": "an_convergenza",
@@ -974,7 +1133,7 @@
       "role": null,
       "color": "#FF7B6F",
       "ring": 1,
-      "bearing": 16,
+      "bearing": 19,
       "popupLinks": [
         {
           "id": "an_valore_assoluto",
@@ -1003,7 +1162,7 @@
       "role": null,
       "color": "#FF7B71",
       "ring": 4,
-      "bearing": 0,
+      "bearing": 1,
       "popupLinks": [
         {
           "id": "an_convergenza",
@@ -1048,7 +1207,7 @@
       "role": null,
       "color": "#FF7A72",
       "ring": 0,
-      "bearing": 17,
+      "bearing": 20,
       "popupLinks": [
         {
           "id": "num_q_ordine",
@@ -1077,7 +1236,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 7,
-      "bearing": 0,
+      "bearing": 2,
       "popupLinks": [
         {
           "id": "fond_iniettive_suriettive",
@@ -1118,7 +1277,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 6,
-      "bearing": 39,
+      "bearing": 42,
       "popupLinks": [
         {
           "id": "fond_funzioni",
@@ -1147,7 +1306,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 4,
-      "bearing": 32,
+      "bearing": 35,
       "popupLinks": [
         {
           "id": "fond_relazioni",
@@ -1204,7 +1363,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 4,
-      "bearing": 45,
+      "bearing": 48,
       "popupLinks": [
         {
           "id": "fond_relazioni",
@@ -1233,7 +1392,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 5,
-      "bearing": 43,
+      "bearing": 46,
       "popupLinks": [
         {
           "id": "fond_proposizioni",
@@ -1262,7 +1421,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 2,
-      "bearing": 48,
+      "bearing": 51,
       "popupLinks": [
         {
           "id": "fond_quantificatori",
@@ -1291,7 +1450,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 0,
-      "bearing": 50,
+      "bearing": 53,
       "popupLinks": [
         {
           "id": "fond_quantificatori",
@@ -1312,7 +1471,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 1,
-      "bearing": 49,
+      "bearing": 52,
       "popupLinks": [
         {
           "id": "fond_proposizioni",
@@ -1337,7 +1496,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 3,
-      "bearing": 47,
+      "bearing": 50,
       "popupLinks": [
         {
           "id": "fond_insiemi",
@@ -1382,7 +1541,7 @@
       "role": null,
       "color": "#FF7B6F",
       "ring": 10,
-      "bearing": 17,
+      "bearing": 20,
       "popupLinks": [
         {
           "id": "num_dedekind",
@@ -1423,7 +1582,7 @@
       "role": null,
       "color": "#FF7F50",
       "ring": 1,
-      "bearing": 39,
+      "bearing": 42,
       "popupLinks": [
         {
           "id": "num_n",
@@ -1561,7 +1720,7 @@
       "role": null,
       "color": "#FF7A72",
       "ring": 9,
-      "bearing": 22,
+      "bearing": 25,
       "popupLinks": [
         {
           "id": "alg_anelli",
@@ -1586,7 +1745,7 @@
       "role": null,
       "color": "#FE7A75",
       "ring": 8,
-      "bearing": 23,
+      "bearing": 26,
       "popupLinks": [
         {
           "id": "num_dedekind",
@@ -1607,7 +1766,7 @@
       "role": null,
       "color": "#FF7F50",
       "ring": 0,
-      "bearing": 40,
+      "bearing": 43,
       "popupLinks": [
         {
           "id": "fond_iniettive_suriettive",
@@ -1636,7 +1795,7 @@
       "role": null,
       "color": "#FF7F50",
       "ring": 2,
-      "bearing": 31,
+      "bearing": 34,
       "popupLinks": [
         {
           "id": "alg_gruppi",
@@ -1677,7 +1836,7 @@
       "role": null,
       "color": "#FC7988",
       "ring": 5,
-      "bearing": 28,
+      "bearing": 31,
       "popupLinks": [
         {
           "id": "alg_campi",
@@ -1714,7 +1873,7 @@
       "role": null,
       "color": "#FD7980",
       "ring": 6,
-      "bearing": 27,
+      "bearing": 30,
       "popupLinks": [
         {
           "id": "num_radice2",
@@ -1735,7 +1894,7 @@
       "role": null,
       "color": "#FE7A7A",
       "ring": 7,
-      "bearing": 26,
+      "bearing": 29,
       "popupLinks": [
         {
           "id": "num_estremo_superiore",
@@ -1756,7 +1915,7 @@
       "role": null,
       "color": "#FE7A72",
       "ring": 11,
-      "bearing": 10,
+      "bearing": 13,
       "popupLinks": [
         {
           "id": "alg_binomio",
@@ -1801,7 +1960,7 @@
       "role": null,
       "color": "#FF7B6C",
       "ring": 11,
-      "bearing": 3,
+      "bearing": 5,
       "popupLinks": [
         {
           "id": "num_estremo_superiore",
@@ -1842,7 +2001,7 @@
       "role": null,
       "color": "#FE7A75",
       "ring": 8,
-      "bearing": 13,
+      "bearing": 16,
       "popupLinks": [
         {
           "id": "num_aritmetica",
@@ -1867,7 +2026,7 @@
       "role": null,
       "color": "#FC7988",
       "ring": 3,
-      "bearing": 30,
+      "bearing": 33,
       "popupLinks": [
         {
           "id": "fond_equivalenza",
@@ -1912,7 +2071,7 @@
       "role": null,
       "color": "#FE797D",
       "ring": 4,
-      "bearing": 29,
+      "bearing": 32,
       "popupLinks": [
         {
           "id": "num_ordine",
@@ -2112,6 +2271,16 @@
       "type": "prerequisite"
     },
     {
+      "from": "an_prodotto_interno",
+      "to": "an_norme_equivalenti",
+      "type": "prerequisite"
+    },
+    {
+      "from": "an_succ_complesse",
+      "to": "an_norme_equivalenti",
+      "type": "prerequisite"
+    },
+    {
       "from": "an_monotone",
       "to": "an_numero_e",
       "type": "prerequisite"
@@ -2122,6 +2291,16 @@
       "type": "prerequisite"
     },
     {
+      "from": "an_serie_potenze",
+      "to": "an_operazioni_serie_potenze",
+      "type": "prerequisite"
+    },
+    {
+      "from": "an_riordinamenti",
+      "to": "an_operazioni_serie_potenze",
+      "type": "prerequisite"
+    },
+    {
       "from": "an_norma",
       "to": "an_prodotto_interno",
       "type": "prerequisite"
@@ -2129,6 +2308,16 @@
     {
       "from": "alg_base_dimensione",
       "to": "an_prodotto_interno",
+      "type": "prerequisite"
+    },
+    {
+      "from": "an_convergenza_assoluta",
+      "to": "an_riordinamenti",
+      "type": "prerequisite"
+    },
+    {
+      "from": "fond_cardinalita",
+      "to": "an_riordinamenti",
       "type": "prerequisite"
     },
     {
@@ -2449,8 +2638,8 @@
   ],
   "meta": {
     "counts": {
-      "nodes": 55,
-      "edges": 102,
+      "nodes": 58,
+      "edges": 108,
       "dangling_prerequisites": 0
     },
     "palette": {
