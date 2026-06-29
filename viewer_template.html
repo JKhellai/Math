@@ -434,6 +434,22 @@ function App(DATA){
       .forEach(c=>{ let mn=Infinity; children[c.id].forEach(k=>{ if(pos[k]&&pos[k].y<mn) mn=pos[k].y; });
         if(mn<Infinity && pos[c.id]) pos[c.id].y=mn; });
     homeY = maxY/2;
+    // 去重叠（确定性，等价于力导向的"最小间距约束"）：只在水平 x/z 平面推开过近的同层节点对，
+    //   保 y 分层不变；只动 < MINSEP 的局部，不扰动全局间距。完全确定 → 位置仍稳定可记忆。
+    (function separate(){
+      const ids=DATA.nodes.map(n=>n.id), MINSEP=4.0;
+      for(let it=0; it<16; it++){ let moved=false;
+        for(let i=0;i<ids.length;i++){ const a=pos[ids[i]]; if(!a) continue;
+          for(let j=i+1;j<ids.length;j++){ const b=pos[ids[j]]; if(!b) continue;
+            if(Math.abs(a.y-b.y) > LEVEL_H*0.6) continue;          // 不同层不管（垂直已分开）
+            let dx=b.x-a.x, dz=b.z-a.z, d=Math.hypot(dx,dz);
+            if(d>1e-3 && d<MINSEP){ const p=(MINSEP-d)/2/d;
+              a.x-=dx*p; a.z-=dz*p; b.x+=dx*p; b.z+=dz*p; moved=true; }
+            else if(d<=1e-3){ const ang=hash01(ids[i]+'|'+ids[j])*6.2832; // 完全重合→按哈希定向分开（确定性）
+              a.x-=Math.cos(ang)*1.6; a.z-=Math.sin(ang)*1.6; b.x+=Math.cos(ang)*1.6; b.z+=Math.sin(ang)*1.6; moved=true; }
+          } }
+        if(!moved) break; }
+    })();
   })();
 
   // ════════════════════════════════════════════════════════════════════
