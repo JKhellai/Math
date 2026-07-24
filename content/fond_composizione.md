@@ -3,141 +3,373 @@ id: fond_composizione
 label: 复合与逆函数
 parent: fond_fondamenta
 prerequisites: [fond_funzioni, fond_iniettive_suriettive]
-summary: 复合 g∘f 把函数接力成新函数，满足结合律、以恒等为单位；可逆 ⟺ 双射，逆函数唯一且 (g∘f)⁻¹ = f⁻¹∘g⁻¹。
+summary: 复合 g∘f 把 f 的输出作为 g 的输入；复合满足结合律，以恒等函数为单位。f 存在逆函数当且仅当 f 是双射，此时逆唯一，且 (g∘f)⁻¹ = f⁻¹∘g⁻¹。
 status: learning
 refs: Amann–Escher, Analysis I §I.3
 ---
 
-## 接力
-
-函数最自然的玩法是**串起来用**：一个函数的输出，喂给下一个函数当输入。「先求平方、再加一」「先取等价类、再做别的」——数学里的复杂操作几乎都是简单操作的接力。这一节先把「接力」本身定成一个运算，弄清它的基本性质；然后回应上一节末尾的悬念——**什么样的函数，箭头能走回去**。两件事到头来是一件：「走回去」必须用「接力」才说得清楚。
+[[fond_iniettive_suriettive|上一节]]定义了单射、满射与双射，但没有回答一个问题：什么样的函数存在「反过来」的函数，把 f 的输出送回原来的输入。要精确陈述这个问题，需要先有把两个函数依次作用的运算。本节先定义这个运算，再用它刻画可逆性。
 
 ## 复合
 
-设 f : A → B，g : B → C（注意衔接条件：**f 的到达域 = g 的定义域**，接力棒得递得上）。定义它们的**复合**(composition)
+**定义（复合）** 设 f : X → Y，g : Y → V。定义
 
-g ∘ f : A → C，  a ↦ g(f(a))。
+g ∘ f : X → V，  x ↦ g(f(x))，
 
-先尽本分，验证 g∘f 真是个函数：任给 a ∈ A，f 是函数，f(a) 是 B 中唯一确定的元素；g 是函数，g(f(a)) 又是 C 中唯一确定的元素。每个输入恰好一个输出，资格合法。∎
+称为 f 与 g 的**复合**(composition)，读作「f 之后接 g」。
 
-<svg viewBox="0 0 380 150" xmlns="http://www.w3.org/2000/svg">
+定义要求 f 的到达域与 g 的定义域是同一个集合 Y，否则 g(f(x)) 无意义。
+
+g ∘ f 是函数：
+
+∀x ∈ X : f(x) ∈ Y 唯一确定 ⟹ g(f(x)) ∈ V 唯一确定
+（第一步因 f 是函数，第二步因 g 是函数；于是每个 x 恰好对应 V 中一个元素，符合[[fond_funzioni|函数]]的定义）
+
+**注** 记号 g ∘ f 中 g 写在左边，先作用的却是 f。这个顺序来自 g(f(x)) 的写法。
+
+<svg viewBox="0 0 400 175" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <marker id="mkb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5A5FE0"/>
+    </marker>
+  </defs>
+  <ellipse cx="60" cy="60" rx="32" ry="40" fill="none" stroke="#888" stroke-width="1.3"/>
+  <ellipse cx="200" cy="60" rx="32" ry="40" fill="none" stroke="#888" stroke-width="1.3"/>
+  <ellipse cx="340" cy="60" rx="32" ry="40" fill="none" stroke="#888" stroke-width="1.3"/>
+  <text x="60" y="16" font-size="14" text-anchor="middle" fill="#333">X</text>
+  <text x="200" y="16" font-size="14" text-anchor="middle" fill="#333">Y</text>
+  <text x="340" y="16" font-size="14" text-anchor="middle" fill="#333">V</text>
+  <circle cx="60" cy="60" r="3" fill="#333"/>
+  <circle cx="200" cy="60" r="3" fill="#333"/>
+  <circle cx="340" cy="60" r="3" fill="#333"/>
+  <text x="46" y="80" font-size="11" fill="#555">x</text>
+  <text x="186" y="80" font-size="11" fill="#555">f(x)</text>
+  <text x="322" y="80" font-size="11" fill="#555">g(f(x))</text>
+  <line x1="95" y1="60" x2="163" y2="60" stroke="#555" stroke-width="1.3" marker-end="url(#mk)"/>
+  <line x1="235" y1="60" x2="303" y2="60" stroke="#555" stroke-width="1.3" marker-end="url(#mk)"/>
+  <text x="129" y="52" font-size="12" fill="#555">f</text>
+  <text x="269" y="52" font-size="12" fill="#555">g</text>
+  <polyline points="60,104 60,140 340,140 340,104" fill="none" stroke="#5A5FE0" stroke-width="1.3" marker-end="url(#mkb)"/>
+  <text x="200" y="158" font-size="12" text-anchor="middle" fill="#5A5FE0">g ∘ f</text>
+</svg>
+
+## 结合律
+
+**命题（A–E 命题 3.3）** 设 f : X → Y，g : Y → U，h : U → V。则 (h ∘ g) ∘ f 与 h ∘ (g ∘ f) 都有定义，且
+
+(h ∘ g) ∘ f = h ∘ (g ∘ f)。
+
+**证明** 先验两边有定义、且定义域到达域相同：
+
+g ∘ f : X → U，h : U → V ⟹ h ∘ (g ∘ f) : X → V
+h ∘ g : Y → V，f : X → Y ⟹ (h ∘ g) ∘ f : X → V
+（两次都是复合的衔接条件成立）
+
+再逐点验值。由[[fond_funzioni|函数相等]]的定义，这一步不能省：
+
+∀x ∈ X : ((h ∘ g) ∘ f)(x) = (h ∘ g)(f(x)) = h(g(f(x)))
+∀x ∈ X : (h ∘ (g ∘ f))(x) = h((g ∘ f)(x)) = h(g(f(x)))
+（两行各步都只用复合的定义；末端相同）∎
+
+<svg viewBox="0 0 440 175" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <marker id="m2o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E0612F"/>
+    </marker>
+    <marker id="m2b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5A5FE0"/>
+    </marker>
+  </defs>
+  <text x="45" y="92" font-size="14" text-anchor="middle" fill="#333">X</text>
+  <text x="165" y="92" font-size="14" text-anchor="middle" fill="#333">Y</text>
+  <text x="285" y="92" font-size="14" text-anchor="middle" fill="#333">U</text>
+  <text x="405" y="92" font-size="14" text-anchor="middle" fill="#333">V</text>
+  <line x1="58" y1="87" x2="152" y2="87" stroke="#555" stroke-width="1.2" marker-end="url(#m2)"/>
+  <line x1="178" y1="87" x2="272" y2="87" stroke="#555" stroke-width="1.2" marker-end="url(#m2)"/>
+  <line x1="298" y1="87" x2="392" y2="87" stroke="#555" stroke-width="1.2" marker-end="url(#m2)"/>
+  <text x="105" y="80" font-size="12" text-anchor="middle" fill="#555">f</text>
+  <text x="225" y="80" font-size="12" text-anchor="middle" fill="#555">g</text>
+  <text x="345" y="80" font-size="12" text-anchor="middle" fill="#555">h</text>
+  <polyline points="45,72 45,42 285,42 285,72" fill="none" stroke="#E0612F" stroke-width="1.2" marker-end="url(#m2o)"/>
+  <text x="165" y="34" font-size="12" text-anchor="middle" fill="#E0612F">g ∘ f</text>
+  <polyline points="165,102 165,132 405,132 405,102" fill="none" stroke="#5A5FE0" stroke-width="1.2" marker-end="url(#m2b)"/>
+  <text x="285" y="148" font-size="12" text-anchor="middle" fill="#5A5FE0">h ∘ g</text>
+  <text x="220" y="20" font-size="11" text-anchor="middle" fill="#777">先合橙色再接 h ： h ∘ (g ∘ f)</text>
+  <text x="220" y="168" font-size="11" text-anchor="middle" fill="#777">先 f 再接蓝色 ： (h ∘ g) ∘ f</text>
+</svg>
+
+因此复合三个函数时可省略括号，写作 h ∘ g ∘ f；多于三个的复合同理。
+
+**注（复合不交换）** 即使 g ∘ f 与 f ∘ g 都有定义，二者一般不等。取 X = Y = V = ℝ（ℝ 此处按熟悉的方式借用，严格构造留待后面），f(x) := x + 1，g(x) := x²：
+
+(g ∘ f)(x) = (x + 1)² = x² + 2x + 1，  (f ∘ g)(x) = x² + 1
+x = 1 ⟹ (g ∘ f)(1) = 4 ≠ 2 = (f ∘ g)(1) ⟹ g ∘ f ≠ f ∘ g
+（一个反例即足以否定相等，因函数相等要求逐点相等）
+
+## 交换图
+
+复合关系常用图表示。约定把 f : X → Y 画成 X --f--> Y。
+
+**定义（交换图）** 一个由集合与箭头组成的图称**交换**(commutative)，若图中任取两个集合，沿箭头方向从一个到另一个的**任意两条路径**，其复合相等。
+
+<svg viewBox="0 0 440 175" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
     </marker>
   </defs>
-  <ellipse cx="60" cy="70" rx="34" ry="42" fill="none" stroke="#888" stroke-width="1.4"/>
-  <ellipse cx="190" cy="70" rx="34" ry="42" fill="none" stroke="#888" stroke-width="1.4"/>
-  <ellipse cx="320" cy="70" rx="34" ry="42" fill="none" stroke="#888" stroke-width="1.4"/>
-  <text x="60" y="74" font-size="14" text-anchor="middle" fill="#333">A</text>
-  <text x="190" y="74" font-size="14" text-anchor="middle" fill="#333">B</text>
-  <text x="320" y="74" font-size="14" text-anchor="middle" fill="#333">C</text>
-  <line x1="98" y1="64" x2="152" y2="64" stroke="#555" stroke-width="1.3" marker-end="url(#arr3)"/>
-  <text x="125" y="54" font-size="13" text-anchor="middle" fill="#333">f</text>
-  <line x1="228" y1="64" x2="282" y2="64" stroke="#555" stroke-width="1.3" marker-end="url(#arr3)"/>
-  <text x="255" y="54" font-size="13" text-anchor="middle" fill="#333">g</text>
-  <path d="M 70 116 C 140 152, 240 152, 310 116" fill="none" stroke="#E0612F" stroke-width="1.4" marker-end="url(#arr3)"/>
-  <text x="190" y="146" font-size="13" text-anchor="middle" fill="#E0612F">g∘f</text>
+  <text x="50" y="45" font-size="14" text-anchor="middle" fill="#333">X</text>
+  <text x="170" y="45" font-size="14" text-anchor="middle" fill="#333">Y</text>
+  <text x="110" y="140" font-size="14" text-anchor="middle" fill="#333">V</text>
+  <line x1="63" y1="40" x2="157" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#m3)"/>
+  <text x="110" y="32" font-size="12" text-anchor="middle" fill="#555">f</text>
+  <line x1="166" y1="56" x2="123" y2="124" stroke="#555" stroke-width="1.2" marker-end="url(#m3)"/>
+  <text x="156" y="100" font-size="12" fill="#555">g</text>
+  <line x1="54" y1="56" x2="97" y2="124" stroke="#555" stroke-width="1.2" marker-end="url(#m3)"/>
+  <text x="52" y="100" font-size="12" fill="#555">h</text>
+  <text x="110" y="165" font-size="12" text-anchor="middle" fill="#E0612F">交换 ⟺ h = g ∘ f</text>
+  <line x1="230" y1="20" x2="230" y2="155" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="290" y="45" font-size="14" text-anchor="middle" fill="#333">X</text>
+  <text x="400" y="45" font-size="14" text-anchor="middle" fill="#333">Y</text>
+  <text x="290" y="130" font-size="14" text-anchor="middle" fill="#333">U</text>
+  <text x="400" y="130" font-size="14" text-anchor="middle" fill="#333">V</text>
+  <line x1="303" y1="40" x2="387" y2="40" stroke="#555" stroke-width="1.2" marker-end="url(#m3)"/>
+  <text x="345" y="32" font-size="12" text-anchor="middle" fill="#555">f</text>
+  <line x1="290" y1="53" x2="290" y2="112" stroke="#555" stroke-width="1.2" marker-end="url(#m3)"/>
+  <text x="272" y="88" font-size="12" fill="#555">φ</text>
+  <line x1="400" y1="53" x2="400" y2="112" stroke="#555" stroke-width="1.2" marker-end="url(#m3)"/>
+  <text x="406" y="88" font-size="12" fill="#555">g</text>
+  <line x1="303" y1="125" x2="387" y2="125" stroke="#555" stroke-width="1.2" marker-end="url(#m3)"/>
+  <text x="345" y="147" font-size="12" text-anchor="middle" fill="#555">ψ</text>
+  <text x="345" y="165" font-size="12" text-anchor="middle" fill="#E0612F">交换 ⟺ g ∘ f = ψ ∘ φ</text>
 </svg>
 
-**记号的方向是个著名的坑**：g∘f 读「g 复合 f」，可执行顺序是**先 f 后 g**——符号从右往左吃。根源在记号 g(f(a))：a 先被里层的 f 吞掉。读 ∘ 时心里默念「**∘ = 作用在……的结果上**」就不会反。
+左图从 X 到 V 有两条路径：直接走 h，或先 f 后 g。二者相等即 h = g ∘ f。右图从 X 到 V 也有两条：先 f 后 g，或先 φ 后 ψ。二者相等即 g ∘ f = ψ ∘ φ。
 
-## 复合的三条基本性质
+上一段结合律的图，正是这个约定的一个实例：从 X 到 V 的两条路径 h ∘ (g ∘ f) 与 (h ∘ g) ∘ f 相等，图交换。**结合律使得「沿箭头走过去」这件事与括号无关，交换图才有意义**——否则同一条路径按不同分段方式复合会得到不同的函数，图无法表达任何东西。
 
-**(一) 不可交换。** 一般 g∘f ≠ f∘g——连两边是否都有定义都未必。就算都有定义也常不等：取 f, g : ℝ → ℝ，f(x) = x+1，g(x) = 2x，则 (g∘f)(x) = 2(x+1) = 2x+2，而 (f∘g)(x) = 2x+1。在 x = 0 处一个给 2、一个给 1，按函数相等的三件套（上一节的定义），两者不等。「先加一再翻倍」与「先翻倍再加一」当然不同——顺序就是信息。
+## 恒等函数
 
-**(二) 结合律。** 设 f : A → B，g : B → C，h : C → D。则
+**定义（恒等函数）** 对集合 X，定义 id_X : X → X，x ↦ x，称 X 上的**恒等函数**(identity function)。
 
-h ∘ (g∘f) = (h∘g) ∘ f。
+**命题** ∀f : X → Y : f ∘ id_X = f  ∧  id_Y ∘ f = f。
 
-**证明.** 两边都是 A → D 的函数（定义域、到达域已同），按 [[fond_funzioni|函数相等]] 只剩验逐点的值。任给 a ∈ A：左边给 h((g∘f)(a)) = h(g(f(a)))；右边给 (h∘g)(f(a)) = h(g(f(a)))。逐点相同。∎
+**证明** 三者定义域皆为 X、到达域皆为 Y。
 
-证明平淡，后果不平淡：括号既然怎么放都一样，干脆不写——h∘g∘f 从此是合法记号，任意长的接力链都不必操心结合顺序。
+∀x ∈ X : (f ∘ id_X)(x) = f(id_X(x)) = f(x)
+∀x ∈ X : (id_Y ∘ f)(x) = id_Y(f(x)) = f(x)
+（各步只用复合与 id 的定义）∎
 
-**(三) 恒等是单位。** 对任意 f : A → B：f ∘ id_A = f 且 id_B ∘ f = f（逐点一验即得）。恒等函数之于 ∘，恰如 1 之于乘法、0 之于加法——什么也不做的那个，地位最特殊。
+## 可逆当且仅当双射
 
-> 留意这个组合：一种运算（∘），满足结合律，有单位元（id），而且马上要看到「逆」。这三样性质凑在一起，是数学里出现频率最高的结构配方之一——它有专门的名字：**群**。正式定义留待 [[alg_gruppi|群]]。
+**命题（A–E 命题 3.5）** 设 f : X → Y。则
 
-## 复合保品质
+f 双射 ⟺ ∃g : Y → X，g ∘ f = id_X ∧ f ∘ g = id_Y，
 
-接力不糟蹋好品质。两条小引理（设 f : A → B，g : B → C）：
+且此时 g 由 f 唯一确定。
 
-**引理 1.** f、g 都是单射 ⟹ g∘f 是单射。
+**证明**
 
-**证明.** 标准开场白：设 (g∘f)(x) = (g∘f)(x′)，即 g(f(x)) = g(f(x′))。g 单射，剥掉一层得 f(x) = f(x′)；f 单射，再剥一层得 x = x′。∎（像剥洋葱：单射的本事就是「从外往里剥」。）
+**(i) ⟹.** 设 f 双射。
 
-**引理 2.** f、g 都是满射 ⟹ g∘f 是满射。
+f 满射 ⟹ ∀y ∈ Y, ∃x ∈ X : f(x) = y
+（存在性）
 
-**证明.** 任给 c ∈ C，倒着追射手：g 满，存在 b ∈ B 使 g(b) = c；f 满，存在 a ∈ A 使 f(a) = b。于是 (g∘f)(a) = g(f(a)) = g(b) = c。∎（满射的本事是「从外往里追」。）
+f 单射 ∧ f(x) = f(x′) = y ⟹ x = x′
+（唯一性）
 
-两条合起来：**双射的复合是双射**。
+⟹ ∀y ∈ Y, ∃!x ∈ X : f(x) = y
+
+（合起来正是[[fond_funzioni|「恰好一个」]]。于是可定义 g : Y → X，把 y 送到这个唯一的 x。）
+
+<svg viewBox="0 0 380 185" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <marker id="m4g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E0612F"/>
+    </marker>
+  </defs>
+  <ellipse cx="80" cy="90" rx="38" ry="62" fill="none" stroke="#888" stroke-width="1.3"/>
+  <ellipse cx="290" cy="90" rx="38" ry="62" fill="none" stroke="#888" stroke-width="1.3"/>
+  <text x="80" y="18" font-size="14" text-anchor="middle" fill="#333">X</text>
+  <text x="290" y="18" font-size="14" text-anchor="middle" fill="#333">Y</text>
+  <circle cx="80" cy="50" r="3.5" fill="#333"/><circle cx="80" cy="90" r="3.5" fill="#333"/><circle cx="80" cy="130" r="3.5" fill="#333"/>
+  <circle cx="290" cy="50" r="3.5" fill="#333"/><circle cx="290" cy="90" r="3.5" fill="#333"/><circle cx="290" cy="130" r="3.5" fill="#333"/>
+  <line x1="90" y1="47" x2="276" y2="47" stroke="#555" stroke-width="1.1" marker-end="url(#m4)"/>
+  <line x1="90" y1="127" x2="276" y2="127" stroke="#555" stroke-width="1.1" marker-end="url(#m4)"/>
+  <line x1="90" y1="84" x2="276" y2="84" stroke="#555" stroke-width="1.1" marker-end="url(#m4)"/>
+  <text x="183" y="78" font-size="12" text-anchor="middle" fill="#555">f</text>
+  <line x1="280" y1="97" x2="94" y2="97" stroke="#E0612F" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#m4g)"/>
+  <text x="183" y="112" font-size="12" text-anchor="middle" fill="#E0612F">g</text>
+  <text x="190" y="175" font-size="10" text-anchor="middle" fill="#777">双射把 X 与 Y 逐点配对；把每个 y 送回与它配对的那个 x，即得 g</text>
+</svg>
+
+验证两个等式：
+
+∀y ∈ Y : (f ∘ g)(y) = f(g(y)) = y ⟹ f ∘ g = id_Y
+（g(y) 按定义就是满足 f(·) = y 的那个元素）
+
+∀x ∈ X : (g ∘ f)(x) = g(f(x)) = x ⟹ g ∘ f = id_X
+（记 y := f(x)；x 满足 f(x) = y，而这样的元素唯一，故 g(y) = x）
+
+**(ii) ⟸.** 设 g 满足两个等式。
+
+f 满射：∀y ∈ Y : f(g(y)) = y ⟹ 取 x := g(y) 得 f(x) = y
+（用 f ∘ g = id_Y）
+
+f 单射：f(x) = f(x′)
+ ⟹ g(f(x)) = g(f(x′))
+ ⟹ (g ∘ f)(x) = (g ∘ f)(x′)
+ ⟹ id_X(x) = id_X(x′)
+ ⟹ x = x′
+（第 1 步两边作用 g；第 2 步复合的定义；第 3 步用 g ∘ f = id_X）
+
+**(iii) 唯一性.** 设 h : Y → X 也满足 h ∘ f = id_X ∧ f ∘ h = id_Y。
+
+g = g ∘ id_Y = g ∘ (f ∘ h) = (g ∘ f) ∘ h = id_X ∘ h = h
+（依次用：id 的单位性；f ∘ h = id_Y；结合律；g ∘ f = id_X；id 的单位性）∎
 
 ## 逆函数
 
-现在回应那个悬念。f : A → B 称为**可逆**(invertible)，若存在 g : B → A，使得
+**定义（逆函数）** 设 f : X → Y 双射。由上一命题，满足
 
-g ∘ f = id_A  且  f ∘ g = id_B。
+f ∘ f⁻¹ = id_Y  ∧  f⁻¹ ∘ f = id_X
 
-第一条说「先去再回，回到原地」（g 撤销 f），第二条说「先回再去，也回到原地」（f 撤销 g）。**两条都要**，一条不够——文末陷阱里有反例。
+的函数 f⁻¹ : Y → X 存在且唯一，称 f 的**逆函数**(inverse function)。
 
-**逆若存在则唯一。** 设 g、g′ 都满足上面两条。看这串推演：
+上式对 f 与 f⁻¹ 对称，故 f⁻¹ 也满足命题 3.5 的条件：
 
-g = g ∘ id_B = g ∘ (f ∘ g′) = (g ∘ f) ∘ g′ = id_A ∘ g′ = g′。
+f⁻¹ 双射 ∧ (f⁻¹)⁻¹ = f
+（把命题 3.5 中的 f 换成 f⁻¹、g 换成 f 即得）
 
-五步分别用了：单位、g′ 的第二条、**结合律**、g 的第一条、单位。∎ 唯一既证，专属记号有了着落：记作 **f⁻¹**。留意这个证明一个元素都没碰——全程只摆弄运算律。这种「不看内部、只用规律」的推理，正是将来代数的日常呼吸。
+**注（记号 f⁻¹ 的两种含义）** 对**任意**函数 f : X → Y（不要求双射）与 C ⊆ Y，记号
 
-**主定理.** f : A → B 可逆 ⟺ f 是双射。
+f⁻¹(C) := { x ∈ X : f(x) ∈ C }
 
-**证明.** 「⟹」设 f 可逆，逆为 g。*单射*：设 f(x) = f(x′)，两边用 g 作用：g(f(x)) = g(f(x′))，即 id_A(x) = id_A(x′)，即 x = x′。*满射*：任给 b ∈ B，取 a := g(b)，则 f(a) = f(g(b)) = id_B(b) = b——见证到手。
+表示 C 的**原像**(preimage)。特别地记 f⁻¹(y) := f⁻¹({y})，称 f 在 y 处的**纤维**(fiber)，它就是方程 f(x) = y 的解集，可能为空。原像的自变量是子集或点、取值是**子集**；逆函数的自变量是点、取值是**点**。f 双射时二者相容：{ f⁻¹(y) } = f⁻¹({y})。原像的系统性质留待下一节。
 
-「⟸」设 f 是双射，要亲手造出逆。任给 b ∈ B：f 满射，存在 a 使 f(a) = b；f 单射，这样的 a 至多一个。两条合并：**恰好存在一个** a 使 f(a) = b——又是 ∃!，正因唯一，「把 b 送到这个 a」才是合法的指派，得函数 g : B → A。验两条：对任意 a ∈ A，g(f(a)) 按定义是「被 f 打到 f(a) 的那个唯一元素」，而 a 自己就打中了，由唯一性 g(f(a)) = a，故 g∘f = id_A；对任意 b ∈ B，g(b) 是打中 b 的那个元素，所以 f(g(b)) = b，故 f∘g = id_B。∎
+**命题（A–E 命题 3.6）** f : X → Y 双射 ∧ g : Y → V 双射 ⟹ g ∘ f 双射，且
 
-回头看「⟸」的构造，会发现它就是上一节那句直觉的严格版：双射之下 B 的每个元素恰被一支箭打中，「沿箭头走回去」处处可行、绝无歧义——单射保证「无歧义」，满射保证「处处可行」，一人一岗。
+(g ∘ f)⁻¹ = f⁻¹ ∘ g⁻¹。
 
-例子接着上一节的活：f : ℝ → ℝ, x ↦ 2x+1 已证双射，按构造其逆为 f⁻¹(b) = (b−1)/2（就是当时满射证明里解出的那个见证！）。验算：f⁻¹(f(x)) = ((2x+1)−1)/2 = x，f(f⁻¹(b)) = 2·(b−1)/2 + 1 = b。两条都过。——满射证明里「解方程找见证」的活，和「求逆函数」原来是同一件事。
+**证明** f⁻¹ ∘ g⁻¹ : V → X。由命题 3.5，只需验两个复合皆为恒等：
 
-## 几个最容易栽跟头的地方
+(f⁻¹ ∘ g⁻¹) ∘ (g ∘ f) = f⁻¹ ∘ (g⁻¹ ∘ g) ∘ f = f⁻¹ ∘ id_Y ∘ f = f⁻¹ ∘ f = id_X
+(g ∘ f) ∘ (f⁻¹ ∘ g⁻¹) = g ∘ (f ∘ f⁻¹) ∘ g⁻¹ = g ∘ id_Y ∘ g⁻¹ = g ∘ g⁻¹ = id_V
+（两链第 1 步均用结合律重新分组，其后用逆的定义与 id 的单位性）
 
-- **f⁻¹ 不是 1/f。** 上例里 f⁻¹(x) = (x−1)/2，而 1/f(x) = 1/(2x+1)——风马牛。记号 ⁻¹ 在这里指「关于 ∘ 的逆」，不是「关于乘法的倒数」；撞车纯属历史包袱。
-- **单边撤销不够。** 取 A = {1}，B = {a, b}，f : A → B, f(1) = a，g : B → A 只能是常函数 g(a) = g(b) = 1。验 g∘f：g(f(1)) = g(a) = 1，确实 = id_A——左边撤销成立！可 f 不是双射（b 空置），也确实 (f∘g)(b) = f(1) = a ≠ b。**一条等式只担保一半品质**（细嚼主定理「⟹」的证明会发现：单射只用了第一条，满射只用了第二条），定义里两条缺一不可。
-- **复合的衔接**：写 g∘f 前先核对 f 的到达域等于 g 的定义域，对不上就是未定义——这也是「到达域是函数身份的一部分」的又一次应用。
+由命题 3.5，g ∘ f 双射且其逆为 f⁻¹ ∘ g⁻¹。∎
 
-## 一道激活练习
+<svg viewBox="0 0 440 195" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="m5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <marker id="m5o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E0612F"/>
+    </marker>
+  </defs>
+  <ellipse cx="70" cy="80" rx="30" ry="42" fill="none" stroke="#888" stroke-width="1.3"/>
+  <ellipse cx="220" cy="80" rx="30" ry="42" fill="none" stroke="#888" stroke-width="1.3"/>
+  <ellipse cx="370" cy="80" rx="30" ry="42" fill="none" stroke="#888" stroke-width="1.3"/>
+  <text x="70" y="26" font-size="14" text-anchor="middle" fill="#333">X</text>
+  <text x="220" y="26" font-size="14" text-anchor="middle" fill="#333">Y</text>
+  <text x="370" y="26" font-size="14" text-anchor="middle" fill="#333">V</text>
+  <line x1="103" y1="66" x2="185" y2="66" stroke="#555" stroke-width="1.2" marker-end="url(#m5)"/>
+  <line x1="253" y1="66" x2="335" y2="66" stroke="#555" stroke-width="1.2" marker-end="url(#m5)"/>
+  <text x="144" y="58" font-size="12" text-anchor="middle" fill="#555">f</text>
+  <text x="294" y="58" font-size="12" text-anchor="middle" fill="#555">g</text>
+  <line x1="337" y1="96" x2="255" y2="96" stroke="#E0612F" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m5o)"/>
+  <line x1="187" y1="96" x2="105" y2="96" stroke="#E0612F" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m5o)"/>
+  <text x="296" y="112" font-size="12" text-anchor="middle" fill="#E0612F">g⁻¹</text>
+  <text x="146" y="112" font-size="12" text-anchor="middle" fill="#E0612F">f⁻¹</text>
+  <text x="220" y="160" font-size="11" text-anchor="middle" fill="#777">去程 X→V 先 f 后 g；回程 V→X 只能先 g⁻¹ 后 f⁻¹</text>
+  <text x="220" y="180" font-size="11" text-anchor="middle" fill="#E0612F">故 (g ∘ f)⁻¹ = f⁻¹ ∘ g⁻¹，右端次序颠倒</text>
+</svg>
 
-设 f : A → B 与 g : B → C 都是双射。证明 g∘f（由引理 1、2 已知是双射，故可逆）的逆是
+## 例
 
-(g∘f)⁻¹ = f⁻¹ ∘ g⁻¹。
+f : ℝ → ℝ，f(x) := 2x + 1。
 
-注意右边的**顺序反了过来**。先想一想为什么必须反——「先穿袜子后穿鞋」，脱的时候谁先脱？——再动手证。（提示：逆是唯一的，所以只需验证 f⁻¹∘g⁻¹ 满足逆的两条定义等式；通篇只用结合律和单位元，一个元素都不必碰。）
+f 单射：2x + 1 = 2x′ + 1 ⟹ 2x = 2x′ ⟹ x = x′
+f 满射：∀y ∈ ℝ，取 x := (y − 1)/2 ⟹ f(x) = 2·(y−1)/2 + 1 = y
+⟹ f 双射，f⁻¹(y) = (y − 1)/2
+
+验证：
+f⁻¹(f(x)) = ((2x + 1) − 1)/2 = x
+f(f⁻¹(y)) = 2·(y − 1)/2 + 1 = y
+
+<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <line x1="30" y1="198.6" x2="285" y2="198.6" stroke="#bbb" stroke-width="1"/>
+  <line x1="101.4" y1="15" x2="101.4" y2="275" stroke="#bbb" stroke-width="1"/>
+  <text x="288" y="202" font-size="10" fill="#999">x</text>
+  <text x="106" y="18" font-size="10" fill="#999">y</text>
+  <line x1="30" y1="270" x2="280" y2="20" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="246" y="40" font-size="10" fill="#999">y = x</text>
+  <line x1="65.7" y1="234.3" x2="172.9" y2="20" stroke="#E0612F" stroke-width="2"/>
+  <text x="177" y="28" font-size="11" fill="#E0612F">f</text>
+  <line x1="65.7" y1="234.3" x2="280" y2="127.1" stroke="#5A5FE0" stroke-width="2"/>
+  <text x="256" y="118" font-size="11" fill="#5A5FE0">f⁻¹</text>
+  <circle cx="101.4" cy="162.9" r="3.5" fill="#E0612F"/>
+  <text x="66" y="158" font-size="10" fill="#E0612F">(0,1)</text>
+  <circle cx="137.1" cy="198.6" r="3.5" fill="#5A5FE0"/>
+  <text x="142" y="215" font-size="10" fill="#5A5FE0">(1,0)</text>
+  <line x1="101.4" y1="162.9" x2="137.1" y2="198.6" stroke="#777" stroke-width="0.8" stroke-dasharray="3,2"/>
+</svg>
+
+两图像关于直线 y = x 对称。理由：由[[fond_funzioni|函数即其图像]]，
+
+(a, b) ∈ f ⟺ b = f(a) ⟺ a = f⁻¹(b) ⟺ (b, a) ∈ f⁻¹
+（中间一步用逆函数的定义）
+
+而 (a, b) ↦ (b, a) 就是平面上关于 y = x 的反射。（此处用到 ℝ 与平面坐标，均为借用。）
+
+## 练习
+
+(a) 设 f : X → Y，g : Y → X，g ∘ f = id_X（**只**假设这一个等式）。证明 f 单射、g 满射；再举一例说明此时 f 不必满射。
+
+(b) 证明：f : X → Y 单射 ∧ g : Y → V 单射 ⟹ g ∘ f 单射。
+
+(c) 求 f : ℝ → ℝ，f(x) = 3x − 4 的逆函数，并验证两个恒等式。
 
 ## 参考解答
 
-（建议先自己写完再看。）思路：要证「某物是 (g∘f) 的逆」，由逆的唯一性，只需验证它满足两条定义等式。记 h := f⁻¹∘g⁻¹ : C → A（衔接合法：g⁻¹ : C → B，f⁻¹ : B → A）。
+**(a)** f 单射：
 
-**第一条** h ∘ (g∘f) = id_A：
+f(x) = f(x′) ⟹ g(f(x)) = g(f(x′)) ⟹ id_X(x) = id_X(x′) ⟹ x = x′
+（第 1 步两边作用 g；第 2 步用 g ∘ f = id_X）
 
-```
-(f⁻¹∘g⁻¹) ∘ (g∘f)
-= f⁻¹ ∘ (g⁻¹∘g) ∘ f     （结合律——括号随便挪）
-= f⁻¹ ∘ id_B ∘ f         （g⁻¹∘g = id_B）
-= f⁻¹ ∘ f                 （id 是单位）
-= id_A。
-```
+g 满射：
 
-**第二条** (g∘f) ∘ h = id_C：
+∀x ∈ X，取 y := f(x) ∈ Y ⟹ g(y) = g(f(x)) = id_X(x) = x
+（X 的每个元素都在 g 的像中）
 
-```
-(g∘f) ∘ (f⁻¹∘g⁻¹)
-= g ∘ (f∘f⁻¹) ∘ g⁻¹     （结合律）
-= g ∘ id_B ∘ g⁻¹          （f∘f⁻¹ = id_B）
-= g ∘ g⁻¹                  （id 是单位）
-= id_C。
-```
+f 不必满射的例子：X := {0}，Y := {0, 1}，f(0) := 0，g(0) := g(1) := 0。
 
-两条都成立，由逆的唯一性，(g∘f)⁻¹ = f⁻¹∘g⁻¹。∎
+(g ∘ f)(0) = g(0) = 0 = id_X(0) ⟹ g ∘ f = id_X
+f(X) = {0} ∌ 1 ⟹ f 不满射 ∎
 
-顺序为何必须反，现在看得真切：消去要**从中间烧起**——(g∘f) 的左边只有先贴上 f⁻¹…g⁻¹ 中靠右的 g⁻¹，才能让 g⁻¹∘g 在链条中央相遇湮灭，露出里面的 f 再被 f⁻¹ 接走。穿衣是 f 先 g 后（袜子先鞋后），脱衣只能 g 先 f 后（鞋先袜后）。也再次留意：全程没碰过任何元素——和唯一性的证明一样，纯靠运算律行走。
+对照命题 3.5：**只有一个等式时只能得到「f 单射、g 满射」，两个等式同时成立才给出双射。** 这也说明命题 3.5 里那两个等式缺一不可。
 
-## 往前看一步
+**(b)** (g ∘ f)(x) = (g ∘ f)(x′)
+ ⟹ g(f(x)) = g(f(x′))
+ ⟹ f(x) = f(x′)
+ ⟹ x = x′
+（第 2 步用 g 单射；第 3 步用 f 单射）∎
 
-地基的工具箱就此配齐：双射是「完美配对」，而且我们现在知道它可逆、可复合、复合还保双射。于是一个古老的问题第一次有了严格的问法：两个集合什么时候算「**一样多**」？答曰——它们之间存在一个双射。这个回答对有限集合不过是常识；可一旦放到无穷集合上，它将掀翻你的直觉：你会看到「部分可以和整体一样多」，也会看到「无穷与无穷竟分大小」。这就是 [[fond_cardinalita|等势与可数性]] 的内容。
+**(c)** y = 3x − 4 ⟹ x = (y + 4)/3 ⟹ f⁻¹(y) = (y + 4)/3
+
+f⁻¹(f(x)) = ((3x − 4) + 4)/3 = 3x/3 = x
+f(f⁻¹(y)) = 3·(y + 4)/3 − 4 = (y + 4) − 4 = y ∎
+
+## 前瞻
+
+上面那条注里出现的原像 f⁻¹(C)，对任意函数都有定义，且与像 f(A) 一样，可以看作 P(Y) → P(X) 与 P(X) → P(Y) 上的函数。它们在并、交、补之下的行为并不对称——原像与三种运算都可交换，像却只对并可交换。这是下一节的内容。
