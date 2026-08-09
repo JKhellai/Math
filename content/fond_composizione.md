@@ -22,7 +22,7 @@ g ∘ f : X → V，  x ↦ g(f(x))，
 
 g ∘ f 是函数：
 
-∀x ∈ X : f(x) ∈ Y 唯一确定 ⟹ g(f(x)) ∈ V 唯一确定
+∀x ∈ X : f(x) ∈ Y 唯一确定 ⟹ g(f(x)) ∈ V 唯一确定<br>
 （第一步因 f 是函数，第二步因 g 是函数；于是每个 x 恰好对应 V 中一个元素，符合[[fond_funzioni|函数]]的定义）
 
 **注** 记号 g ∘ f 中 g 写在左边，先作用的却是 f。这个顺序来自 g(f(x)) 的写法。
@@ -64,14 +64,14 @@ g ∘ f 是函数：
 
 **证明** 先验两边有定义、且定义域到达域相同：
 
-g ∘ f : X → U，h : U → V ⟹ h ∘ (g ∘ f) : X → V
-h ∘ g : Y → V，f : X → Y ⟹ (h ∘ g) ∘ f : X → V
+g ∘ f : X → U，h : U → V ⟹ h ∘ (g ∘ f) : X → V<br>
+h ∘ g : Y → V，f : X → Y ⟹ (h ∘ g) ∘ f : X → V<br>
 （两次都是复合的衔接条件成立）
 
 再逐点验值。由[[fond_funzioni|函数相等]]的定义，这一步不能省：
 
-∀x ∈ X : ((h ∘ g) ∘ f)(x) = (h ∘ g)(f(x)) = h(g(f(x)))
-∀x ∈ X : (h ∘ (g ∘ f))(x) = h((g ∘ f)(x)) = h(g(f(x)))
+∀x ∈ X : ((h ∘ g) ∘ f)(x) = (h ∘ g)(f(x)) = h(g(f(x)))<br>
+∀x ∈ X : (h ∘ (g ∘ f))(x) = h((g ∘ f)(x)) = h(g(f(x)))<br>
 （两行各步都只用复合的定义；末端相同）∎
 
 <svg viewBox="0 0 440 175" xmlns="http://www.w3.org/2000/svg">
@@ -108,8 +108,8 @@ h ∘ g : Y → V，f : X → Y ⟹ (h ∘ g) ∘ f : X → V
 
 **注（复合不交换）** 即使 g ∘ f 与 f ∘ g 都有定义，二者一般不等。取 X = Y = V = ℝ（ℝ 此处按熟悉的方式借用，严格构造留待后面），f(x) := x + 1，g(x) := x²：
 
-(g ∘ f)(x) = (x + 1)² = x² + 2x + 1，  (f ∘ g)(x) = x² + 1
-x = 1 ⟹ (g ∘ f)(1) = 4 ≠ 2 = (f ∘ g)(1) ⟹ g ∘ f ≠ f ∘ g
+(g ∘ f)(x) = (x + 1)² = x² + 2x + 1，  (f ∘ g)(x) = x² + 1<br>
+x = 1 ⟹ (g ∘ f)(1) = 4 ≠ 2 = (f ∘ g)(1) ⟹ g ∘ f ≠ f ∘ g<br>
 （一个反例即足以否定相等，因函数相等要求逐点相等）
 
 ## 交换图
@@ -156,21 +156,21 @@ x = 1 ⟹ (g ∘ f)(1) = 4 ≠ 2 = (f ∘ g)(1) ⟹ g ∘ f ≠ f ∘ g
 
 ## 恒等函数
 
-**定义（恒等函数）** 对集合 X，定义 id_X : X → X，x ↦ x，称 X 上的**恒等函数**(identity function)。
+**定义（恒等函数）** 对集合 X，定义 id<sub>X</sub> : X → X，x ↦ x，称 X 上的**恒等函数**(identity function)。
 
-**命题** ∀f : X → Y : f ∘ id_X = f  ∧  id_Y ∘ f = f。
+**命题** ∀f : X → Y : f ∘ id<sub>X</sub> = f  ∧  id<sub>Y</sub> ∘ f = f。
 
 **证明** 三者定义域皆为 X、到达域皆为 Y。
 
-∀x ∈ X : (f ∘ id_X)(x) = f(id_X(x)) = f(x)
-∀x ∈ X : (id_Y ∘ f)(x) = id_Y(f(x)) = f(x)
+∀x ∈ X : (f ∘ id<sub>X</sub>)(x) = f(id<sub>X</sub>(x)) = f(x)<br>
+∀x ∈ X : (id<sub>Y</sub> ∘ f)(x) = id<sub>Y</sub>(f(x)) = f(x)<br>
 （各步只用复合与 id 的定义）∎
 
 ## 可逆当且仅当双射
 
 **命题（A–E 命题 3.5）** 设 f : X → Y。则
 
-f 双射 ⟺ ∃g : Y → X，g ∘ f = id_X ∧ f ∘ g = id_Y，
+f 双射 ⟺ ∃g : Y → X，g ∘ f = id<sub>X</sub> ∧ f ∘ g = id<sub>Y</sub>，
 
 且此时 g 由 f 唯一确定。
 
@@ -178,10 +178,10 @@ f 双射 ⟺ ∃g : Y → X，g ∘ f = id_X ∧ f ∘ g = id_Y，
 
 **(i) ⟹.** 设 f 双射。
 
-f 满射 ⟹ ∀y ∈ Y, ∃x ∈ X : f(x) = y
+f 满射 ⟹ ∀y ∈ Y, ∃x ∈ X : f(x) = y<br>
 （存在性）
 
-f 单射 ∧ f(x) = f(x′) = y ⟹ x = x′
+f 单射 ∧ f(x) = f(x′) = y ⟹ x = x′<br>
 （唯一性）
 
 ⟹ ∀y ∈ Y, ∃!x ∈ X : f(x) = y
@@ -214,40 +214,40 @@ f 单射 ∧ f(x) = f(x′) = y ⟹ x = x′
 
 验证两个等式：
 
-∀y ∈ Y : (f ∘ g)(y) = f(g(y)) = y ⟹ f ∘ g = id_Y
+∀y ∈ Y : (f ∘ g)(y) = f(g(y)) = y ⟹ f ∘ g = id<sub>Y</sub><br>
 （g(y) 按定义就是满足 f(·) = y 的那个元素）
 
-∀x ∈ X : (g ∘ f)(x) = g(f(x)) = x ⟹ g ∘ f = id_X
+∀x ∈ X : (g ∘ f)(x) = g(f(x)) = x ⟹ g ∘ f = id<sub>X</sub><br>
 （记 y := f(x)；x 满足 f(x) = y，而这样的元素唯一，故 g(y) = x）
 
 **(ii) ⟸.** 设 g 满足两个等式。
 
-f 满射：∀y ∈ Y : f(g(y)) = y ⟹ 取 x := g(y) 得 f(x) = y
-（用 f ∘ g = id_Y）
+f 满射：∀y ∈ Y : f(g(y)) = y ⟹ 取 x := g(y) 得 f(x) = y<br>
+（用 f ∘ g = id<sub>Y</sub>）
 
-f 单射：f(x) = f(x′)
- ⟹ g(f(x)) = g(f(x′))
- ⟹ (g ∘ f)(x) = (g ∘ f)(x′)
- ⟹ id_X(x) = id_X(x′)
- ⟹ x = x′
-（第 1 步两边作用 g；第 2 步复合的定义；第 3 步用 g ∘ f = id_X）
+f 单射：f(x) = f(x′)<br>
+ ⟹ g(f(x)) = g(f(x′))<br>
+ ⟹ (g ∘ f)(x) = (g ∘ f)(x′)<br>
+ ⟹ id<sub>X</sub>(x) = id<sub>X</sub>(x′)<br>
+ ⟹ x = x′<br>
+（第 1 步两边作用 g；第 2 步复合的定义；第 3 步用 g ∘ f = id<sub>X</sub>）
 
-**(iii) 唯一性.** 设 h : Y → X 也满足 h ∘ f = id_X ∧ f ∘ h = id_Y。
+**(iii) 唯一性.** 设 h : Y → X 也满足 h ∘ f = id<sub>X</sub> ∧ f ∘ h = id<sub>Y</sub>。
 
-g = g ∘ id_Y = g ∘ (f ∘ h) = (g ∘ f) ∘ h = id_X ∘ h = h
-（依次用：id 的单位性；f ∘ h = id_Y；结合律；g ∘ f = id_X；id 的单位性）∎
+g = g ∘ id<sub>Y</sub> = g ∘ (f ∘ h) = (g ∘ f) ∘ h = id<sub>X</sub> ∘ h = h<br>
+（依次用：id 的单位性；f ∘ h = id<sub>Y</sub>；结合律；g ∘ f = id<sub>X</sub>；id 的单位性）∎
 
 ## 逆函数
 
 **定义（逆函数）** 设 f : X → Y 双射。由上一命题，满足
 
-f ∘ f⁻¹ = id_Y  ∧  f⁻¹ ∘ f = id_X
+f ∘ f⁻¹ = id<sub>Y</sub>  ∧  f⁻¹ ∘ f = id<sub>X</sub>
 
 的函数 f⁻¹ : Y → X 存在且唯一，称 f 的**逆函数**(inverse function)。
 
 上式对 f 与 f⁻¹ 对称，故 f⁻¹ 也满足命题 3.5 的条件：
 
-f⁻¹ 双射 ∧ (f⁻¹)⁻¹ = f
+f⁻¹ 双射 ∧ (f⁻¹)⁻¹ = f<br>
 （把命题 3.5 中的 f 换成 f⁻¹、g 换成 f 即得）
 
 **注（记号 f⁻¹ 的两种含义）** 对**任意**函数 f : X → Y（不要求双射）与 C ⊆ Y，记号
@@ -262,8 +262,8 @@ f⁻¹(C) := { x ∈ X : f(x) ∈ C }
 
 **证明** f⁻¹ ∘ g⁻¹ : V → X。由命题 3.5，只需验两个复合皆为恒等：
 
-(f⁻¹ ∘ g⁻¹) ∘ (g ∘ f) = f⁻¹ ∘ (g⁻¹ ∘ g) ∘ f = f⁻¹ ∘ id_Y ∘ f = f⁻¹ ∘ f = id_X
-(g ∘ f) ∘ (f⁻¹ ∘ g⁻¹) = g ∘ (f ∘ f⁻¹) ∘ g⁻¹ = g ∘ id_Y ∘ g⁻¹ = g ∘ g⁻¹ = id_V
+(f⁻¹ ∘ g⁻¹) ∘ (g ∘ f) = f⁻¹ ∘ (g⁻¹ ∘ g) ∘ f = f⁻¹ ∘ id<sub>Y</sub> ∘ f = f⁻¹ ∘ f = id<sub>X</sub><br>
+(g ∘ f) ∘ (f⁻¹ ∘ g⁻¹) = g ∘ (f ∘ f⁻¹) ∘ g⁻¹ = g ∘ id<sub>Y</sub> ∘ g⁻¹ = g ∘ g⁻¹ = id<sub>V</sub><br>
 （两链第 1 步均用结合律重新分组，其后用逆的定义与 id 的单位性）
 
 由命题 3.5，g ∘ f 双射且其逆为 f⁻¹ ∘ g⁻¹。∎
@@ -299,12 +299,12 @@ f⁻¹(C) := { x ∈ X : f(x) ∈ C }
 
 f : ℝ → ℝ，f(x) := 2x + 1。
 
-f 单射：2x + 1 = 2x′ + 1 ⟹ 2x = 2x′ ⟹ x = x′
-f 满射：∀y ∈ ℝ，取 x := (y − 1)/2 ⟹ f(x) = 2·(y−1)/2 + 1 = y
+f 单射：2x + 1 = 2x′ + 1 ⟹ 2x = 2x′ ⟹ x = x′<br>
+f 满射：∀y ∈ ℝ，取 x := (y − 1)/2 ⟹ f(x) = 2·(y−1)/2 + 1 = y<br>
 ⟹ f 双射，f⁻¹(y) = (y − 1)/2
 
-验证：
-f⁻¹(f(x)) = ((2x + 1) − 1)/2 = x
+验证：<br>
+f⁻¹(f(x)) = ((2x + 1) − 1)/2 = x<br>
 f(f⁻¹(y)) = 2·(y − 1)/2 + 1 = y
 
 <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
@@ -327,14 +327,14 @@ f(f⁻¹(y)) = 2·(y − 1)/2 + 1 = y
 
 两图像关于直线 y = x 对称。理由：由[[fond_funzioni|函数即其图像]]，
 
-(a, b) ∈ f ⟺ b = f(a) ⟺ a = f⁻¹(b) ⟺ (b, a) ∈ f⁻¹
+(a, b) ∈ f ⟺ b = f(a) ⟺ a = f⁻¹(b) ⟺ (b, a) ∈ f⁻¹<br>
 （中间一步用逆函数的定义）
 
 而 (a, b) ↦ (b, a) 就是平面上关于 y = x 的反射。（此处用到 ℝ 与平面坐标，均为借用。）
 
 ## 练习
 
-(a) 设 f : X → Y，g : Y → X，g ∘ f = id_X（**只**假设这一个等式）。证明 f 单射、g 满射；再举一例说明此时 f 不必满射。
+(a) 设 f : X → Y，g : Y → X，g ∘ f = id<sub>X</sub>（**只**假设这一个等式）。证明 f 单射、g 满射；再举一例说明此时 f 不必满射。
 
 (b) 证明：f : X → Y 单射 ∧ g : Y → V 单射 ⟹ g ∘ f 单射。
 
@@ -344,30 +344,30 @@ f(f⁻¹(y)) = 2·(y − 1)/2 + 1 = y
 
 **(a)** f 单射：
 
-f(x) = f(x′) ⟹ g(f(x)) = g(f(x′)) ⟹ id_X(x) = id_X(x′) ⟹ x = x′
-（第 1 步两边作用 g；第 2 步用 g ∘ f = id_X）
+f(x) = f(x′) ⟹ g(f(x)) = g(f(x′)) ⟹ id<sub>X</sub>(x) = id<sub>X</sub>(x′) ⟹ x = x′<br>
+（第 1 步两边作用 g；第 2 步用 g ∘ f = id<sub>X</sub>）
 
 g 满射：
 
-∀x ∈ X，取 y := f(x) ∈ Y ⟹ g(y) = g(f(x)) = id_X(x) = x
+∀x ∈ X，取 y := f(x) ∈ Y ⟹ g(y) = g(f(x)) = id<sub>X</sub>(x) = x<br>
 （X 的每个元素都在 g 的像中）
 
 f 不必满射的例子：X := {0}，Y := {0, 1}，f(0) := 0，g(0) := g(1) := 0。
 
-(g ∘ f)(0) = g(0) = 0 = id_X(0) ⟹ g ∘ f = id_X
+(g ∘ f)(0) = g(0) = 0 = id<sub>X</sub>(0) ⟹ g ∘ f = id<sub>X</sub><br>
 f(X) = {0} ∌ 1 ⟹ f 不满射 ∎
 
 对照命题 3.5：**只有一个等式时只能得到「f 单射、g 满射」，两个等式同时成立才给出双射。** 这也说明命题 3.5 里那两个等式缺一不可。
 
-**(b)** (g ∘ f)(x) = (g ∘ f)(x′)
- ⟹ g(f(x)) = g(f(x′))
- ⟹ f(x) = f(x′)
- ⟹ x = x′
+**(b)** (g ∘ f)(x) = (g ∘ f)(x′)<br>
+ ⟹ g(f(x)) = g(f(x′))<br>
+ ⟹ f(x) = f(x′)<br>
+ ⟹ x = x′<br>
 （第 2 步用 g 单射；第 3 步用 f 单射）∎
 
 **(c)** y = 3x − 4 ⟹ x = (y + 4)/3 ⟹ f⁻¹(y) = (y + 4)/3
 
-f⁻¹(f(x)) = ((3x − 4) + 4)/3 = 3x/3 = x
+f⁻¹(f(x)) = ((3x − 4) + 4)/3 = 3x/3 = x<br>
 f(f⁻¹(y)) = 3·(y + 4)/3 − 4 = (y + 4) − 4 = y ∎
 
 ## 前瞻
