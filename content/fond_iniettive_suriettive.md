@@ -82,24 +82,64 @@ g : ℝ → [0, ∞)，x ↦ x²  是满射<br>
 
 ## 例：投影
 
-**例（A–E 例 3.4(b)）** 设 X₁, …, X<sub>n</sub> 非空。则对每个 k，[[fond_relazioni|投影]]
+先回忆[[fond_relazioni|笛卡尔积与投影]]的定义。给定 n 个集合 X₁, X₂, …, X<sub>n</sub>，它们的积
+
+X₁ × X₂ × ⋯ × X<sub>n</sub>
+
+的元素是形如 (x₁, x₂, …, x<sub>n</sub>) 的 n 元组，其中**每个分量 x<sub>j</sub> 取自对应的 X<sub>j</sub>**（j = 1, 2, …, n）。第 k 个投影就是「只保留第 k 个分量」的函数：
 
 pr<sub>k</sub> : X₁ × ⋯ × X<sub>n</sub> → X<sub>k</sub>，  (x₁, …, x<sub>n</sub>) ↦ x<sub>k</sub>
 
-是**满射**，但一般**不是单射**。
+这里 j 与 k 都是取值于 {1, …, n} 的指标；k 是选定的那一个（要保留哪个分量），j 用来遍历全部 n 个位置。
 
-**满射的验证**：任给 a ∈ X<sub>k</sub>，因各 X<sub>j</sub> 非空，可从每个 X<sub>j</sub>（j ≠ k）任取一个元素 c<sub>j</sub>，构造
+**具体例子一（n = 2）** 取 X₁ = X₂ = ℝ，则积是平面 ℝ²，而
 
-x := (c₁, …, c<sub>k−1</sub>, a, c<sub>k+1</sub>, …, c<sub>n</sub>)<br>
-⟹ pr<sub>k</sub>(x) = a
+pr₁ : ℝ² → ℝ，  (x, y) ↦ x
 
-故 X<sub>k</sub> 的每个元素都被取到。（**这里用到了各 X<sub>j</sub> 非空**——若某个 X<sub>j</sub> = ∅，则整个积为空，投影没有可用的原像。）
+把平面上的点送到它的横坐标。
 
-**非单射的反例**：取 n = 2，X₁ = X₂ = {0, 1}，k = 1。则
+<svg viewBox="0 0 420 190" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="155" x2="320" y2="155" stroke="#888" stroke-width="1.3"/>
+<text x="326" y="159" font-size="12" fill="#555">ℝ</text>
+<text x="46" y="30" font-size="12" fill="#555">ℝ²</text>
+<rect x="55" y="35" width="245" height="105" fill="#979AFF" fill-opacity="0.07" stroke="#5A5FE0" stroke-width="1" stroke-dasharray="4,3"/>
+<line x1="90" y1="45" x2="90" y2="150" stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="160" y1="45" x2="160" y2="150" stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="230" y1="45" x2="230" y2="150" stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+<circle cx="90" cy="55" r="3.5" fill="#E0612F"/><circle cx="90" cy="85" r="3.5" fill="#E0612F"/><circle cx="90" cy="115" r="3.5" fill="#E0612F"/>
+<circle cx="160" cy="55" r="3.5" fill="#00A070"/><circle cx="160" cy="85" r="3.5" fill="#00A070"/><circle cx="160" cy="115" r="3.5" fill="#00A070"/>
+<circle cx="230" cy="55" r="3.5" fill="#5A5FE0"/><circle cx="230" cy="85" r="3.5" fill="#5A5FE0"/><circle cx="230" cy="115" r="3.5" fill="#5A5FE0"/>
+<circle cx="90" cy="155" r="4.5" fill="#E0612F"/>
+<circle cx="160" cy="155" r="4.5" fill="#00A070"/>
+<circle cx="230" cy="155" r="4.5" fill="#5A5FE0"/>
+<text x="180" y="180" font-size="10" text-anchor="middle" fill="#777">同一条竖线上的点横坐标相同，全被送到 ℝ 上同一点</text>
+</svg>
 
-pr₁(0, 0) = 0 = pr₁(0, 1)，而 (0,0) ≠ (0,1)
+图中每条竖线上的三个点横坐标相同，因此被 pr₁ 送到 ℝ 上的同一个点——**不是单射**。另一方面，ℝ 上任何一点 a 都有原像（例如 (a, 0)）——**是满射**。
 
-两个不同的输入给出同一个值，故 pr₁ 不是单射。∎
+**具体例子二（有限集）** 取 n = 2，X₁ = X₂ = {0, 1}。则
+
+X₁ × X₂ = { (0,0), (0,1), (1,0), (1,1) }
+
+而 pr₁ 把这四个元素分别送到 0, 0, 1, 1。可以看到：
+
+pr₁(0,0) = 0 = pr₁(0,1)，而 (0,0) ≠ (0,1)  ⟹ **非单射**<br>
+X₁ = {0,1} 的两个元素都被取到  ⟹ **满射**
+
+**一般情形（A–E 例 3.4(b)）** 设 X₁, …, X<sub>n</sub> 都非空，k ∈ {1, …, n}。则 pr<sub>k</sub> 是**满射**，但一般**不是单射**。
+
+**满射的证明** 任给 a ∈ X<sub>k</sub>，要造出一个原像，即造出一个 n 元组，其第 k 个分量是 a。
+
+第 k 个位置放 a。其余每个位置 j（j ≠ k）需要填一个 X<sub>j</sub> 中的元素——**因为 X<sub>j</sub> 非空，可以任取一个**，记作 c<sub>j</sub>。于是得到
+
+x := (c₁, …, c<sub>k−1</sub>, a, c<sub>k+1</sub>, …, c<sub>n</sub>) ∈ X₁ × ⋯ × X<sub>n</sub><br>
+⟹ pr<sub>k</sub>(x) = a（第 k 个分量正是 a）
+
+故 X<sub>k</sub> 的每个元素都有原像，pr<sub>k</sub> 满射。∎
+
+**非空条件为什么必需**：若某个 X<sub>j</sub> = ∅（j ≠ k），则上面第 j 个位置无元素可填，构造不出 x。事实上此时整个积 X₁ × ⋯ × X<sub>n</sub> = ∅（由[[fond_relazioni|命题 2.6]]），于是 pr<sub>k</sub> 是从空集出发的函数，像为空，而 X<sub>k</sub> 非空——不是满射。
+
+**非单射** 上面的具体例子二已给出反例。一般地，只要**存在某个 j ≠ k 使 X<sub>j</sub> 至少有两个元素**，就能仿照那个例子造出两个只在第 j 位不同的 n 元组，它们的第 k 个分量相同，故 pr<sub>k</sub> 非单射。（若所有 j ≠ k 的 X<sub>j</sub> 都是单元素集，则 pr<sub>k</sub> 反而是单射——这就是「一般不是」而非「一定不是」的原因。）
 
 ## 否定形式
 
