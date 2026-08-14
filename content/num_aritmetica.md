@@ -160,13 +160,75 @@ m ∈ M ⟹ ν(m) ∈ M：设 m ⊡ n = m ⊟ n，则
 
 再证：这样的运算**确实存在**。难点在于「递归定义是否合法」——上面那两条规定看起来定义了加法，但严格说来，我们还没有证明真有这样一个函数存在。
 
-**思路**：对每个固定的 n，先造出一个函数 φ<sub>n</sub> : ℕ → ℕ，它承担「n 加上某数」的角色。
+### 先看清要造的是什么
+
+思路是：对每个固定的 n，造一个函数 φ<sub>n</sub> : ℕ → ℕ，让它承担「n 加上某数」的职责。
+
+**φ<sub>n</sub> 应该是什么？** 按我们想要的加法，φ<sub>n</sub> 将满足 φ<sub>n</sub>(m) = n + ν(m)，也就是「先加 n，再加 1」。取 n = 2 具体看一遍：
+
+φ₂(0) = 3，  φ₂(1) = 4，  φ₂(2) = 5，  φ₂(3) = 6，  …
+
+即 φ₂ 是「加 3」这个函数。
+
+**但不能这样定义它。** 「加 3」这句话本身就用到了加法，而加法正是我们要造的东西——直接说「令 φ<sub>n</sub> 为加 n+1 的函数」是循环论证。
+
+出路是**不说它是什么，只说它怎么走**：规定起点，再规定每一步如何由上一步得到。对 φ₂：
+
+**起点** φ₂(0) = 3　（即 ν(2)）<br>
+**步进** φ₂(下一个) = 下一个(φ₂(当前))　（即 φ₂(ν(m)) = ν(φ₂(m))）
+
+照这两条走一遍：
+
+φ₂(0) = ν(2) = 3<br>
+φ₂(1) = φ₂(ν(0)) = ν(φ₂(0)) = ν(3) = 4<br>
+φ₂(2) = φ₂(ν(1)) = ν(φ₂(1)) = ν(4) = 5<br>
+φ₂(3) = φ₂(ν(2)) = ν(φ₂(2)) = ν(5) = 6
+
+<svg viewBox="0 0 420 155" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="pa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#5A5FE0"/>
+</marker>
+<marker id="pb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#E0612F"/>
+</marker>
+</defs>
+<text x="20" y="42" font-size="12" fill="#5A5FE0">输入</text>
+<text x="70" y="42" font-size="14" text-anchor="middle" fill="#333">0</text>
+<text x="150" y="42" font-size="14" text-anchor="middle" fill="#333">1</text>
+<text x="230" y="42" font-size="14" text-anchor="middle" fill="#333">2</text>
+<text x="310" y="42" font-size="14" text-anchor="middle" fill="#333">3</text>
+<text x="370" y="42" font-size="14" fill="#999">⋯</text>
+<line x1="82" y1="38" x2="138" y2="38" stroke="#5A5FE0" stroke-width="1.2" marker-end="url(#pa)"/>
+<line x1="162" y1="38" x2="218" y2="38" stroke="#5A5FE0" stroke-width="1.2" marker-end="url(#pa)"/>
+<line x1="242" y1="38" x2="298" y2="38" stroke="#5A5FE0" stroke-width="1.2" marker-end="url(#pa)"/>
+<text x="110" y="30" font-size="10" text-anchor="middle" fill="#5A5FE0">ν</text>
+<line x1="70" y1="52" x2="70" y2="88" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="150" y1="52" x2="150" y2="88" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="230" y1="52" x2="230" y2="88" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+<line x1="310" y1="52" x2="310" y2="88" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="14" y="108" font-size="12" fill="#E0612F">φ₂ 的值</text>
+<text x="70" y="108" font-size="14" text-anchor="middle" fill="#333">3</text>
+<text x="150" y="108" font-size="14" text-anchor="middle" fill="#333">4</text>
+<text x="230" y="108" font-size="14" text-anchor="middle" fill="#333">5</text>
+<text x="310" y="108" font-size="14" text-anchor="middle" fill="#333">6</text>
+<text x="370" y="108" font-size="14" fill="#999">⋯</text>
+<line x1="82" y1="104" x2="138" y2="104" stroke="#E0612F" stroke-width="1.2" marker-end="url(#pb)"/>
+<line x1="162" y1="104" x2="218" y2="104" stroke="#E0612F" stroke-width="1.2" marker-end="url(#pb)"/>
+<line x1="242" y1="104" x2="298" y2="104" stroke="#E0612F" stroke-width="1.2" marker-end="url(#pb)"/>
+<text x="110" y="96" font-size="10" text-anchor="middle" fill="#E0612F">ν</text>
+<text x="200" y="140" font-size="10" text-anchor="middle" fill="#777">上行走一步 ⟹ 下行也走一步；起点定为 ν(2) = 3</text>
+</svg>
+
+这两条规定把 φ₂ 的每一个值都逼了出来，且没有用到加法。剩下要做的是证明：**对每个 n，这样的 φ<sub>n</sub> 确实存在**。
+
+### 构造
 
 令
 
 N := { n ∈ ℕ ; 存在 φ<sub>n</sub> : ℕ → ℕ 使 φ<sub>n</sub>(0) = ν(n) 且 φ<sub>n</sub>(ν(m)) = ν(φ<sub>n</sub>(m)) 对一切 m ∈ ℕ }
 
-用 (N1) 证 N = ℕ。
+即「那些已经配好了 φ 的 n」。用 (N1) 证 N = ℕ。
 
 **0 ∈ N**：取 φ<sub>0</sub> := ν。验证两个条件：
 
@@ -301,4 +363,4 @@ E. Landau, *Grundlagen der Analysis*（1930）
 
 ## 前瞻
 
-加法、乘法与序都已定义，(N1) 是推出全部算术律的唯一工具。下一步是把归纳原理本身加强：允许从任意 n₀ 起步，允许在归纳步骤中使用此前**所有**情形的结论。这两种形式的陈述需要 + 与 ≤，现在已经具备。见 [[num_induzione|归纳原理与带余除法]]。
+加法、乘法与序都已定义，(N1) 是推出全部算术律的唯一工具。下一步是把归纳原理本身加强：允许从任意 n₀ 起步，允许在归纳步骤中使用此前**所有**情形的结论。这两种形式的陈述需要 + 与 ≤，现在已经具备。见 [[num_induzione|归纳原理与良序原理]]。

@@ -1461,7 +1461,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 2,
-      "bearing": 56,
+      "bearing": 57,
       "popupLinks": [
         {
           "id": "fond_proposizioni",
@@ -1600,7 +1600,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 4,
-      "bearing": 53,
+      "bearing": 54,
       "popupLinks": [
         {
           "id": "fond_relazioni",
@@ -1674,7 +1674,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 5,
-      "bearing": 50,
+      "bearing": 51,
       "popupLinks": [
         {
           "id": "fond_funzioni",
@@ -1715,7 +1715,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 2,
-      "bearing": 57,
+      "bearing": 58,
       "popupLinks": [
         {
           "id": "fond_quantificatori",
@@ -1797,7 +1797,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 0,
-      "bearing": 60,
+      "bearing": 61,
       "popupLinks": [
         {
           "id": "fond_insiemi",
@@ -1822,7 +1822,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 1,
-      "bearing": 59,
+      "bearing": 60,
       "popupLinks": [
         {
           "id": "fond_proposizioni",
@@ -1859,7 +1859,7 @@
       "role": null,
       "color": "#A9A9A9",
       "ring": 3,
-      "bearing": 55,
+      "bearing": 56,
       "popupLinks": [
         {
           "id": "fond_insiemi",
@@ -1946,37 +1946,33 @@
       "id": "num_aritmetica",
       "label": "自然数的算术",
       "parent": "num_costruzioni",
-      "summary": "加法与乘法由递归出生:m+0=m、m+S(n)=S(m+n);1+1=2 从此是定理,交换律、结合律、分配律逐条由归纳法证得,皆为定理而非默认。",
+      "summary": "加法由 n+0 := n、n+ν(m) := ν(n+m) 递归定义，乘法由 n·0 := 0、n·ν(m) := n·m+n 定义，序由 m ≤ n :⟺ ∃d : m+d = n 定义；通常的算术律全部由 Peano 公理推出。",
       "depth": 2,
       "isContainer": false,
       "isTop": false,
       "role": null,
       "color": "#C0894A",
       "ring": 1,
-      "bearing": 45,
+      "bearing": 46,
       "popupLinks": [
         {
           "id": "num_n",
-          "text": "归纳原理"
+          "text": "Peano 公理"
         },
         {
-          "id": "fond_funzioni",
-          "text": "∃!"
+          "id": "fond_ordine",
+          "text": "全序化"
         },
         {
           "id": "num_ricorsione",
-          "text": "递归定理"
+          "text": "递归定义"
         },
         {
-          "id": "fond_equivalenza",
-          "text": "等价类"
-        },
-        {
-          "id": "alg_gruppi",
-          "text": "群"
+          "id": "num_induzione",
+          "text": "归纳原理与良序原理"
         }
       ],
-      "body": "\n## 骨架要学会算术\n\n上一节的 ℕ 只会一件事:从 0 出发,一步步走。它不会加、不会乘——「+」这个符号根本尚未定义,1 + 1 = 2 暂时还是一句没有意义的话。可加法的**直觉**早就藏在骨架里:n + m,不就是「从 n 出发再走 m 步」么?这一节把这句话铸成严格的定义,然后做一件更要紧的事:交换律、结合律这些自幼熟习、却从未被证明过的定律,将在这里逐条获得证明。\n\n## 递归:归纳的孪生兄弟\n\n「从 n 出发再走 m 步」是个**分层指示**:第 0 步在哪儿说清楚,每下一步怎么走说清楚。把这种定义方式提炼成一般原理:\n\n**递归定理(recursion theorem).** 设 X 是集合,a ∈ X,g : X → X。则**存在唯一**的函数 f : ℕ → X,使得\n\nf(0) = a,  且  ∀n ∈ ℕ, f(S(n)) = g(f(n))。\n\n读法:f(0) 钦定为 a(起步),f 在「下一个数」处的值由它在「这个数」处的值经 g 加工而来(传递)。这与<a class=\"wl\" data-id=\"num_n\">归纳原理</a>是一对孪生:归纳说「性质沿链条传遍全体」,递归说「**取值**沿链条铺满全体」——一个用于证明,一个用于定义。\n\n又是「存在且唯一」,照<a class=\"wl\" data-id=\"fond_funzioni\">∃!</a>的老规矩拆两半。**唯一性**我们当场证掉:设 f、f′ 都满足两条,对 P(n) :≡「f(n) = f′(n)」跑归纳——奠基:f(0) = a = f′(0);归纳步:设 f(n) = f′(n),则 f(S(n)) = g(f(n)) = g(f′(n)) = f′(S(n))。由归纳原理,f 与 f′ 逐点相同,而二者定义域、到达域已同,故 f = f′。∎\n\n**存在性**却深得多,值得说破为什么:函数不是一句咒语,是一个**实实在在的集合**(那堆有序对)——归纳法只会证明「已有之物」的性质,**变不出集合来**。要把无穷多步指示真正拼装成一堆合法的有序对,得在集合论里动一番手脚。此处暂且承认存在性,严格搭建留待 <a class=\"wl\" data-id=\"num_ricorsione\">递归定理</a> 专节,先继续前行。\n\n## 加法\n\n固定 m ∈ ℕ。对「X = ℕ,起步 a = m,传递 g = S」用一次递归定理,得到唯一的函数 σₘ : ℕ → ℕ,满足 σₘ(0) = m、σₘ(S(n)) = S(σₘ(n))。把 σₘ(n) 写作 **m + n**,上面两条就成了**加法(addition)的定义**:\n\n- (A1) m + 0 := m;\n- (A2) m + S(n) := S(m + n)。\n\n读出声来:「加 0 = 原地不动」「加『n 的下一个』= 先加 n、再走一步」——正是「重复地走」的严格版。顺带重提一句旧话:这样一来 + 是个堂堂正正的函数 ℕ×ℕ → ℕ,(m,n) ↦ m+n——「运算就是函数」,当初在函数那节埋下的伏笔,在此第一次落到实处。\n\n**1 + 1 = 2,这就证。** 按定义 1 := S(0),2 := S(1)。于是\n\n1 + 1 = 1 + S(0) ⟨A2⟩= S(1 + 0) ⟨A1⟩= S(1) = 2。∎\n\n两步,每步都有出处。从今天起,这个等式不再是口诀,是定理。\n\n顺手再得一个小定理:**S(n) = n + 1**——因为 n + 1 = n + S(0) ⟨A2⟩= S(n + 0) ⟨A1⟩= S(n)。「后继」从此可以退居幕后,我们终于有资格写熟悉的 n + 1 了。\n\n## 定律是定理,不是定义\n\n现在试试 0 + n。别急着喊「当然等于 n」——定义直接给出的只有 m + **0** = m(A1,0 在**右边**),而 **0** + n 里 0 在左边,定义对它**只字未提**。定义是不对称的,对称性必须证明。这就是本节的主要工作:每一条「天经地义」,都要由一次归纳确立为定理。\n\n**引理 A.** ∀n ∈ ℕ, 0 + n = n。\n\n**证明.** 对 n 归纳。奠基:0 + 0 ⟨A1⟩= 0。归纳步:设 0 + n = n,则 0 + S(n) ⟨A2⟩= S(0 + n) ⟨归纳假设⟩= S(n)。∎\n\n**引理 B.** ∀m, n ∈ ℕ, S(m) + n = S(m + n)。(「左边的进位也能搬出来」——A2 只管右边,左边这条得证。)\n\n**证明.** 固定 m,对 n 归纳。奠基:S(m) + 0 ⟨A1⟩= S(m) ⟨A1 反用⟩= S(m + 0)。归纳步:设 S(m) + n = S(m + n),则 S(m) + S(n) ⟨A2⟩= S(S(m) + n) ⟨归纳假设⟩= S(S(m + n)) ⟨A2 反用⟩= S(m + S(n))。∎\n\n**定理(加法交换律 commutativity).** ∀m, n ∈ ℕ, m + n = n + m。\n\n**证明.** 固定 m,对 n 归纳。奠基:m + 0 ⟨A1⟩= m ⟨引理 A⟩= 0 + m。归纳步:设 m + n = n + m,则\n\nm + S(n) ⟨A2⟩= S(m + n) ⟨归纳假设⟩= S(n + m) ⟨引理 B 反用⟩= S(n) + m。∎\n\n留意这个证明的**结构**:交换律不是一步证完的,它踩着两块垫脚石(引理 A 管「0 在左边」,引理 B 管「后继在左边」)才够得着。把大目标拆成小引理、逐块归纳——这是往后许多证明的标准做法。**结合律** (k + m) + n = k + (m + n) 则不需要任何引理,留作文末练习;它一经确立,括号就可以省去,放心写 k + m + n。\n\n## 乘法\n\n同一台递归机器,再次启用。固定 m,定义**乘法(multiplication)**:\n\n- (M1) m · 0 := 0;\n- (M2) m · S(n) := m · n + m。\n\n「乘 0 归零」「乘『n 的下一个』= 先乘 n、再加一个 m」——乘法就是**重复地加**,正如加法是重复地走。验收一下,算 2 · 2(其中 3 := S(2),4 := S(3)):\n\n2 · 2 = 2 · S(1) ⟨M2⟩= 2·1 + 2 = (2 · S(0)) + 2 ⟨M2⟩= (2·0 + 2) + 2 ⟨M1⟩= (0 + 2) + 2 ⟨引理 A⟩= 2 + 2,\n\n而 2 + 2 = 2 + S(1) ⟨A2⟩= S(2 + 1) = S(2 + S(0)) ⟨A2⟩= S(S(2 + 0)) ⟨A1⟩= S(S(2)) = S(3) = 4。∎\n\n每一步都有定义或引理可援,字字有据。\n\n乘法的定律同样逐条可证,且**踩在加法定律的肩上**。示范一条,看这种「层层叠加」:\n\n**定理(分配律 distributivity).** ∀k, m, n ∈ ℕ, k · (m + n) = k·m + k·n。\n\n**证明.** 固定 k、m,对 n 归纳。奠基:k·(m + 0) ⟨A1⟩= k·m ⟨A1 反用⟩= k·m + 0 ⟨M1 反用⟩= k·m + k·0。归纳步:设 k·(m+n) = k·m + k·n,则\n\nk·(m + S(n)) ⟨A2⟩= k·S(m + n) ⟨M2⟩= k·(m+n) + k ⟨归纳假设⟩= (k·m + k·n) + k ⟨加法结合律⟩= k·m + (k·n + k) ⟨M2 反用⟩= k·m + k·S(n)。∎\n\n看见没——倒数第二步用的正是你即将在练习里证明的**加法结合律**:定律之间有先后的依托——加法诸律先行确立,乘法诸律方能在其上立足。乘法的交换律、结合律手法如出一辙(各需一两块「0 在左、S 在左」式的垫脚石),清单先记在这儿,手痒尽可自证,我们不再逐条占篇幅。\n\n## 一道激活练习\n\n证明**加法结合律(associativity)**:\n\n∀k, m, n ∈ ℕ, (k + m) + n = k + (m + n)。\n\n(提示:固定 k、m,对 n 归纳——想想为什么挑 n:定义 A1/A2 都是在**右边**的变元上动作的,对 n 归纳,每一步都有现成的依据可援。全程只需 A1、A2 与归纳假设,连引理都不用。)\n\n## 参考解答\n\n(建议先自己写完再看。)固定 k, m,对 P(n) :≡「(k+m)+n = k+(m+n)」跑归纳。\n\n**奠基** P(0):\n\n(k + m) + 0 ⟨A1⟩= k + m ⟨A1 反用,作用在 m 上⟩= k + (m + 0)。\n\n**归纳步**:设 (k+m)+n = k+(m+n),往证 P(S(n)):\n\n```\n(k + m) + S(n)\n= S((k + m) + n)      ⟨A2⟩\n= S(k + (m + n))      ⟨归纳假设⟩\n= k + S(m + n)        ⟨A2 反用⟩\n= k + (m + S(n))      ⟨A2 反用,作用在内层⟩\n```\n\n两步齐备,由归纳原理结论对一切 n 成立;k、m 任意,定理得证。∎\n\n回味:整场证明就是把括号外的 S「往里搬运」——A2 正着用是「拆」,反着用是「装」,归纳假设负责中途换轨。做完这道,你已亲手确立三大定律之一;随之而来的还有记号上的自由:从此 k + m + n 不必加括号,怎么结合都是同一个数。\n\n## 往前看一步\n\n总结一下:ℕ 会走(S)、会加、会乘,定律齐备、张张有出生证明。可它是个**残缺**的世界:方程 x + 3 = 1 在 ℕ 里无解——「减法」无处安身,当初<a class=\"wl\" data-id=\"fond_equivalenza\">等价类</a>那节预告的整数构造也尚未动工。修复的路有两条走法,而我们要先走一条看似绕远的:停下来,把「一种运算 + 它的定律」**本身**当作研究对象。复合那节末尾提到的组合——结合律、单位元、逆元——ℕ 恰好是「有结合律、有单位元、**没有逆元**」。给这套配置一个名字并系统地研究它,代数主干由此开始:<a class=\"wl\" data-id=\"alg_gruppi\">群</a>。",
+      "body": "\n<a class=\"wl\" data-id=\"num_n\">Peano 公理</a>只给出了三样东西：集合 ℕ、元素 0、后继函数 ν。加法、乘法、大小比较都还不存在。本节把它们定义出来，并说明通常的算术律全部可由公理推出。\n\n## 一条必须先立的规矩\n\n**在本节中，0 与 1 只是集合 ℕ 中两个被指定的元素，与我们平常认识的数字 0、1 没有任何关系。**\n\n这句话来自 A–E，是初学者最容易违反的一点：证明中途不自觉地用上「显然 2+3=5」「加法当然可交换」这类日常算术事实。**凡是还没从公理推出来的性质，一律不得使用。** 本节的每一步都只能依据：\n\n(N0) ν 单射<br>\n(N1) 归纳<br>\n以及本节已经定义、已经证明的内容\n\n## 定理 5.3\n\n**定理（A–E 定理 5.3）** ℕ 上存在加法 **+**、乘法 **·** 与偏序 **≤**，它们由下列条件唯一确定：\n\n**(i)** 加法结合、交换，以 0 为单位元。\n\n**(ii)** 乘法结合、交换，以 **1 := ν(0)** 为单位元。\n\n**(iii)** 分配律成立：(ℓ + m) · n = ℓ · n + m · n，  ℓ, m, n ∈ ℕ。\n\n**(iv)** 0 · n = 0，且 ν(n) = n + 1，  n ∈ ℕ。\n\n**(v)** ℕ 被 ≤ <a class=\"wl\" data-id=\"fond_ordine\">全序化</a>，且 0 = min(ℕ)。\n\n**(vi)** 对每个 n ∈ ℕ，不存在 k ∈ ℕ 使 n < k < n + 1。\n\n**(vii)** 对一切 m, n ∈ ℕ：\n\nm ≤ n ⟺ ∃d ∈ ℕ : m + d = n<br>\nm < n ⟺ ∃d ∈ ℕ<sup>×</sup> : m + d = n\n\n其中 d 唯一，称 n 与 m 的**差**，记 d := n − m。\n\n**(viii)** 对一切 m, n ∈ ℕ：\n\nm ≤ n ⟺ m + ℓ ≤ n + ℓ，  ℓ ∈ ℕ<br>\nm < n ⟺ m + ℓ < n + ℓ，  ℓ ∈ ℕ\n\n**(ix)** 对一切 m, n ∈ ℕ<sup>×</sup>，m · n ∈ ℕ<sup>×</sup>。\n\n**(x)** 对一切 m, n ∈ ℕ：\n\nm ≤ n ⟺ m · ℓ ≤ n · ℓ，  ℓ ∈ ℕ<sup>×</sup><br>\nm < n ⟺ m · ℓ < n · ℓ，  ℓ ∈ ℕ<sup>×</sup>\n\n**注 (iv) 的后半句很要紧**：ν(n) = n + 1。它说明后继函数不是另一种独立的运算——**取后继就是加 1**。这把公理里的 ν 与日常的「+1」对上了号。\n\n**（A–E 说明）** 原书只证加法的存在唯一性，其余各条推荐读者参阅 Landau 的专著。那些证明是初等的，但篇幅可观。下面按原书处理：完整给出加法部分，其余标明出处。\n\n## 加法的递归定义\n\n加法由下面两条规定：\n\nn + 0 := n<br>\nn + ν(m) := ν(n + m)\n\n第一条说「加 0 不变」；第二条说「加上一个后继，等于先加原来那个数、再取一次后继」。\n\n**这是一个递归定义**：等号右边的 n + m 比左边的 n + ν(m) 「小一步」，于是可以一步步退回到 n + 0，而 n + 0 已由第一条直接给出。\n\n## 先算一遍：2 + 3\n\n按<a class=\"wl\" data-id=\"num_n\">记号约定</a>，1 = ν(0)，2 = ν(1)，3 = ν(2)。完整算一遍 2 + 3，**每一步只许用上面两条规定**。\n\n**第一阶段：把第二个加数一层层剥开**（反复用第二条）\n\n<svg viewBox=\"0 0 420 265\" xmlns=\"http://www.w3.org/2000/svg\">\n<text x=\"20\" y=\"24\" font-size=\"12\" fill=\"#5A5FE0\">拆解：每次把 ν 从括号内提到括号外</text>\n<text x=\"30\" y=\"50\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">2 + 3</text>\n<text x=\"30\" y=\"76\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">= 2 + ν(2)</text>\n<text x=\"200\" y=\"76\" font-size=\"10\" fill=\"#999\">3 = ν(2)</text>\n<text x=\"30\" y=\"102\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">= ν(2 + 2)</text>\n<text x=\"200\" y=\"102\" font-size=\"10\" fill=\"#E0612F\">用第二条</text>\n<text x=\"30\" y=\"128\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">= ν(2 + ν(1))</text>\n<text x=\"200\" y=\"128\" font-size=\"10\" fill=\"#999\">2 = ν(1)</text>\n<text x=\"30\" y=\"154\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">= ν(ν(2 + 1))</text>\n<text x=\"200\" y=\"154\" font-size=\"10\" fill=\"#E0612F\">用第二条</text>\n<text x=\"30\" y=\"180\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">= ν(ν(2 + ν(0)))</text>\n<text x=\"200\" y=\"180\" font-size=\"10\" fill=\"#999\">1 = ν(0)</text>\n<text x=\"30\" y=\"206\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">= ν(ν(ν(2 + 0)))</text>\n<text x=\"200\" y=\"206\" font-size=\"10\" fill=\"#E0612F\">用第二条</text>\n<text x=\"30\" y=\"232\" font-size=\"13\" font-family=\"monospace\" fill=\"#333\">= ν(ν(ν(2)))</text>\n<text x=\"200\" y=\"232\" font-size=\"10\" fill=\"#00A070\">用第一条，触底</text>\n<line x1=\"24\" y1=\"36\" x2=\"24\" y2=\"240\" stroke=\"#5A5FE0\" stroke-width=\"1.5\"/>\n<text x=\"30\" y=\"258\" font-size=\"11\" fill=\"#00A070\">再回代：ν(ν(ν(2))) = ν(ν(3)) = ν(4) = 5</text>\n</svg>\n\n写成一条链：\n\n2 + 3<br>\n= 2 + ν(2)　（3 = ν(2)）<br>\n= ν(2 + 2)　（第二条）<br>\n= ν(2 + ν(1))　（2 = ν(1)）<br>\n= ν(ν(2 + 1))　（第二条）<br>\n= ν(ν(2 + ν(0)))　（1 = ν(0)）<br>\n= ν(ν(ν(2 + 0)))　（第二条）<br>\n= ν(ν(ν(2)))　（第一条，递归触底）<br>\n= ν(ν(3))　（ν(2) = 3）<br>\n= ν(4)　（ν(3) = 4）<br>\n= 5　（ν(4) = 5）\n\n**这就是加法在公理层面的全部内容**：「加 3」就是「连取三次后继」。日常的加法表在这里是被**算出来**的，不是被假定的。\n\n## 唯一性\n\n先证：满足条件的加法**至多有一个**。以下把待定的运算记作 ⊡（暂不写成 +，以免不自觉地套用日常加法的性质）。\n\n设 ⊡ 是 ℕ 上的**交换**运算，满足\n\n0 ⊡ 0 = 0，  n ⊡ 1 = ν(n)，  n ⊡ ν(m) = ν(n ⊡ m)，  n, m ∈ ℕ  ……(★)\n\n**第一步：0 ⊡ n = n 对一切 n 成立。**\n\n令 N := { n ∈ ℕ ; 0 ⊡ n = n }，用 <a class=\"wl\" data-id=\"num_n\">(N1)</a>。\n\n0 ∈ N：由 (★) 的第一式 0 ⊡ 0 = 0。\n\nn ∈ N ⟹ ν(n) ∈ N：设 0 ⊡ n = n，则\n\n0 ⊡ ν(n) = ν(0 ⊡ n)　（(★) 第三式）<br>\n= ν(n)　（归纳假设）\n\n故 ν(n) ∈ N。由 (N1)，N = ℕ。∎\n\n**第二步：满足 (★) 的交换运算至多一个。**\n\n设 ⊟ 是另一个满足 (★) 的交换运算。固定任意 n ∈ ℕ，令\n\nM := { m ∈ ℕ ; m ⊡ n = m ⊟ n }\n\n0 ∈ M：对 ⊟ 重复第一步的论证得 0 ⊟ n = n；由第一步 0 ⊡ n = n。故 0 ⊡ n = n = 0 ⊟ n。\n\nm ∈ M ⟹ ν(m) ∈ M：设 m ⊡ n = m ⊟ n，则\n\nν(m) ⊡ n = n ⊡ ν(m)　（⊡ 交换）<br>\n= ν(n ⊡ m)　（(★) 第三式）<br>\n= ν(m ⊡ n)　（⊡ 交换）<br>\n= ν(m ⊟ n)　（归纳假设）<br>\n= ν(n ⊟ m)　（⊟ 交换）<br>\n= n ⊟ ν(m)　（(★) 第三式，对 ⊟）<br>\n= ν(m) ⊟ n　（⊟ 交换）\n\n故 ν(m) ∈ M。由 (N1)，M = ℕ。\n\n因 n 任意，得 m ⊡ n = m ⊟ n 对一切 m, n 成立，即 ⊡ = ⊟。∎\n\n## 存在性\n\n再证：这样的运算**确实存在**。难点在于「递归定义是否合法」——上面那两条规定看起来定义了加法，但严格说来，我们还没有证明真有这样一个函数存在。\n\n### 先看清要造的是什么\n\n思路是：对每个固定的 n，造一个函数 φ<sub>n</sub> : ℕ → ℕ，让它承担「n 加上某数」的职责。\n\n**φ<sub>n</sub> 应该是什么？** 按我们想要的加法，φ<sub>n</sub> 将满足 φ<sub>n</sub>(m) = n + ν(m)，也就是「先加 n，再加 1」。取 n = 2 具体看一遍：\n\nφ₂(0) = 3，  φ₂(1) = 4，  φ₂(2) = 5，  φ₂(3) = 6，  …\n\n即 φ₂ 是「加 3」这个函数。\n\n**但不能这样定义它。** 「加 3」这句话本身就用到了加法，而加法正是我们要造的东西——直接说「令 φ<sub>n</sub> 为加 n+1 的函数」是循环论证。\n\n出路是**不说它是什么，只说它怎么走**：规定起点，再规定每一步如何由上一步得到。对 φ₂：\n\n**起点** φ₂(0) = 3　（即 ν(2)）<br>\n**步进** φ₂(下一个) = 下一个(φ₂(当前))　（即 φ₂(ν(m)) = ν(φ₂(m))）\n\n照这两条走一遍：\n\nφ₂(0) = ν(2) = 3<br>\nφ₂(1) = φ₂(ν(0)) = ν(φ₂(0)) = ν(3) = 4<br>\nφ₂(2) = φ₂(ν(1)) = ν(φ₂(1)) = ν(4) = 5<br>\nφ₂(3) = φ₂(ν(2)) = ν(φ₂(2)) = ν(5) = 6\n\n<svg viewBox=\"0 0 420 155\" xmlns=\"http://www.w3.org/2000/svg\">\n<defs>\n<marker id=\"pa\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\">\n<path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#5A5FE0\"/>\n</marker>\n<marker id=\"pb\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\">\n<path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#E0612F\"/>\n</marker>\n</defs>\n<text x=\"20\" y=\"42\" font-size=\"12\" fill=\"#5A5FE0\">输入</text>\n<text x=\"70\" y=\"42\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">0</text>\n<text x=\"150\" y=\"42\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">1</text>\n<text x=\"230\" y=\"42\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">2</text>\n<text x=\"310\" y=\"42\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">3</text>\n<text x=\"370\" y=\"42\" font-size=\"14\" fill=\"#999\">⋯</text>\n<line x1=\"82\" y1=\"38\" x2=\"138\" y2=\"38\" stroke=\"#5A5FE0\" stroke-width=\"1.2\" marker-end=\"url(#pa)\"/>\n<line x1=\"162\" y1=\"38\" x2=\"218\" y2=\"38\" stroke=\"#5A5FE0\" stroke-width=\"1.2\" marker-end=\"url(#pa)\"/>\n<line x1=\"242\" y1=\"38\" x2=\"298\" y2=\"38\" stroke=\"#5A5FE0\" stroke-width=\"1.2\" marker-end=\"url(#pa)\"/>\n<text x=\"110\" y=\"30\" font-size=\"10\" text-anchor=\"middle\" fill=\"#5A5FE0\">ν</text>\n<line x1=\"70\" y1=\"52\" x2=\"70\" y2=\"88\" stroke=\"#999\" stroke-width=\"1\" stroke-dasharray=\"3,3\"/>\n<line x1=\"150\" y1=\"52\" x2=\"150\" y2=\"88\" stroke=\"#999\" stroke-width=\"1\" stroke-dasharray=\"3,3\"/>\n<line x1=\"230\" y1=\"52\" x2=\"230\" y2=\"88\" stroke=\"#999\" stroke-width=\"1\" stroke-dasharray=\"3,3\"/>\n<line x1=\"310\" y1=\"52\" x2=\"310\" y2=\"88\" stroke=\"#999\" stroke-width=\"1\" stroke-dasharray=\"3,3\"/>\n<text x=\"14\" y=\"108\" font-size=\"12\" fill=\"#E0612F\">φ₂ 的值</text>\n<text x=\"70\" y=\"108\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">3</text>\n<text x=\"150\" y=\"108\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">4</text>\n<text x=\"230\" y=\"108\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">5</text>\n<text x=\"310\" y=\"108\" font-size=\"14\" text-anchor=\"middle\" fill=\"#333\">6</text>\n<text x=\"370\" y=\"108\" font-size=\"14\" fill=\"#999\">⋯</text>\n<line x1=\"82\" y1=\"104\" x2=\"138\" y2=\"104\" stroke=\"#E0612F\" stroke-width=\"1.2\" marker-end=\"url(#pb)\"/>\n<line x1=\"162\" y1=\"104\" x2=\"218\" y2=\"104\" stroke=\"#E0612F\" stroke-width=\"1.2\" marker-end=\"url(#pb)\"/>\n<line x1=\"242\" y1=\"104\" x2=\"298\" y2=\"104\" stroke=\"#E0612F\" stroke-width=\"1.2\" marker-end=\"url(#pb)\"/>\n<text x=\"110\" y=\"96\" font-size=\"10\" text-anchor=\"middle\" fill=\"#E0612F\">ν</text>\n<text x=\"200\" y=\"140\" font-size=\"10\" text-anchor=\"middle\" fill=\"#777\">上行走一步 ⟹ 下行也走一步；起点定为 ν(2) = 3</text>\n</svg>\n\n这两条规定把 φ₂ 的每一个值都逼了出来，且没有用到加法。剩下要做的是证明：**对每个 n，这样的 φ<sub>n</sub> 确实存在**。\n\n### 构造\n\n令\n\nN := { n ∈ ℕ ; 存在 φ<sub>n</sub> : ℕ → ℕ 使 φ<sub>n</sub>(0) = ν(n) 且 φ<sub>n</sub>(ν(m)) = ν(φ<sub>n</sub>(m)) 对一切 m ∈ ℕ }\n\n即「那些已经配好了 φ 的 n」。用 (N1) 证 N = ℕ。\n\n**0 ∈ N**：取 φ<sub>0</sub> := ν。验证两个条件：\n\nφ<sub>0</sub>(0) = ν(0) ✓<br>\nφ<sub>0</sub>(ν(m)) = ν(ν(m)) = ν(φ<sub>0</sub>(m)) ✓\n\n**n ∈ N ⟹ ν(n) ∈ N**：设 φ<sub>n</sub> 已存在。定义\n\nψ : ℕ → ℕ，  m ↦ ν(φ<sub>n</sub>(m))\n\n则\n\nψ(0) = ν(φ<sub>n</sub>(0)) = ν(ν(n))　（即 ν 作用于 ν(n)，符合要求）<br>\nψ(ν(m)) = ν(φ<sub>n</sub>(ν(m))) = ν(ν(φ<sub>n</sub>(m))) = ν(ψ(m)) ✓\n\n故 ψ 可充当 φ<sub>ν(n)</sub>，即 ν(n) ∈ N。\n\n由 (N1)，N = ℕ：**每个 n 都有这样一个 φ<sub>n</sub>**。\n\n**φ<sub>n</sub> 唯一**：设 φ<sub>n</sub> 与 ψ<sub>n</sub> 都满足条件，令 M<sub>n</sub> := { m ; φ<sub>n</sub>(m) = ψ<sub>n</sub>(m) }。则 0 ∈ M<sub>n</sub>（两者在 0 处都等于 ν(n)）；若 m ∈ M<sub>n</sub>，则\n\nφ<sub>n</sub>(ν(m)) = ν(φ<sub>n</sub>(m)) = ν(ψ<sub>n</sub>(m)) = ψ<sub>n</sub>(ν(m))\n\n故 ν(m) ∈ M<sub>n</sub>。由 (N1)，M<sub>n</sub> = ℕ，即 φ<sub>n</sub> = ψ<sub>n</sub>。\n\n**定义加法**：\n\nn + m := n，  若 m = 0<br>\nn + m := φ<sub>n</sub>(m′)，  若 m = ν(m′)\n\n这个分情形是完备且无歧义的：由<a class=\"wl\" data-id=\"num_n\">注 5.1(a)</a>，每个 m 要么是 0、要么恰是唯一一个 m′ 的后继。\n\n可验证它满足 n + ν(m) = ν(n + m)，并且 n + 0 = n、n + 1 = ν(n)。∎\n\n**注** 上面为构造 φ<sub>n</sub> 所做的工作，实质上是**递归定理**的一个特例：它保证「用前一步定义后一步」这种定义方式确实产生一个函数。一般形式的递归定理将在<a class=\"wl\" data-id=\"num_ricorsione\">递归定义</a>一节给出。\n\n## 一条性质的证明示范：结合律\n\n其余各条的证法都类似——**把待证等式中的一个变元设为归纳变元，对它用 (N1)**。以结合律为例。\n\n固定任意 ℓ, m ∈ ℕ，令\n\nN := { n ∈ ℕ ; (ℓ + m) + n = ℓ + (m + n) }\n\n**0 ∈ N**：(ℓ + m) + 0 = ℓ + m = ℓ + (m + 0)（三处都用 n + 0 = n）。\n\n**n ∈ N ⟹ ν(n) ∈ N**：\n\n(ℓ + m) + ν(n) = ν((ℓ + m) + n)　（递归式第二条）<br>\n= ν(ℓ + (m + n))　（归纳假设）<br>\n= ℓ + ν(m + n)　（递归式第二条，反向用）<br>\n= ℓ + (m + ν(n))　（递归式第二条，反向用）\n\n故 ν(n) ∈ N。由 (N1)，N = ℕ。因 ℓ, m 任意，结合律对一切 ℓ, m, n 成立。∎\n\n## 乘法与序\n\n**乘法**同样递归定义：\n\nn · 0 := 0<br>\nn · ν(m) := n · m + n\n\n即「乘以一个后继，等于先乘原来那个数、再加一个 n」。存在唯一性的论证与加法同型。\n\n**例** 算 2 · 3：\n\n2 · 3 = 2 · ν(2) = 2 · 2 + 2 = (2 · ν(1)) + 2 = (2 · 1 + 2) + 2<br>\n= ((2 · ν(0)) + 2) + 2 = ((2 · 0 + 2) + 2) + 2 = ((0 + 2) + 2) + 2<br>\n= (2 + 2) + 2 = 4 + 2 = 6\n\n**序**由加法定义（定理 5.3(vii)）：\n\nm ≤ n  :⟺  ∃d ∈ ℕ : m + d = n\n\n即「m 不超过 n」意思是「从 m 出发再加上某个自然数能到达 n」。相应地\n\nm < n  :⟺  ∃d ∈ ℕ<sup>×</sup> : m + d = n\n\n（要求 d ≠ 0，故 m ≠ n。）由 (vii)，这个 d 唯一，记 d = n − m。\n\n**注（减法的局限）** n − m 只在 m ≤ n 时有定义。ℕ 中不存在 0 − 1 这样的元素——**减法在 ℕ 内不封闭**。这正是下一步要构造 ℤ 的动因。\n\n## 定理 5.3 中未证部分的出处\n\n原书只给出加法的存在唯一性证明（即上面两节），(i)–(x) 的其余部分推荐参阅：\n\nE. Landau, *Grundlagen der Analysis*（1930）\n\n那里的证明都是初等的，逐条用 (N1) 归纳，与上面结合律的证法同型。\n\n## 练习\n\n(a) 完全按递归定义计算 3 + 2，写出每一步及其依据（不得使用日常算术）。\n\n(b) 用归纳法证明：∀n ∈ ℕ，0 + n = n。（注意：递归定义给出的是 n + 0 = n，两者不是同一条——交换律尚未证明，不得直接调换。）\n\n(c) 用序的定义证明：∀n ∈ ℕ，0 ≤ n。（提示：按 m ≤ n :⟺ ∃d : m + d = n 找出这个 d。）\n\n## 参考解答\n\n**(a)**\n\n3 + 2<br>\n= 3 + ν(1)　（2 = ν(1)）<br>\n= ν(3 + 1)　（递归式第二条）<br>\n= ν(3 + ν(0))　（1 = ν(0)）<br>\n= ν(ν(3 + 0))　（递归式第二条）<br>\n= ν(ν(3))　（递归式第一条）<br>\n= ν(4)　（ν(3) = 4）<br>\n= 5　（ν(4) = 5）∎\n\n（与正文的 2 + 3 = 5 对照：两者结果相同，但这**不能**用「加法交换」来解释——交换律要单独证明。这里是两次独立计算恰好得到同一结果。）\n\n**(b)** 令 N := { n ∈ ℕ ; 0 + n = n }。\n\n**0 ∈ N**：0 + 0 = 0，由递归式第一条（取 n = 0）。\n\n**n ∈ N ⟹ ν(n) ∈ N**：设 0 + n = n，则\n\n0 + ν(n) = ν(0 + n)　（递归式第二条）<br>\n= ν(n)　（归纳假设）\n\n故 ν(n) ∈ N。由 (N1)，N = ℕ。∎\n\n**注** 这道题正是唯一性证明里的「第一步」。它之所以需要单独证明，是因为递归定义只规定了**第二个**加数为 0 的情形（n + 0 = n），第一个加数为 0 的情形（0 + n = n）必须另行推出。\n\n**(c)** 要证 0 ≤ n，按定义需找到 d ∈ ℕ 使 0 + d = n。\n\n取 d := n。由练习 (b)，0 + n = n。故 d = n 满足要求，得 0 ≤ n。∎\n\n因 n 任意，0 是 ℕ 的最小元，这正是定理 5.3(v) 中 0 = min(ℕ) 的内容。\n\n## 前瞻\n\n加法、乘法与序都已定义，(N1) 是推出全部算术律的唯一工具。下一步是把归纳原理本身加强：允许从任意 n₀ 起步，允许在归纳步骤中使用此前**所有**情形的结论。这两种形式的陈述需要 + 与 ≤，现在已经具备。见 <a class=\"wl\" data-id=\"num_induzione\">归纳原理与良序原理</a>。",
       "refs": "Amann–Escher, Analysis I §I.5"
     },
     {
@@ -2127,6 +2123,39 @@
       "refs": "Amann–Escher, Analysis I §I.10"
     },
     {
+      "id": "num_induzione",
+      "label": "归纳原理与良序原理",
+      "parent": "num_costruzioni",
+      "summary": "归纳原理有三种常用形式：从 0 起、从 n₀ 起、强归纳（可用此前全部情形）。良序原理说 ℕ 的每个非空子集有最小元，它由 (N1) 推出，是归纳的另一副面孔。",
+      "depth": 2,
+      "isContainer": false,
+      "isTop": false,
+      "role": null,
+      "color": "#C0894A",
+      "ring": 2,
+      "bearing": 0,
+      "popupLinks": [
+        {
+          "id": "num_n",
+          "text": "(N1)"
+        },
+        {
+          "id": "num_aritmetica",
+          "text": "加法与序"
+        },
+        {
+          "id": "fond_dimostrazioni",
+          "text": "证蕴含式的标准做法"
+        },
+        {
+          "id": "fond_ordine",
+          "text": "下界"
+        }
+      ],
+      "body": "\n<a class=\"wl\" data-id=\"num_n\">(N1)</a> 已经用过多次。它的直接形式是关于**子集**的；实际证题时用的是关于**命题**的形式，而且常需要两种加强：从任意起点开始，以及在归纳步骤中调用此前的全部结论。<a class=\"wl\" data-id=\"num_aritmetica\">加法与序</a>已经就位，现在可以把这些形式完整写出来。\n\n## 先做一个完整的例子\n\n**待证**：对每个 n ≥ 1，前 n 个奇数之和等于 n²，即\n\n1 + 3 + 5 + ⋯ + (2n − 1) = n²\n\n**先手算几个**，看它是否可信：\n\nn = 1：1 = 1 = 1²<br>\nn = 2：1 + 3 = 4 = 2²<br>\nn = 3：1 + 3 + 5 = 9 = 3²<br>\nn = 4：1 + 3 + 5 + 7 = 16 = 4²\n\n<svg viewBox=\"0 0 420 175\" xmlns=\"http://www.w3.org/2000/svg\">\n<rect x=\"30\" y=\"40\" width=\"26\" height=\"26\" fill=\"#FF7F50\" fill-opacity=\"0.5\" stroke=\"#E0612F\" stroke-width=\"1\"/>\n<text x=\"43\" y=\"86\" font-size=\"11\" text-anchor=\"middle\" fill=\"#555\">1 = 1²</text>\n<rect x=\"100\" y=\"40\" width=\"26\" height=\"26\" fill=\"#FF7F50\" fill-opacity=\"0.5\" stroke=\"#E0612F\" stroke-width=\"1\"/>\n<rect x=\"126\" y=\"40\" width=\"26\" height=\"26\" fill=\"#5A5FE0\" fill-opacity=\"0.35\" stroke=\"#5A5FE0\" stroke-width=\"1\"/>\n<rect x=\"100\" y=\"66\" width=\"26\" height=\"26\" fill=\"#5A5FE0\" fill-opacity=\"0.35\" stroke=\"#5A5FE0\" stroke-width=\"1\"/>\n<rect x=\"126\" y=\"66\" width=\"26\" height=\"26\" fill=\"#5A5FE0\" fill-opacity=\"0.35\" stroke=\"#5A5FE0\" stroke-width=\"1\"/>\n<text x=\"126\" y=\"112\" font-size=\"11\" text-anchor=\"middle\" fill=\"#555\">1+3 = 2²</text>\n<rect x=\"200\" y=\"40\" width=\"26\" height=\"26\" fill=\"#FF7F50\" fill-opacity=\"0.5\" stroke=\"#E0612F\" stroke-width=\"1\"/>\n<rect x=\"226\" y=\"40\" width=\"26\" height=\"26\" fill=\"#5A5FE0\" fill-opacity=\"0.35\" stroke=\"#5A5FE0\" stroke-width=\"1\"/>\n<rect x=\"200\" y=\"66\" width=\"26\" height=\"26\" fill=\"#5A5FE0\" fill-opacity=\"0.35\" stroke=\"#5A5FE0\" stroke-width=\"1\"/>\n<rect x=\"226\" y=\"66\" width=\"26\" height=\"26\" fill=\"#5A5FE0\" fill-opacity=\"0.35\" stroke=\"#5A5FE0\" stroke-width=\"1\"/>\n<rect x=\"252\" y=\"40\" width=\"26\" height=\"26\" fill=\"#00A070\" fill-opacity=\"0.3\" stroke=\"#00A070\" stroke-width=\"1\"/>\n<rect x=\"252\" y=\"66\" width=\"26\" height=\"26\" fill=\"#00A070\" fill-opacity=\"0.3\" stroke=\"#00A070\" stroke-width=\"1\"/>\n<rect x=\"200\" y=\"92\" width=\"26\" height=\"26\" fill=\"#00A070\" fill-opacity=\"0.3\" stroke=\"#00A070\" stroke-width=\"1\"/>\n<rect x=\"226\" y=\"92\" width=\"26\" height=\"26\" fill=\"#00A070\" fill-opacity=\"0.3\" stroke=\"#00A070\" stroke-width=\"1\"/>\n<rect x=\"252\" y=\"92\" width=\"26\" height=\"26\" fill=\"#00A070\" fill-opacity=\"0.3\" stroke=\"#00A070\" stroke-width=\"1\"/>\n<text x=\"239\" y=\"138\" font-size=\"11\" text-anchor=\"middle\" fill=\"#555\">1+3+5 = 3²</text>\n<text x=\"320\" y=\"70\" font-size=\"11\" fill=\"#777\">每加一个奇数，</text>\n<text x=\"320\" y=\"90\" font-size=\"11\" fill=\"#777\">正方形边长加一</text>\n<text x=\"320\" y=\"110\" font-size=\"11\" fill=\"#00A070\">新增的 L 形有</text>\n<text x=\"320\" y=\"128\" font-size=\"11\" fill=\"#00A070\">2n+1 个格子</text>\n</svg>\n\n手算只能验证有限个 n。要对**一切** n 成立，需要归纳。\n\n**归纳基础（n₀ = 1）**：1 = 1 · 1 = 1²，成立。\n\n**归纳假设**：设对某个 n ≥ 1 有 1 + 3 + ⋯ + (2n − 1) = n²。\n\n**归纳步骤**：要证 n + 1 的情形，即\n\n1 + 3 + ⋯ + (2(n+1) − 1) = (n+1)²\n\n左边的最后一项是 2(n+1) − 1 = 2n + 1，故\n\n1 + 3 + ⋯ + (2n + 1)<br>\n= [ 1 + 3 + ⋯ + (2n − 1) ] + (2n + 1)　（把最后一项单独拆出）<br>\n= n² + (2n + 1)　（**用归纳假设**）<br>\n= n² + 2n + 1<br>\n= (n + 1)²　（由<a class=\"wl\" data-id=\"num_aritmetica\">分配律</a>展开可验证）\n\n归纳步骤完成，结论对一切 n ≥ 1 成立。∎\n\n**注意归纳假设用在哪一步**：只用了一次，就是把方括号里那一整串替换成 n²。归纳法的全部力量都集中在这一步——**它允许你把「上一个情形」当作已知**。\n\n## 归纳法的标准格式\n\n设对每个 n ∈ ℕ 给定一个命题 A(n)。要证 A(n) 对一切 n 成立，做两件事：\n\n**(a) 归纳基础**：证明 A(0) 为真。\n\n**(b) 归纳步骤**，分两半：\n\n**(α) 归纳假设**：设 A(n) 对某个 n ∈ ℕ 为真。<br>\n**(β) 由 (α) 及此前已证的结论，推出 A(n + 1) 为真。**\n\n**为什么这样就够了**：令 N := { n ∈ ℕ ; A(n) 为真 }。(a) 给出 0 ∈ N，(b) 给出 n ∈ N ⟹ n + 1 ∈ N。由 <a class=\"wl\" data-id=\"num_n\">(N1)</a>，N = ℕ。∎\n\n**注（归纳假设不是循环论证）** (α) 中「设 A(n) 为真」不是假定结论成立。要证的是蕴含式 A(n) ⟹ A(n+1)，而<a class=\"wl\" data-id=\"fond_dimostrazioni\">证蕴含式的标准做法</a>正是「设前件为真，推出后件」。假设的是**某一个** n 的情形，推出的是**下一个**；结合基础，才逐级传遍全体。\n\n## 从 n₀ 起的归纳\n\n上面的例子实际上从 n₀ = 1 起步，而不是 0。这需要一点点推广。\n\n**命题（A–E 命题 5.7，归纳原理）** 设 n₀ ∈ ℕ，且对每个 n ≥ n₀ 给定命题 A(n)。若\n\n**(i)** A(n₀) 为真，<br>\n**(ii)** 对每个 n ≥ n₀，由 A(n) 为真可推出 A(n + 1) 为真，\n\n则 A(n) 对一切 n ≥ n₀ 为真。\n\n**证明** 把指标**平移**，化归到从 0 起的情形。令\n\nN := { n ∈ ℕ ; A(n + n₀) 为真 }\n\n**0 ∈ N**：A(0 + n₀) = A(n₀)，由 (i) 为真。\n\n**n ∈ N ⟹ n + 1 ∈ N**：设 A(n + n₀) 为真。因 n + n₀ ≥ n₀，由 (ii) 得 A((n + n₀) + 1) 为真，即 A((n + 1) + n₀) 为真（用<a class=\"wl\" data-id=\"num_aritmetica\">加法结合律与交换律</a>）。\n\n由 (N1)，N = ℕ，即 A(m) 对一切 m ≥ n₀ 为真（取 m = n + n₀，当 n 跑遍 ℕ 时 m 跑遍 ≥ n₀ 的全部自然数）。∎\n\n**平移的意思**：原来的 n₀, n₀+1, n₀+2, … 被重新编号成 0, 1, 2, …，于是又能用标准的 (N1)。\n\n## 例：2ⁿ > n²（n ≥ 5）\n\n这个例子说明为什么需要 n₀ ≠ 0：结论在小的 n 处**不成立**。\n\n先看小的情形：\n\nn = 0：2⁰ = 1 > 0 = 0² ✓<br>\nn = 1：2¹ = 2 > 1 = 1² ✓<br>\nn = 2：2² = 4，2² = 4，**不是** > ✗<br>\nn = 3：2³ = 8 < 9 = 3² ✗<br>\nn = 4：2⁴ = 16 = 4²，**不是** > ✗<br>\nn = 5：2⁵ = 32 > 25 = 5² ✓\n\n从 n = 5 起才稳定成立，所以取 n₀ = 5。\n\n**归纳基础**：32 > 25 ✓（上面已验）\n\n**归纳假设**：设对某个 n ≥ 5 有 2ⁿ > n²。\n\n**归纳步骤**：\n\n2^(n+1) = 2 · 2ⁿ > 2 · n² = n² + n²　（**用归纳假设**，再把 2n² 写成 n² + n²）\n\n现在需要 n² ≥ 2n + 1。因 n ≥ 5：\n\nn · n ≥ 5n　（<a class=\"wl\" data-id=\"num_aritmetica\">定理 5.3(x)</a>，两边乘 n）<br>\n5n = 2n + 3n > 2n + 1　（因 n ≥ 5 ⟹ 3n ≥ 15 > 1）\n\n故 n² > 2n + 1。代回：\n\n2^(n+1) > n² + n² > n² + 2n + 1 = (n + 1)²\n\n归纳步骤完成，结论对一切 n ≥ 5 成立。∎\n\n## 强归纳\n\n有时证 A(n + 1) 需要用到的不止 A(n)，而是 A(n₀), …, A(n) 全部。\n\n**命题（A–E 命题 5.9）** 设 n₀ ∈ ℕ，且对每个 n ≥ n₀ 给定命题 A(n)。若\n\n**(i)** A(n₀) 为真，<br>\n**(ii)** 对每个 n ≥ n₀，由「A(k) 对一切 n₀ ≤ k ≤ n 为真」这一假设可推出 A(n + 1) 为真，\n\n则 A(n) 对一切 n ≥ n₀ 为真。\n\n<svg viewBox=\"0 0 420 195\" xmlns=\"http://www.w3.org/2000/svg\">\n<defs>\n<marker id=\"ia\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\">\n<path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#5A5FE0\"/>\n</marker>\n<marker id=\"ib\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\">\n<path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#E0612F\"/>\n</marker>\n</defs>\n<text x=\"20\" y=\"24\" font-size=\"12\" fill=\"#5A5FE0\">普通归纳：只用前一个</text>\n<circle cx=\"50\" cy=\"55\" r=\"13\" fill=\"none\" stroke=\"#5A5FE0\" stroke-width=\"1.2\"/><text x=\"50\" y=\"60\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">0</text>\n<circle cx=\"115\" cy=\"55\" r=\"13\" fill=\"none\" stroke=\"#5A5FE0\" stroke-width=\"1.2\"/><text x=\"115\" y=\"60\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">1</text>\n<circle cx=\"180\" cy=\"55\" r=\"13\" fill=\"none\" stroke=\"#5A5FE0\" stroke-width=\"1.2\"/><text x=\"180\" y=\"60\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">2</text>\n<circle cx=\"245\" cy=\"55\" r=\"13\" fill=\"none\" stroke=\"#5A5FE0\" stroke-width=\"1.2\"/><text x=\"245\" y=\"60\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">3</text>\n<circle cx=\"310\" cy=\"55\" r=\"13\" fill=\"#979AFF\" fill-opacity=\"0.3\" stroke=\"#5A5FE0\" stroke-width=\"1.5\"/><text x=\"310\" y=\"60\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">4</text>\n<line x1=\"258\" y1=\"55\" x2=\"295\" y2=\"55\" stroke=\"#5A5FE0\" stroke-width=\"1.5\" marker-end=\"url(#ia)\"/>\n<text x=\"350\" y=\"59\" font-size=\"10\" fill=\"#5A5FE0\">只有一支箭</text>\n<text x=\"20\" y=\"110\" font-size=\"12\" fill=\"#E0612F\">强归纳：可用此前全部</text>\n<circle cx=\"50\" cy=\"145\" r=\"13\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.2\"/><text x=\"50\" y=\"150\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">0</text>\n<circle cx=\"115\" cy=\"145\" r=\"13\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.2\"/><text x=\"115\" y=\"150\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">1</text>\n<circle cx=\"180\" cy=\"145\" r=\"13\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.2\"/><text x=\"180\" y=\"150\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">2</text>\n<circle cx=\"245\" cy=\"145\" r=\"13\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.2\"/><text x=\"245\" y=\"150\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">3</text>\n<circle cx=\"310\" cy=\"145\" r=\"13\" fill=\"#FF7F50\" fill-opacity=\"0.3\" stroke=\"#E0612F\" stroke-width=\"1.5\"/><text x=\"310\" y=\"150\" font-size=\"11\" text-anchor=\"middle\" fill=\"#333\">4</text>\n<path d=\"M 58 136 Q 180 100 300 136\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.2\" marker-end=\"url(#ib)\"/>\n<path d=\"M 123 138 Q 215 112 299 139\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.2\" marker-end=\"url(#ib)\"/>\n<path d=\"M 191 141 Q 245 122 298 141\" fill=\"none\" stroke=\"#E0612F\" stroke-width=\"1.2\" marker-end=\"url(#ib)\"/>\n<line x1=\"258\" y1=\"145\" x2=\"295\" y2=\"145\" stroke=\"#E0612F\" stroke-width=\"1.2\" marker-end=\"url(#ib)\"/>\n<text x=\"350\" y=\"149\" font-size=\"10\" fill=\"#E0612F\">全部可用</text>\n<text x=\"210\" y=\"185\" font-size=\"10\" text-anchor=\"middle\" fill=\"#777\">两者结论相同，强归纳只是把归纳假设放宽</text>\n</svg>\n\n**证明** 令 B(n) := 「A(k) 对一切 n₀ ≤ k ≤ n 为真」。对 B 用普通归纳（命题 5.7）。\n\n**B(n₀)**：即 A(n₀) 为真，由 (i)。\n\n**B(n) ⟹ B(n + 1)**：设 B(n)，即 A(k) 对 n₀ ≤ k ≤ n 全为真。由 (ii) 得 A(n + 1) 为真。把它与 B(n) 合起来，得 A(k) 对 n₀ ≤ k ≤ n + 1 全为真，即 B(n + 1)。\n\n由命题 5.7，B(n) 对一切 n ≥ n₀ 为真。特别地，取 k = n 得 A(n) 对一切 n ≥ n₀ 为真。∎\n\n**注** 强归纳不是更强的公理，它由普通归纳推出。差别只在**使用时的便利**：归纳步骤中可以调用此前任意多个已证情形，而不必只用紧邻的那一个。\n\n## 良序原理\n\n(N1) 还有一副面孔，形式上与归纳很不一样，用起来常常更顺手。\n\n**命题（A–E 命题 5.5）** ℕ 是**良序**的(well ordered)，即：**ℕ 的每个非空子集都有最小元**。\n\n**证明（反证）** 设 A ⊆ ℕ 非空，且 A **没有**最小元。令\n\nB := { n ∈ ℕ ; n 是 A 的<a class=\"wl\" data-id=\"fond_ordine\">下界</a> }\n\n即「一切不超过 A 中每个元素的自然数」。用 (N1) 证 B = ℕ。\n\n**0 ∈ B**：由<a class=\"wl\" data-id=\"num_aritmetica\">0 = min(ℕ)</a>，0 ≤ a 对一切 a ∈ ℕ 成立，特别地对一切 a ∈ A 成立。故 0 是 A 的下界。\n\n**n ∈ B ⟹ n + 1 ∈ B**：设 n 是 A 的下界，即 ∀a ∈ A : n ≤ a。\n\n此时 **n ∉ A**——否则 n 既属于 A 又是 A 的下界，那 n 就是 A 的最小元，与「A 无最小元」矛盾。\n\n于是对一切 a ∈ A，有 n ≤ a 且 n ≠ a，即 n < a。由<a class=\"wl\" data-id=\"num_aritmetica\">定理 5.3(vi)</a>（n 与 n+1 之间没有别的自然数），n < a 蕴含 n + 1 ≤ a。故 n + 1 也是 A 的下界，即 n + 1 ∈ B。\n\n由 (N1)，B = ℕ。\n\n**导出矛盾**：因 A 非空，取 m ∈ A。则 m ∈ ℕ = B，即 m 是 A 的下界。而 m 又属于 A，故 m 是 A 的最小元——与「A 无最小元」矛盾。∎\n\n**注（三者的关系）** (N1)、归纳原理、良序原理讲的是同一件事的三种说法：\n\n**(N1)**：含 0 且对后继封闭的子集是全体。<br>\n**归纳原理**：A(0) 真且 A(n) ⟹ A(n+1)，则 A 处处真。<br>\n**良序原理**：非空子集必有最小元。\n\n上面由 (N1) 推出了良序原理。反过来也能由良序原理推出归纳（练习 (c)）。实际证题时按方便选用：**要「逐级推进」时用归纳，要「取一个最小的反例」时用良序**。\n\n## 练习\n\n(a) 用归纳法证明：∀n ∈ ℕ，0 + 1 + 2 + ⋯ + n = n(n+1)/2。（提示：从 n₀ = 0 起。此处允许使用<a class=\"wl\" data-id=\"num_aritmetica\">定理 5.3</a> 的算术律。）\n\n(b) 用归纳法证明：∀n ≥ 1，2ⁿ ≥ n + 1。\n\n(c) 用**良序原理**证明归纳原理的基本形式：设 A(0) 为真，且 ∀n : A(n) ⟹ A(n+1)。证明 A(n) 对一切 n 成立。（提示：反设不然，考虑「使 A 为假的 n」构成的集合。）\n\n## 参考解答\n\n**(a)** 记 S(n) := 0 + 1 + ⋯ + n。\n\n**归纳基础（n = 0）**：S(0) = 0，而 0·(0+1)/2 = 0。相等 ✓\n\n**归纳假设**：设 S(n) = n(n+1)/2。\n\n**归纳步骤**：\n\nS(n+1) = S(n) + (n+1)　（把最后一项拆出）<br>\n= n(n+1)/2 + (n+1)　（**用归纳假设**）<br>\n= (n+1) · [ n/2 + 1 ]　（提出公因子 n+1）<br>\n= (n+1) · (n+2)/2\n\n这正是 (n+1)((n+1)+1)/2。归纳完成。∎\n\n**(b) 归纳基础（n = 1）**：2¹ = 2，1 + 1 = 2。有 2 ≥ 2 ✓\n\n**归纳假设**：设对某个 n ≥ 1 有 2ⁿ ≥ n + 1。\n\n**归纳步骤**：\n\n2^(n+1) = 2 · 2ⁿ ≥ 2(n + 1)　（**用归纳假设**，两边乘 2，由定理 5.3(x)）<br>\n= 2n + 2 = (n + 2) + n<br>\n≥ n + 2　（因 n ≥ 1 ≥ 0，加上非负的 n 只会变大）\n\n而 n + 2 = (n+1) + 1，正是所需。归纳完成。∎\n\n**(c)** 设 A(0) 为真且 ∀n : A(n) ⟹ A(n+1)。反设结论不成立，即存在某个 n 使 A(n) 为假。令\n\nF := { n ∈ ℕ ; A(n) 为假 }\n\n由反设 F ≠ ∅。由**良序原理**，F 有最小元 m := min(F)。\n\n**m ≠ 0**：因 A(0) 为真，0 ∉ F。\n\n故 m ≥ 1，于是 m 有前驱：由<a class=\"wl\" data-id=\"num_n\">注 5.1(a)</a>，存在 m′ 使 m = m′ + 1。\n\n**A(m′) 为真**：因 m′ < m 而 m 是 F 中最小的，故 m′ ∉ F。\n\n由假设 A(m′) ⟹ A(m′ + 1) = A(m)，得 A(m) 为真。但 m ∈ F 说明 A(m) 为假——矛盾。\n\n故 F = ∅，即 A(n) 对一切 n 成立。∎\n\n**注** 这个证法的套路是「**取最小的反例**」：假设有反例，取最小的那个，再说明它的前一个不是反例，从而推出它自己也不是反例，矛盾。这是良序原理最常见的用法。\n\n## 前瞻\n\n良序原理的一个直接应用是整数的除法：给定 m ≥ 1 与 n，可以在「所有形如 n − km 的非负数」中取最小者，得到唯一的商与余数。由此还能推出每个大于 1 的自然数都可分解为素数之积。见 带余除法与素因数分解。",
+      "refs": "Amann–Escher, Analysis I §I.5"
+    },
+    {
       "id": "num_n",
       "label": "Peano 公理与自然数",
       "parent": "num_costruzioni",
@@ -2137,7 +2166,7 @@
       "role": null,
       "color": "#C0894A",
       "ring": 0,
-      "bearing": 46,
+      "bearing": 47,
       "popupLinks": [
         {
           "id": "fond_funzioni",
@@ -2933,11 +2962,6 @@
       "type": "prerequisite"
     },
     {
-      "from": "fond_funzioni",
-      "to": "num_aritmetica",
-      "type": "prerequisite"
-    },
-    {
       "from": "an_cauchy",
       "to": "num_cantor",
       "type": "prerequisite",
@@ -2982,6 +3006,11 @@
     {
       "from": "num_radice2",
       "to": "num_estremo_superiore",
+      "type": "prerequisite"
+    },
+    {
+      "from": "num_aritmetica",
+      "to": "num_induzione",
       "type": "prerequisite"
     },
     {
@@ -3117,7 +3146,7 @@
   ],
   "meta": {
     "counts": {
-      "nodes": 65,
+      "nodes": 66,
       "edges": 126,
       "dangling_prerequisites": 0
     },
